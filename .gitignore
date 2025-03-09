@@ -1,0 +1,59 @@
+# Visual Studio & temporary files
+.vs/
+*.user
+*.suo
+*.vssscc
+*.cache
+*.ncb
+*.log
+*.tlog
+*.obj
+*.pdb
+*.ipch
+*.aps
+*.ilk
+*.exp
+*.iobj
+*.ipdb
+*.obj
+*.rsp
+*.pch
+
+# Build and Bin
+bin/
+obj/
+Debug/
+Release/
+x64/
+x86/
+
+# User-generated config
+app.config
+*.csproj.user
+*.csproj.vspscc
+*.csproj.vspscc
+*.DS_Store
+Thumbs.db
+desktop.ini
+
+# Packages
+packages/
+*.nupkg
+.nuget/
+project.lock.json
+project.assets.json
+**/packages/*
+
+# Entity Framework config
+App.config
+
+# Deployments
+publish/
+*.Publish.xml
+
+# Backups
+Backup*/
+
+# JetBrains
+.idea/
+*.sln.iml
