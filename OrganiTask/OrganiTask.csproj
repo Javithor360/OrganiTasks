@@ -55,10 +55,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Categoria.cs">
+    <Compile Include="Entities\Board.cs">
       <DependentUpon>OrganiTaskDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\Etiqueta.cs">
+    <Compile Include="Entities\Category.cs">
       <DependentUpon>OrganiTaskDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\OrganiTaskDB.Context.cs">
@@ -79,13 +79,13 @@
     <Compile Include="Entities\sysdiagrams.cs">
       <DependentUpon>OrganiTaskDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\Tablero.cs">
+    <Compile Include="Entities\Tag.cs">
       <DependentUpon>OrganiTaskDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\Tarea.cs">
+    <Compile Include="Entities\Task.cs">
       <DependentUpon>OrganiTaskDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\Usuario.cs">
+    <Compile Include="Entities\User.cs">
       <DependentUpon>OrganiTaskDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Forms\Main.cs">
@@ -109,6 +109,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="App.config.example" />
     <EntityDeploy Include="Entities\OrganiTaskDB.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>OrganiTaskDB.Designer.cs</LastGenOutput>
