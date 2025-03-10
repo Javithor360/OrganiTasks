@@ -12,21 +12,23 @@ namespace OrganiTask.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class Tablero
+    public partial class Tag
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Tablero()
+        public Tag()
         {
-            this.Categoria = new HashSet<Categoria>();
+            this.Category = new HashSet<Category>();
+            this.Task = new HashSet<Task>();
         }
     
-        public int ID { get; set; }
-        public string Nombre { get; set; }
-        public string Descripcion { get; set; }
-        public Nullable<int> ID_Usuario { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Color { get; set; }
+        public string Description { get; set; }
     
-        public virtual Usuario Usuario { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Categoria> Categoria { get; set; }
+        public virtual ICollection<Category> Category { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Task> Task { get; set; }
     }
 }

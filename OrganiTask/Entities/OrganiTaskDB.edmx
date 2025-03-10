@@ -5,29 +5,37 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="organitaskModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Categoria">
+        <EntityType Name="Board">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Titulo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Description" Type="text" />
+          <Property Name="UserId" Type="int" />
         </EntityType>
-        <EntityType Name="CategoriaEtiqueta">
+        <EntityType Name="BoardCategory">
           <Key>
-            <PropertyRef Name="ID_Categoria" />
-            <PropertyRef Name="ID_Etiqueta" />
+            <PropertyRef Name="BoardId" />
+            <PropertyRef Name="CategoryId" />
           </Key>
-          <Property Name="ID_Categoria" Type="int" Nullable="false" />
-          <Property Name="ID_Etiqueta" Type="int" Nullable="false" />
+          <Property Name="BoardId" Type="int" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="Etiqueta">
+        <EntityType Name="Category">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Color" Type="varchar" MaxLength="7" Nullable="false" />
-          <Property Name="Descripcion" Type="text" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CategoryTag">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+            <PropertyRef Name="TagId" />
+          </Key>
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="TagId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -39,171 +47,163 @@
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
-        <EntityType Name="Tablero">
+        <EntityType Name="Tag">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="Descripcion" Type="text" />
-          <Property Name="ID_Usuario" Type="int" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Color" Type="varchar" MaxLength="7" Nullable="false" />
+          <Property Name="Description" Type="text" />
         </EntityType>
-        <EntityType Name="TableroCategoria">
+        <EntityType Name="Task">
           <Key>
-            <PropertyRef Name="ID_Tablero" />
-            <PropertyRef Name="ID_Categoria" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="ID_Tablero" Type="int" Nullable="false" />
-          <Property Name="ID_Categoria" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Description" Type="text" />
+          <Property Name="DateStart" Type="datetime" />
+          <Property Name="DateEnd" Type="datetime" />
         </EntityType>
-        <EntityType Name="Tarea">
+        <EntityType Name="TaskTag">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="TaskId" />
+            <PropertyRef Name="TagId" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Titulo" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="Descripcion" Type="text" />
-          <Property Name="FechaInicio" Type="datetime" />
-          <Property Name="FechaFin" Type="datetime" />
+          <Property Name="TaskId" Type="int" Nullable="false" />
+          <Property Name="TagId" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="TareaEtiqueta">
+        <EntityType Name="User">
           <Key>
-            <PropertyRef Name="ID_Tarea" />
-            <PropertyRef Name="ID_Etiqueta" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="ID_Tarea" Type="int" Nullable="false" />
-          <Property Name="ID_Etiqueta" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Usuario">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Username" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="255" Nullable="false" />
         </EntityType>
-        <Association Name="FK__Categoria__ID_Ca__59063A47">
-          <End Role="Categoria" Type="Self.Categoria" Multiplicity="1" />
-          <End Role="CategoriaEtiqueta" Type="Self.CategoriaEtiqueta" Multiplicity="*" />
+        <Association Name="FK__Categoria__ID_Ca__46E78A0C">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="CategoryTag" Type="Self.CategoryTag" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Categoria">
-              <PropertyRef Name="ID" />
+            <Principal Role="Category">
+              <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="CategoriaEtiqueta">
-              <PropertyRef Name="ID_Categoria" />
+            <Dependent Role="CategoryTag">
+              <PropertyRef Name="CategoryId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Categoria__ID_Et__59FA5E80">
-          <End Role="Etiqueta" Type="Self.Etiqueta" Multiplicity="1" />
-          <End Role="CategoriaEtiqueta" Type="Self.CategoriaEtiqueta" Multiplicity="*" />
+        <Association Name="FK__Categoria__ID_Et__47DBAE45">
+          <End Role="Tag" Type="Self.Tag" Multiplicity="1" />
+          <End Role="CategoryTag" Type="Self.CategoryTag" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Etiqueta">
-              <PropertyRef Name="ID" />
+            <Principal Role="Tag">
+              <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="CategoriaEtiqueta">
-              <PropertyRef Name="ID_Etiqueta" />
+            <Dependent Role="CategoryTag">
+              <PropertyRef Name="TagId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Tablero__ID_Usua__5812160E">
-          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
-          <End Role="Tablero" Type="Self.Tablero" Multiplicity="*" />
+        <Association Name="FK__Tablero__ID_Usua__45F365D3">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Board" Type="Self.Board" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Usuario">
-              <PropertyRef Name="ID" />
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Tablero">
-              <PropertyRef Name="ID_Usuario" />
+            <Dependent Role="Board">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TableroCa__ID_Ca__5BE2A6F2">
-          <End Role="Categoria" Type="Self.Categoria" Multiplicity="1" />
-          <End Role="TableroCategoria" Type="Self.TableroCategoria" Multiplicity="*" />
+        <Association Name="FK__TableroCa__ID_Ca__49C3F6B7">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="BoardCategory" Type="Self.BoardCategory" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Categoria">
-              <PropertyRef Name="ID" />
+            <Principal Role="Category">
+              <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="TableroCategoria">
-              <PropertyRef Name="ID_Categoria" />
+            <Dependent Role="BoardCategory">
+              <PropertyRef Name="CategoryId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TableroCa__ID_Ta__5AEE82B9">
-          <End Role="Tablero" Type="Self.Tablero" Multiplicity="1" />
-          <End Role="TableroCategoria" Type="Self.TableroCategoria" Multiplicity="*" />
+        <Association Name="FK__TableroCa__ID_Ta__48CFD27E">
+          <End Role="Board" Type="Self.Board" Multiplicity="1" />
+          <End Role="BoardCategory" Type="Self.BoardCategory" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Tablero">
-              <PropertyRef Name="ID" />
+            <Principal Role="Board">
+              <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="TableroCategoria">
-              <PropertyRef Name="ID_Tablero" />
+            <Dependent Role="BoardCategory">
+              <PropertyRef Name="BoardId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TareaEtiq__ID_Et__5DCAEF64">
-          <End Role="Etiqueta" Type="Self.Etiqueta" Multiplicity="1" />
-          <End Role="TareaEtiqueta" Type="Self.TareaEtiqueta" Multiplicity="*" />
+        <Association Name="FK__TareaEtiq__ID_Et__4BAC3F29">
+          <End Role="Tag" Type="Self.Tag" Multiplicity="1" />
+          <End Role="TaskTag" Type="Self.TaskTag" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Etiqueta">
-              <PropertyRef Name="ID" />
+            <Principal Role="Tag">
+              <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="TareaEtiqueta">
-              <PropertyRef Name="ID_Etiqueta" />
+            <Dependent Role="TaskTag">
+              <PropertyRef Name="TagId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TareaEtiq__ID_Ta__5CD6CB2B">
-          <End Role="Tarea" Type="Self.Tarea" Multiplicity="1" />
-          <End Role="TareaEtiqueta" Type="Self.TareaEtiqueta" Multiplicity="*" />
+        <Association Name="FK__TareaEtiq__ID_Ta__4AB81AF0">
+          <End Role="Task" Type="Self.Task" Multiplicity="1" />
+          <End Role="TaskTag" Type="Self.TaskTag" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Tarea">
-              <PropertyRef Name="ID" />
+            <Principal Role="Task">
+              <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="TareaEtiqueta">
-              <PropertyRef Name="ID_Tarea" />
+            <Dependent Role="TaskTag">
+              <PropertyRef Name="TaskId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="organitaskModelStoreContainer">
-          <EntitySet Name="Categoria" EntityType="Self.Categoria" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CategoriaEtiqueta" EntityType="Self.CategoriaEtiqueta" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Etiqueta" EntityType="Self.Etiqueta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Board" EntityType="Self.Board" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BoardCategory" EntityType="Self.BoardCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CategoryTag" EntityType="Self.CategoryTag" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Tablero" EntityType="Self.Tablero" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="TableroCategoria" EntityType="Self.TableroCategoria" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Tarea" EntityType="Self.Tarea" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="TareaEtiqueta" EntityType="Self.TareaEtiqueta" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Categoria__ID_Ca__59063A47" Association="Self.FK__Categoria__ID_Ca__59063A47">
-            <End Role="Categoria" EntitySet="Categoria" />
-            <End Role="CategoriaEtiqueta" EntitySet="CategoriaEtiqueta" />
+          <EntitySet Name="Tag" EntityType="Self.Tag" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Task" EntityType="Self.Task" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TaskTag" EntityType="Self.TaskTag" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Categoria__ID_Ca__46E78A0C" Association="Self.FK__Categoria__ID_Ca__46E78A0C">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="CategoryTag" EntitySet="CategoryTag" />
           </AssociationSet>
-          <AssociationSet Name="FK__Categoria__ID_Et__59FA5E80" Association="Self.FK__Categoria__ID_Et__59FA5E80">
-            <End Role="Etiqueta" EntitySet="Etiqueta" />
-            <End Role="CategoriaEtiqueta" EntitySet="CategoriaEtiqueta" />
+          <AssociationSet Name="FK__Categoria__ID_Et__47DBAE45" Association="Self.FK__Categoria__ID_Et__47DBAE45">
+            <End Role="Tag" EntitySet="Tag" />
+            <End Role="CategoryTag" EntitySet="CategoryTag" />
           </AssociationSet>
-          <AssociationSet Name="FK__Tablero__ID_Usua__5812160E" Association="Self.FK__Tablero__ID_Usua__5812160E">
-            <End Role="Usuario" EntitySet="Usuario" />
-            <End Role="Tablero" EntitySet="Tablero" />
+          <AssociationSet Name="FK__Tablero__ID_Usua__45F365D3" Association="Self.FK__Tablero__ID_Usua__45F365D3">
+            <End Role="User" EntitySet="User" />
+            <End Role="Board" EntitySet="Board" />
           </AssociationSet>
-          <AssociationSet Name="FK__TableroCa__ID_Ca__5BE2A6F2" Association="Self.FK__TableroCa__ID_Ca__5BE2A6F2">
-            <End Role="Categoria" EntitySet="Categoria" />
-            <End Role="TableroCategoria" EntitySet="TableroCategoria" />
+          <AssociationSet Name="FK__TableroCa__ID_Ca__49C3F6B7" Association="Self.FK__TableroCa__ID_Ca__49C3F6B7">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="BoardCategory" EntitySet="BoardCategory" />
           </AssociationSet>
-          <AssociationSet Name="FK__TableroCa__ID_Ta__5AEE82B9" Association="Self.FK__TableroCa__ID_Ta__5AEE82B9">
-            <End Role="Tablero" EntitySet="Tablero" />
-            <End Role="TableroCategoria" EntitySet="TableroCategoria" />
+          <AssociationSet Name="FK__TableroCa__ID_Ta__48CFD27E" Association="Self.FK__TableroCa__ID_Ta__48CFD27E">
+            <End Role="Board" EntitySet="Board" />
+            <End Role="BoardCategory" EntitySet="BoardCategory" />
           </AssociationSet>
-          <AssociationSet Name="FK__TareaEtiq__ID_Et__5DCAEF64" Association="Self.FK__TareaEtiq__ID_Et__5DCAEF64">
-            <End Role="Etiqueta" EntitySet="Etiqueta" />
-            <End Role="TareaEtiqueta" EntitySet="TareaEtiqueta" />
+          <AssociationSet Name="FK__TareaEtiq__ID_Et__4BAC3F29" Association="Self.FK__TareaEtiq__ID_Et__4BAC3F29">
+            <End Role="Tag" EntitySet="Tag" />
+            <End Role="TaskTag" EntitySet="TaskTag" />
           </AssociationSet>
-          <AssociationSet Name="FK__TareaEtiq__ID_Ta__5CD6CB2B" Association="Self.FK__TareaEtiq__ID_Ta__5CD6CB2B">
-            <End Role="Tarea" EntitySet="Tarea" />
-            <End Role="TareaEtiqueta" EntitySet="TareaEtiqueta" />
+          <AssociationSet Name="FK__TareaEtiq__ID_Ta__4AB81AF0" Association="Self.FK__TareaEtiq__ID_Ta__4AB81AF0">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="TaskTag" EntitySet="TaskTag" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -211,25 +211,25 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="organitaskModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Categoria">
+        <EntityType Name="Board">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Titulo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Etiqueta" Relationship="Self.CategoriaEtiqueta" FromRole="Categoria" ToRole="Etiqueta" />
-          <NavigationProperty Name="Tablero" Relationship="Self.TableroCategoria" FromRole="Categoria" ToRole="Tablero" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="UserId" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Tablero__ID_Usua__45F365D3" FromRole="Board" ToRole="User" />
+          <NavigationProperty Name="Category" Relationship="Self.BoardCategory" FromRole="Board" ToRole="Category" />
         </EntityType>
-        <EntityType Name="Etiqueta">
+        <EntityType Name="Category">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Color" Type="String" MaxLength="7" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Categoria" Relationship="Self.CategoriaEtiqueta" FromRole="Etiqueta" ToRole="Categoria" />
-          <NavigationProperty Name="Tarea" Relationship="Self.TareaEtiqueta" FromRole="Etiqueta" ToRole="Tarea" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Board" Relationship="Self.BoardCategory" FromRole="Category" ToRole="Board" />
+          <NavigationProperty Name="Tag" Relationship="Self.CategoryTag" FromRole="Category" ToRole="Tag" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -241,84 +241,84 @@
           <Property Name="version" Type="Int32" />
           <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
-        <EntityType Name="Tablero">
+        <EntityType Name="Tag">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="ID_Usuario" Type="Int32" />
-          <NavigationProperty Name="Usuario" Relationship="Self.FK__Tablero__ID_Usua__5812160E" FromRole="Tablero" ToRole="Usuario" />
-          <NavigationProperty Name="Categoria" Relationship="Self.TableroCategoria" FromRole="Tablero" ToRole="Categoria" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Color" Type="String" MaxLength="7" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Category" Relationship="Self.CategoryTag" FromRole="Tag" ToRole="Category" />
+          <NavigationProperty Name="Task" Relationship="Self.TaskTag" FromRole="Tag" ToRole="Task" />
         </EntityType>
-        <EntityType Name="Tarea">
+        <EntityType Name="Task">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Titulo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="FechaInicio" Type="DateTime" Precision="3" />
-          <Property Name="FechaFin" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Etiqueta" Relationship="Self.TareaEtiqueta" FromRole="Tarea" ToRole="Etiqueta" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DateStart" Type="DateTime" Precision="3" />
+          <Property Name="DateEnd" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Tag" Relationship="Self.TaskTag" FromRole="Task" ToRole="Tag" />
         </EntityType>
-        <EntityType Name="Usuario">
+        <EntityType Name="User">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Tablero" Relationship="Self.FK__Tablero__ID_Usua__5812160E" FromRole="Usuario" ToRole="Tablero" />
+          <NavigationProperty Name="Board" Relationship="Self.FK__Tablero__ID_Usua__45F365D3" FromRole="User" ToRole="Board" />
         </EntityType>
-        <Association Name="FK__Tablero__ID_Usua__5812160E">
-          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
-          <End Role="Tablero" Type="Self.Tablero" Multiplicity="*" />
+        <Association Name="FK__Tablero__ID_Usua__45F365D3">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Board" Type="Self.Board" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Usuario">
-              <PropertyRef Name="ID" />
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Tablero">
-              <PropertyRef Name="ID_Usuario" />
+            <Dependent Role="Board">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="CategoriaEtiqueta">
-          <End Role="Categoria" Type="Self.Categoria" Multiplicity="*" />
-          <End Role="Etiqueta" Type="Self.Etiqueta" Multiplicity="*" />
+        <Association Name="BoardCategory">
+          <End Role="Category" Type="Self.Category" Multiplicity="*" />
+          <End Role="Board" Type="Self.Board" Multiplicity="*" />
         </Association>
-        <Association Name="TableroCategoria">
-          <End Role="Categoria" Type="Self.Categoria" Multiplicity="*" />
-          <End Role="Tablero" Type="Self.Tablero" Multiplicity="*" />
+        <Association Name="CategoryTag">
+          <End Role="Category" Type="Self.Category" Multiplicity="*" />
+          <End Role="Tag" Type="Self.Tag" Multiplicity="*" />
         </Association>
-        <Association Name="TareaEtiqueta">
-          <End Role="Etiqueta" Type="Self.Etiqueta" Multiplicity="*" />
-          <End Role="Tarea" Type="Self.Tarea" Multiplicity="*" />
+        <Association Name="TaskTag">
+          <End Role="Tag" Type="Self.Tag" Multiplicity="*" />
+          <End Role="Task" Type="Self.Task" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="organiTaskEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Categoria" EntityType="Self.Categoria" />
-          <EntitySet Name="Etiqueta" EntityType="Self.Etiqueta" />
+        <EntityContainer Name="organitaskEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Board" EntityType="Self.Board" />
+          <EntitySet Name="Category" EntityType="Self.Category" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
-          <EntitySet Name="Tablero" EntityType="Self.Tablero" />
-          <EntitySet Name="Tarea" EntityType="Self.Tarea" />
-          <EntitySet Name="Usuario" EntityType="Self.Usuario" />
-          <AssociationSet Name="FK__Tablero__ID_Usua__5812160E" Association="Self.FK__Tablero__ID_Usua__5812160E">
-            <End Role="Usuario" EntitySet="Usuario" />
-            <End Role="Tablero" EntitySet="Tablero" />
+          <EntitySet Name="Tag" EntityType="Self.Tag" />
+          <EntitySet Name="Task" EntityType="Self.Task" />
+          <EntitySet Name="User" EntityType="Self.User" />
+          <AssociationSet Name="FK__Tablero__ID_Usua__45F365D3" Association="Self.FK__Tablero__ID_Usua__45F365D3">
+            <End Role="User" EntitySet="User" />
+            <End Role="Board" EntitySet="Board" />
           </AssociationSet>
-          <AssociationSet Name="CategoriaEtiqueta" Association="Self.CategoriaEtiqueta">
-            <End Role="Categoria" EntitySet="Categoria" />
-            <End Role="Etiqueta" EntitySet="Etiqueta" />
+          <AssociationSet Name="BoardCategory" Association="Self.BoardCategory">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Board" EntitySet="Board" />
           </AssociationSet>
-          <AssociationSet Name="TableroCategoria" Association="Self.TableroCategoria">
-            <End Role="Categoria" EntitySet="Categoria" />
-            <End Role="Tablero" EntitySet="Tablero" />
+          <AssociationSet Name="CategoryTag" Association="Self.CategoryTag">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Tag" EntitySet="Tag" />
           </AssociationSet>
-          <AssociationSet Name="TareaEtiqueta" Association="Self.TareaEtiqueta">
-            <End Role="Etiqueta" EntitySet="Etiqueta" />
-            <End Role="Tarea" EntitySet="Tarea" />
+          <AssociationSet Name="TaskTag" Association="Self.TaskTag">
+            <End Role="Tag" EntitySet="Tag" />
+            <End Role="Task" EntitySet="Task" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -326,22 +326,22 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="organitaskModelStoreContainer" CdmEntityContainer="organiTaskEntities">
-          <EntitySetMapping Name="Categoria">
-            <EntityTypeMapping TypeName="organitaskModel.Categoria">
-              <MappingFragment StoreEntitySet="Categoria">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+        <EntityContainerMapping StorageEntityContainer="organitaskModelStoreContainer" CdmEntityContainer="organitaskEntities">
+          <EntitySetMapping Name="Board">
+            <EntityTypeMapping TypeName="organitaskModel.Board">
+              <MappingFragment StoreEntitySet="Board">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Etiqueta">
-            <EntityTypeMapping TypeName="organitaskModel.Etiqueta">
-              <MappingFragment StoreEntitySet="Etiqueta">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="Color" ColumnName="Color" />
-                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <EntitySetMapping Name="Category">
+            <EntityTypeMapping TypeName="organitaskModel.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -356,59 +356,59 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Tablero">
-            <EntityTypeMapping TypeName="organitaskModel.Tablero">
-              <MappingFragment StoreEntitySet="Tablero">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
-                <ScalarProperty Name="ID_Usuario" ColumnName="ID_Usuario" />
+          <EntitySetMapping Name="Tag">
+            <EntityTypeMapping TypeName="organitaskModel.Tag">
+              <MappingFragment StoreEntitySet="Tag">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Tarea">
-            <EntityTypeMapping TypeName="organitaskModel.Tarea">
-              <MappingFragment StoreEntitySet="Tarea">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
-                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
-                <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
-                <ScalarProperty Name="FechaFin" ColumnName="FechaFin" />
+          <EntitySetMapping Name="Task">
+            <EntityTypeMapping TypeName="organitaskModel.Task">
+              <MappingFragment StoreEntitySet="Task">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="DateStart" ColumnName="DateStart" />
+                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Usuario">
-            <EntityTypeMapping TypeName="organitaskModel.Usuario">
-              <MappingFragment StoreEntitySet="Usuario">
-                <ScalarProperty Name="ID" ColumnName="ID" />
+          <EntitySetMapping Name="User">
+            <EntityTypeMapping TypeName="organitaskModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="CategoriaEtiqueta" TypeName="organitaskModel.CategoriaEtiqueta" StoreEntitySet="CategoriaEtiqueta">
-            <EndProperty Name="Categoria">
-              <ScalarProperty Name="ID" ColumnName="ID_Categoria" />
+          <AssociationSetMapping Name="BoardCategory" TypeName="organitaskModel.BoardCategory" StoreEntitySet="BoardCategory">
+            <EndProperty Name="Category">
+              <ScalarProperty Name="Id" ColumnName="CategoryId" />
             </EndProperty>
-            <EndProperty Name="Etiqueta">
-              <ScalarProperty Name="ID" ColumnName="ID_Etiqueta" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="TableroCategoria" TypeName="organitaskModel.TableroCategoria" StoreEntitySet="TableroCategoria">
-            <EndProperty Name="Categoria">
-              <ScalarProperty Name="ID" ColumnName="ID_Categoria" />
-            </EndProperty>
-            <EndProperty Name="Tablero">
-              <ScalarProperty Name="ID" ColumnName="ID_Tablero" />
+            <EndProperty Name="Board">
+              <ScalarProperty Name="Id" ColumnName="BoardId" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="TareaEtiqueta" TypeName="organitaskModel.TareaEtiqueta" StoreEntitySet="TareaEtiqueta">
-            <EndProperty Name="Etiqueta">
-              <ScalarProperty Name="ID" ColumnName="ID_Etiqueta" />
+          <AssociationSetMapping Name="CategoryTag" TypeName="organitaskModel.CategoryTag" StoreEntitySet="CategoryTag">
+            <EndProperty Name="Category">
+              <ScalarProperty Name="Id" ColumnName="CategoryId" />
             </EndProperty>
-            <EndProperty Name="Tarea">
-              <ScalarProperty Name="ID" ColumnName="ID_Tarea" />
+            <EndProperty Name="Tag">
+              <ScalarProperty Name="Id" ColumnName="TagId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="TaskTag" TypeName="organitaskModel.TaskTag" StoreEntitySet="TaskTag">
+            <EndProperty Name="Tag">
+              <ScalarProperty Name="Id" ColumnName="TagId" />
+            </EndProperty>
+            <EndProperty Name="Task">
+              <ScalarProperty Name="Id" ColumnName="TaskId" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>

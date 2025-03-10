@@ -13,10 +13,10 @@ namespace OrganiTask.Entities
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class organiTaskEntities : DbContext
+    public partial class organitaskEntities : DbContext
     {
-        public organiTaskEntities()
-            : base("name=organiTaskEntities")
+        public organitaskEntities()
+            : base("name=organitaskEntities")
         {
         }
     
@@ -25,11 +25,11 @@ namespace OrganiTask.Entities
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Categoria> Categoria { get; set; }
-        public virtual DbSet<Etiqueta> Etiqueta { get; set; }
+        public virtual DbSet<Board> Board { get; set; }
+        public virtual DbSet<Category> Category { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
-        public virtual DbSet<Tablero> Tablero { get; set; }
-        public virtual DbSet<Tarea> Tarea { get; set; }
-        public virtual DbSet<Usuario> Usuario { get; set; }
+        public virtual DbSet<Tag> Tag { get; set; }
+        public virtual DbSet<Task> Task { get; set; }
+        public virtual DbSet<User> User { get; set; }
     }
 }

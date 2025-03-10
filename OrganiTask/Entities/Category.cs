@@ -12,23 +12,21 @@ namespace OrganiTask.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class Etiqueta
+    public partial class Category
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Etiqueta()
+        public Category()
         {
-            this.Categoria = new HashSet<Categoria>();
-            this.Tarea = new HashSet<Tarea>();
+            this.Board = new HashSet<Board>();
+            this.Tag = new HashSet<Tag>();
         }
     
-        public int ID { get; set; }
-        public string Nombre { get; set; }
-        public string Color { get; set; }
-        public string Descripcion { get; set; }
+        public int Id { get; set; }
+        public string Title { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Categoria> Categoria { get; set; }
+        public virtual ICollection<Board> Board { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Tarea> Tarea { get; set; }
+        public virtual ICollection<Tag> Tag { get; set; }
     }
 }
