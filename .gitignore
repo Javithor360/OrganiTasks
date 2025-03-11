@@ -46,6 +46,7 @@ project.assets.json
 
 # Entity Framework config
 App.config
+OrganiTask/Entities/*
 
 # Deployments
 publish/

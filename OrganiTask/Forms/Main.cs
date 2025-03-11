@@ -38,12 +38,12 @@ namespace OrganiTask.Forms
             using (var context = new OrganiTaskDB())
             {
                 // de manera temporal, obtenemos todos los usuarios
-                var users = context.Users.Include(u => u.Board).Select(u => new
+                var users = context.Users.Include(u => u.Boards).Select(u => new
                 {
                     u.Id,
                     u.Username,
                     u.Email,
-                    NumeroTableros = u.Board.Count()
+                    NumeroTableros = u.Boards.Count()
                 }).ToList();
 
                 // y los cargamos en el DataGridView con la información recopilada
