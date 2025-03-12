@@ -13,7 +13,6 @@ namespace OrganiTask.Util
     {
         public OrganiTaskDB() : base("name=organitaskEntities") { }
         public DbSet<User> Users { get; set; }
-        public DbSet<Board> Boards { get; set; }
-        public DbSet<Category> Categories { get; set; }
+        public DbSet<Dashboard> Dashboards { get; set; }
     }
 }
