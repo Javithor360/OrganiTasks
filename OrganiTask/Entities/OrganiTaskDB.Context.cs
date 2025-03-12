@@ -25,11 +25,12 @@ namespace OrganiTask.Entities
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Board> Board { get; set; }
         public virtual DbSet<Category> Category { get; set; }
+        public virtual DbSet<Dashboard> Dashboard { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<Tag> Tag { get; set; }
         public virtual DbSet<Task> Task { get; set; }
+        public virtual DbSet<TaskTag> TaskTag { get; set; }
         public virtual DbSet<User> User { get; set; }
     }
 }

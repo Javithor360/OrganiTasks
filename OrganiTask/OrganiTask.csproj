@@ -71,10 +71,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Board.cs">
+    <Compile Include="Entities\Category.cs">
       <DependentUpon>OrganiTaskDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\Category.cs">
+    <Compile Include="Entities\Dashboard.cs">
       <DependentUpon>OrganiTaskDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\OrganiTaskDB.Context.cs">
@@ -99,6 +99,9 @@
       <DependentUpon>OrganiTaskDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Task.cs">
+      <DependentUpon>OrganiTaskDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TaskTag.cs">
       <DependentUpon>OrganiTaskDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\User.cs">
