@@ -13,6 +13,22 @@
     </providers>
   </entityFramework>
   <connectionStrings>
-    <add name="organitaskEntities" connectionString="CONNECTION_STRING_HERE" providerName="System.Data.EntityClient" />
+	  <!-- Cadena de conexión a base de datos
+			- Asegurarse que la base de datos "organitask" y sus tablas ya existen en SQL Server
+			- Cambiar "SERVER_NAME" por el nombre de servidor de base de datos local -->
+	  <add
+		  name="organitaskEntities"
+		  connectionString="
+		    metadata=res://*/Entities.OrganiTaskDB.csdl|res://*/Entities.OrganiTaskDB.ssdl|res://*/Entities.OrganiTaskDB.msl;
+			provider=System.Data.SqlClient;
+			provider connection string=&quot;data source=SERVER_NAME; 
+			initial catalog=organitask;
+			integrated security=True;
+			encrypt=True;
+			trustservercertificate=True;
+			MultipleActiveResultSets=True;
+			App=EntityFramework&quot;"
+		  providerName="System.Data.EntityClient"
+	/>
   </connectionStrings>
 </configuration>
