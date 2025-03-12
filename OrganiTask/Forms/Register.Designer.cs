@@ -1,6 +1,6 @@
 ﻿namespace OrganiTask.Forms
 {
-    partial class Login
+    partial class Register
     {
         /// <summary>
         /// Required designer variable.
@@ -40,7 +40,7 @@
             this.checkBoxRemember = new System.Windows.Forms.CheckBox();
             this.buttonLogin = new System.Windows.Forms.Button();
             this.linkForgotPassword = new System.Windows.Forms.LinkLabel();
-            this.linkCreateAccount = new System.Windows.Forms.LinkLabel();
+            this.linkSignInAccount = new System.Windows.Forms.LinkLabel();
             this.panelSide.SuspendLayout();
             this.panelMain.SuspendLayout();
             this.SuspendLayout();
@@ -50,8 +50,7 @@
             this.panelSide.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
             this.panelSide.Controls.Add(this.labelAppName);
             this.panelSide.Controls.Add(this.labelWelcome);
-            this.panelSide.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panelSide.Location = new System.Drawing.Point(0, 0);
+            this.panelSide.Location = new System.Drawing.Point(400, 0);
             this.panelSide.Name = "panelSide";
             this.panelSide.Size = new System.Drawing.Size(250, 450);
             this.panelSide.TabIndex = 0;
@@ -61,7 +60,7 @@
             this.labelAppName.AutoSize = true;
             this.labelAppName.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelAppName.ForeColor = System.Drawing.Color.White;
-            this.labelAppName.Location = new System.Drawing.Point(30, 150);
+            this.labelAppName.Location = new System.Drawing.Point(55, 155);
             this.labelAppName.Name = "labelAppName";
             this.labelAppName.Size = new System.Drawing.Size(160, 37);
             this.labelAppName.TabIndex = 1;
@@ -72,16 +71,17 @@
             this.labelWelcome.AutoSize = true;
             this.labelWelcome.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelWelcome.ForeColor = System.Drawing.Color.White;
-            this.labelWelcome.Location = new System.Drawing.Point(32, 200);
+            this.labelWelcome.Location = new System.Drawing.Point(58, 195);
             this.labelWelcome.Name = "labelWelcome";
-            this.labelWelcome.Size = new System.Drawing.Size(183, 21);
+            this.labelWelcome.Size = new System.Drawing.Size(145, 21);
             this.labelWelcome.TabIndex = 2;
-            this.labelWelcome.Text = "Organizate con eficiencia";
+            this.labelWelcome.Text = "Comienza con éxito";
             // 
             // panelMain
             // 
             this.panelMain.BackColor = System.Drawing.Color.White;
             this.panelMain.Controls.Add(this.labelLogin);
+            this.panelMain.Controls.Add(this.panelSide);
             this.panelMain.Controls.Add(this.labelUsername);
             this.panelMain.Controls.Add(this.textBoxUsername);
             this.panelMain.Controls.Add(this.labelPassword);
@@ -89,11 +89,11 @@
             this.panelMain.Controls.Add(this.checkBoxRemember);
             this.panelMain.Controls.Add(this.buttonLogin);
             this.panelMain.Controls.Add(this.linkForgotPassword);
-            this.panelMain.Controls.Add(this.linkCreateAccount);
+            this.panelMain.Controls.Add(this.linkSignInAccount);
             this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelMain.Location = new System.Drawing.Point(250, 0);
+            this.panelMain.Location = new System.Drawing.Point(0, 0);
             this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(400, 450);
+            this.panelMain.Size = new System.Drawing.Size(650, 450);
             this.panelMain.TabIndex = 1;
             // 
             // labelLogin
@@ -101,11 +101,11 @@
             this.labelLogin.AutoSize = true;
             this.labelLogin.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelLogin.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.labelLogin.Location = new System.Drawing.Point(120, 85);
+            this.labelLogin.Location = new System.Drawing.Point(140, 85);
             this.labelLogin.Name = "labelLogin";
-            this.labelLogin.Size = new System.Drawing.Size(138, 28);
+            this.labelLogin.Size = new System.Drawing.Size(118, 28);
             this.labelLogin.TabIndex = 0;
-            this.labelLogin.Text = "Iniciar Sesión";
+            this.labelLogin.Text = "Registrarse";
             // 
             // labelUsername
             // 
@@ -170,7 +170,7 @@
             this.buttonLogin.Name = "buttonLogin";
             this.buttonLogin.Size = new System.Drawing.Size(300, 40);
             this.buttonLogin.TabIndex = 6;
-            this.buttonLogin.Text = "INICIAR SESIÓN";
+            this.buttonLogin.Text = "REGISTRARSE";
             this.buttonLogin.UseVisualStyleBackColor = false;
             this.buttonLogin.Click += new System.EventHandler(this.buttonLogin_Click);
             // 
@@ -187,31 +187,30 @@
             this.linkForgotPassword.Text = "¿Olvidaste tu contraseña?";
             this.linkForgotPassword.Visible = false;
             // 
-            // linkCreateAccount
+            // linkSignInAccount
             // 
-            this.linkCreateAccount.AutoSize = true;
-            this.linkCreateAccount.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkCreateAccount.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.linkCreateAccount.Location = new System.Drawing.Point(149, 320);
-            this.linkCreateAccount.Name = "linkCreateAccount";
-            this.linkCreateAccount.Size = new System.Drawing.Size(109, 15);
-            this.linkCreateAccount.TabIndex = 8;
-            this.linkCreateAccount.TabStop = true;
-            this.linkCreateAccount.Text = "Crear cuenta nueva";
-            this.linkCreateAccount.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkCreateAccount_LinkClicked);
+            this.linkSignInAccount.AutoSize = true;
+            this.linkSignInAccount.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkSignInAccount.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.linkSignInAccount.Location = new System.Drawing.Point(128, 321);
+            this.linkSignInAccount.Name = "linkSignInAccount";
+            this.linkSignInAccount.Size = new System.Drawing.Size(148, 15);
+            this.linkSignInAccount.TabIndex = 8;
+            this.linkSignInAccount.TabStop = true;
+            this.linkSignInAccount.Text = "Inicia Sesión con tu cuenta";
+            this.linkSignInAccount.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkSignInAccount_LinkClicked);
             // 
-            // Login
+            // Register
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(650, 450);
             this.Controls.Add(this.panelMain);
-            this.Controls.Add(this.panelSide);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
-            this.Name = "Login";
+            this.Name = "Register";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "OrganiTask - Iniciar Sesión";
+            this.Text = "OrganiTask - Registro";
             this.panelSide.ResumeLayout(false);
             this.panelSide.PerformLayout();
             this.panelMain.ResumeLayout(false);
@@ -234,6 +233,6 @@
         private System.Windows.Forms.CheckBox checkBoxRemember;
         private System.Windows.Forms.Button buttonLogin;
         private System.Windows.Forms.LinkLabel linkForgotPassword;
-        private System.Windows.Forms.LinkLabel linkCreateAccount;
+        private System.Windows.Forms.LinkLabel linkSignInAccount;
     }
 }

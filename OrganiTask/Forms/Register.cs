@@ -12,9 +12,9 @@ using System.Windows.Forms;
 
 namespace OrganiTask.Forms
 {
-    public partial class Login : Form
+    public partial class Register : Form
     {
-        public Login()
+        public Register()
         {
             InitializeComponent();
         }
@@ -31,8 +31,8 @@ namespace OrganiTask.Forms
                 MessageBox.Show("Login exitoso", "Bienvenido", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 
                 Main mainForm = new Main();
-                this.Hide();
                 mainForm.ShowDialog();
+                
                 this.Visible = true;
             } else
             {
@@ -40,11 +40,11 @@ namespace OrganiTask.Forms
             }
         }
 
-        private void linkCreateAccount_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void linkSignInAccount_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Register registerForm = new Register();
+            Login loginForm = new Login();
             this.Hide();
-            registerForm.Show();
+            loginForm.Show();
         }
     }
 }
