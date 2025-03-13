@@ -100,6 +100,7 @@
             this.dgvCategories.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvCategories.Size = new System.Drawing.Size(340, 200);
             this.dgvCategories.TabIndex = 5;
+            dgvCategories.SelectionChanged += dgvCategories_SelectionChanged;
 
             // 
             // CategoriesManagement

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using OrganiTask.Entities;
+using Task = OrganiTask.Entities.Task; // para resolver la ambigüedad con System.Threading.Tasks.Task
 
 namespace OrganiTask.Util
 {
@@ -14,5 +15,9 @@ namespace OrganiTask.Util
         public OrganiTaskDB() : base("name=organitaskEntities") { }
         public DbSet<User> Users { get; set; }
         public DbSet<Dashboard> Dashboards { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<Task> Tasks { get; set; }
+        public DbSet<TaskTag> TaskTags { get; set; }
     }
 }

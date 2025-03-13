@@ -125,11 +125,6 @@
     <Compile Include="Forms\Test\CategoriesManagement.Designer.cs">
       <DependentUpon>CategoriesManagement.cs</DependentUpon>
     </Compile>
-    <Compile Include="organitaskDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>organitaskDataSet.xsd</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\OrganiTaskDB.cs" />
@@ -160,17 +155,6 @@
     </EntityDeploy>
     <None Include="Entities\OrganiTaskDB.edmx.diagram">
       <DependentUpon>OrganiTaskDB.edmx</DependentUpon>
-    </None>
-    <None Include="organitaskDataSet.xsc">
-      <DependentUpon>organitaskDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="organitaskDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>organitaskDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="organitaskDataSet.xss">
-      <DependentUpon>organitaskDataSet.xsd</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
