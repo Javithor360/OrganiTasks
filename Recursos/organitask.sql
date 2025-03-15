@@ -55,8 +55,8 @@ CREATE TABLE [Task] (
 
 CREATE TABLE [TaskTag] (
   [Id] int PRIMARY KEY IDENTITY(1, 1),
-  [TaskId] int,
-  [TagId] int,
+  [TaskId] int NOT NULL,
+  [TagId] int NULL,
   CONSTRAINT FK_TaskTag_Task FOREIGN KEY (TaskId)
 	REFERENCES [Task] (Id)
 	ON DELETE CASCADE,
