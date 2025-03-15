@@ -11,6 +11,7 @@ using System.Windows.Forms;
 
 using OrganiTask.Entities;
 using OrganiTask.Util;
+using OrganiTask.Forms.Test;
 
 /*
  * CONSIDERACIONES IMPORTANTES PARA TODO EL PROYECTO:
@@ -54,6 +55,18 @@ namespace OrganiTask.Forms
         private void Main_Load(object sender, EventArgs e)
         {
             Refresh();
+        }
+
+        private void btnMainTest_Click(object sender, EventArgs e)
+        {
+            KanbanDashboard kanban = new KanbanDashboard(2, 4);
+            kanban.Show();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            CategoriesManagement categoriesManagement = new CategoriesManagement();
+            categoriesManagement.Show();
         }
     }
 }
