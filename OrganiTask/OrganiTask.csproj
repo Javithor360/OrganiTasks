@@ -71,10 +71,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Board.cs">
+    <Compile Include="Entities\Category.cs">
       <DependentUpon>OrganiTaskDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\Category.cs">
+    <Compile Include="Entities\Dashboard.cs">
       <DependentUpon>OrganiTaskDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\OrganiTaskDB.Context.cs">
@@ -101,6 +101,9 @@
     <Compile Include="Entities\Task.cs">
       <DependentUpon>OrganiTaskDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\TaskTag.cs">
+      <DependentUpon>OrganiTaskDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\User.cs">
       <DependentUpon>OrganiTaskDB.tt</DependentUpon>
     </Compile>
@@ -109,6 +112,12 @@
     </Compile>
     <Compile Include="Forms\Register.Designer.cs">
       <DependentUpon>Register.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\KanbanDashboard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\KanbanDashboard.Designer.cs">
+      <DependentUpon>KanbanDashboard.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Login.cs">
       <SubType>Form</SubType>
@@ -122,6 +131,12 @@
     <Compile Include="Forms\Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Test\CategoriesManagement.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Test\CategoriesManagement.Designer.cs">
+      <DependentUpon>CategoriesManagement.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\OrganiTaskDB.cs" />
@@ -129,11 +144,17 @@
     <EmbeddedResource Include="Forms\Register.resx">
       <DependentUpon>Register.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\KanbanDashboard.resx">
+      <DependentUpon>KanbanDashboard.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Test\CategoriesManagement.resx">
+      <DependentUpon>CategoriesManagement.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

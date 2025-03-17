@@ -17,18 +17,17 @@ namespace OrganiTask.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Tag()
         {
-            this.Category = new HashSet<Category>();
-            this.Task = new HashSet<Task>();
+            this.TaskTag = new HashSet<TaskTag>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
         public string Color { get; set; }
         public string Description { get; set; }
+        public int CategoryId { get; set; }
     
+        public virtual Category Category { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Category> Category { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Task> Task { get; set; }
+        public virtual ICollection<TaskTag> TaskTag { get; set; }
     }
 }
