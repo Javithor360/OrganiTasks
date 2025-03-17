@@ -38,7 +38,7 @@
             this.labelPassword = new System.Windows.Forms.Label();
             this.textBoxPassword = new System.Windows.Forms.TextBox();
             this.checkBoxRemember = new System.Windows.Forms.CheckBox();
-            this.buttonLogin = new System.Windows.Forms.Button();
+            this.buttonRegister = new System.Windows.Forms.Button();
             this.linkForgotPassword = new System.Windows.Forms.LinkLabel();
             this.linkSignInAccount = new System.Windows.Forms.LinkLabel();
             this.panelSide.SuspendLayout();
@@ -87,7 +87,7 @@
             this.panelMain.Controls.Add(this.labelPassword);
             this.panelMain.Controls.Add(this.textBoxPassword);
             this.panelMain.Controls.Add(this.checkBoxRemember);
-            this.panelMain.Controls.Add(this.buttonLogin);
+            this.panelMain.Controls.Add(this.buttonRegister);
             this.panelMain.Controls.Add(this.linkForgotPassword);
             this.panelMain.Controls.Add(this.linkSignInAccount);
             this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -159,20 +159,20 @@
             this.checkBoxRemember.UseVisualStyleBackColor = true;
             this.checkBoxRemember.Visible = false;
             // 
-            // buttonLogin
+            // buttonRegister
             // 
-            this.buttonLogin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.buttonLogin.FlatAppearance.BorderSize = 0;
-            this.buttonLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonLogin.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonLogin.ForeColor = System.Drawing.Color.White;
-            this.buttonLogin.Location = new System.Drawing.Point(50, 268);
-            this.buttonLogin.Name = "buttonLogin";
-            this.buttonLogin.Size = new System.Drawing.Size(300, 40);
-            this.buttonLogin.TabIndex = 6;
-            this.buttonLogin.Text = "REGISTRARSE";
-            this.buttonLogin.UseVisualStyleBackColor = false;
-            this.buttonLogin.Click += new System.EventHandler(this.buttonLogin_Click);
+            this.buttonRegister.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.buttonRegister.FlatAppearance.BorderSize = 0;
+            this.buttonRegister.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonRegister.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonRegister.ForeColor = System.Drawing.Color.White;
+            this.buttonRegister.Location = new System.Drawing.Point(50, 268);
+            this.buttonRegister.Name = "buttonRegister";
+            this.buttonRegister.Size = new System.Drawing.Size(300, 40);
+            this.buttonRegister.TabIndex = 6;
+            this.buttonRegister.Text = "REGISTRARSE";
+            this.buttonRegister.UseVisualStyleBackColor = false;
+            this.buttonRegister.Click += new System.EventHandler(this.buttonRegister_Click);
             // 
             // linkForgotPassword
             // 
@@ -231,7 +231,7 @@
         private System.Windows.Forms.Label labelPassword;
         private System.Windows.Forms.TextBox textBoxPassword;
         private System.Windows.Forms.CheckBox checkBoxRemember;
-        private System.Windows.Forms.Button buttonLogin;
+        private System.Windows.Forms.Button buttonRegister;
         private System.Windows.Forms.LinkLabel linkForgotPassword;
         private System.Windows.Forms.LinkLabel linkSignInAccount;
     }

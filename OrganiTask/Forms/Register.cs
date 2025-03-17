@@ -19,16 +19,16 @@ namespace OrganiTask.Forms
             InitializeComponent();
         }
 
-        private void buttonLogin_Click(object sender, EventArgs e)
+        private void buttonRegister_Click(object sender, EventArgs e)
         {
             string username = textBoxUsername.Text;
             string password = textBoxPassword.Text;
 
-            User user = AuthService.Login(username, password);
+            User user = AuthService.Register(username, password, "test1234@email.com");
 
             if (user != null)
             {
-                MessageBox.Show("Login exitoso", "Bienvenido", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Registro exitoso", "Bienvenido", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 
                 Main mainForm = new Main();
                 mainForm.ShowDialog();
@@ -36,7 +36,7 @@ namespace OrganiTask.Forms
                 this.Visible = true;
             } else
             {
-                MessageBox.Show("Credenciales incorrectas","Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Hubo un error","Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
