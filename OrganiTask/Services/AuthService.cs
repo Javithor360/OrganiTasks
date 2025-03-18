@@ -28,19 +28,19 @@ namespace OrganiTask.Services
             return false;
         }
 
-        public static User Login(string username, string password)
+        public static bool Login(string username, string password)
         {
             using (var context = new OrganiTaskDB())
             {
-                // Buscar al usuario por su nombre de usuario
                 var user = context.Users.SingleOrDefault(u => u.Username == username);
-
                 if (user != null && BCrypt.Net.BCrypt.Verify(password, user.Password))
                 {
-                    return user;
+                    // Actualizar la sesión actual
+                    SessionManager.Instance.Login(user);
+                    // 
+                    return true;
                 }
-
-                return null;
+                return false;
             }
         }
 
@@ -78,6 +78,10 @@ namespace OrganiTask.Services
 
                 return newUser;
             }
+        }
+        public static void Logout()
+        {
+            SessionManager.Instance.Logout();
         }
     }
 }

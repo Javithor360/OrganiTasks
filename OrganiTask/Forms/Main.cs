@@ -55,6 +55,12 @@ namespace OrganiTask.Forms
         private void Main_Load(object sender, EventArgs e)
         {
             Refresh();
+        
+            if (SessionManager.Instance.IsLoggedIn)
+            {
+                User user = SessionManager.Instance.CurrentUser;
+                label1.Text = user.Username;
+            }
         }
 
         private void btnMainTest_Click(object sender, EventArgs e)

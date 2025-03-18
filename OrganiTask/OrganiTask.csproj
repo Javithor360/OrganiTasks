@@ -139,6 +139,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Classes\SessionManager.cs" />
     <Compile Include="Util\OrganiTaskDB.cs" />
     <Compile Include="Services\AuthService.cs" />
     <EmbeddedResource Include="Forms\Register.resx">
