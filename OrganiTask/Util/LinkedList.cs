@@ -6,63 +6,127 @@ using System.Threading.Tasks;
 
 namespace OrganiTask.Util
 {
-    public class LinkedList<T>
+    public class Nodo
     {
-        private class Nodo
-        {
-            public T Data;
-            public Nodo Next;
+        public string Dato;
+        public Nodo Siguiente;
 
-            public Nodo(T data)
-            {
-                Data = data;
-                Next = null;
-            }
+        public Nodo(string dato)
+        {
+            Dato = dato;
+            Siguiente = null;
         }
-        private Nodo head;
+    }
+    public class ListaEnlazada
+    {
+        private Nodo cabeza;
 
-        public void Add(T data)
+        public void Agregar(String dato)
         {
-            Nodo newNode = new Nodo(data);
-            if (head == null)
+            Nodo nuevo = new Nodo(dato);
+                if(cabeza  == null)
             {
-                head = newNode;
+                cabeza = nuevo;
             }
             else
             {
-                Nodo current = head;
-                while(current.Next != null)
+                Nodo actual = cabeza;
+                while (actual.Siguiente != null)
                 {
-                    current = current.Next;
+                    actual = actual.Siguiente;
                 }
-                current.Next = newNode;
+                actual.Siguiente = nuevo;
             }
+                       
         }
 
-        public void Remove(T data)
+        public void AgregarVarios(List<string> datos)
         {
-            if (head == null) return;
-
-            if (head.Data.Equals(data))
+            foreach (var dato in datos)
             {
-                {
-                    head = head.Next;
-                    return;
-                }
-
-                Nodo current = head;
-
-                while (current.Next != null && !current.Next.Data.Equals(data))
-                {
-                    current = current.Next;
-                }
-
-                if (current.Next != null)
-                {
-                    current.Next = current.Next.Next;
-                }
+                Agregar(dato);
             }
         }
 
+        public void Eliminar(string dato)
+        {
+            if (cabeza == null) return;
+
+            if(cabeza.Dato == dato)
+            {
+                cabeza = cabeza.Siguiente;
+                return;
+            }
+
+            Nodo actual = cabeza;
+            while (actual.Siguiente != null && actual.Siguiente.Dato != dato)
+            {
+                actual = actual.Siguiente;
+            }
+
+            if(actual.Siguiente != null)
+            {
+                actual.Siguiente = actual.Siguiente.Siguiente;
+            }
+        }
+        public void Modificar(string Datoviejo, string nuevoDato)
+        {
+            Nodo actual = cabeza;
+            while(actual !=null)
+            {
+                if (actual.Dato == Datoviejo)
+                {
+                    actual.Dato = nuevoDato;
+                    break;
+                }
+                actual = actual.Siguiente;
+            }
+
+        }
+
+        public void Ordenar()
+        {
+            if (cabeza == null || cabeza.Siguiente == null) return;
+
+            Nodo actual, siguiente;
+            string temp;
+            bool swapped;
+
+            do
+            {
+                swapped = false;
+                actual = cabeza;
+
+                while (actual.Siguiente != null)
+                {
+                    siguiente = actual.Siguiente;
+
+                    if(string.Compare(actual.Dato, siguiente.Dato) > 0)
+                    {
+                        temp = actual.Dato;
+                        actual.Dato= siguiente.Dato;
+                        siguiente.Dato = temp;
+                        swapped = true;
+                    }
+                    actual = actual.Siguiente;
+                }
+            }
+            while(swapped);
+        }
+        public List<string> ObtenerLista()
+        {
+            List<string> tareas = new List<string>();
+            Nodo actual = cabeza;
+            while(actual != null)
+            {
+                tareas.Add(actual.Dato);
+                actual = actual.Siguiente;
+            }
+            return tareas;
+        }
+
+        
     }
+
+    
 }
