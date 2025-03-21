@@ -1,132 +1,195 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace OrganiTask.Util
 {
-    public class Nodo
+    public class Node<T>
     {
-        public string Dato;
-        public Nodo Siguiente;
+        public T Value { get; set; }
+        public Node<T> Next { get; set; }
+        public Node<T> Previous { get; set; }
 
-        public Nodo(string dato)
+        public Node(T value)
         {
-            Dato = dato;
-            Siguiente = null;
-        }
+            Value = value;
+            Next = null;
+            Previous = null;
+        }        
     }
-    public class ListaEnlazada
+    public class DoubleLinkledList<T> : IEnumerable<T> where T : IComparable<T>
     {
-        private Nodo cabeza;
+        private Node<T> head;
+        private Node<T> tail;
+        private int count;
 
-        public void Agregar(String dato)
+        public int Count => count;
+
+        public DoubleLinkledList()
         {
-            Nodo nuevo = new Nodo(dato);
-                if(cabeza  == null)
+            head = null;
+            tail= null;
+            count = 0;
+        }
+
+        public void AddFirst(T value)
+        {
+            Node<T> newNode = new Node<T>(value);
             {
-                cabeza = nuevo;
-            }
+                if (head == null)
+                    head = tail = newNode;
+                else
+                {
+                    newNode.Next = head;
+                    head.Previous = newNode;
+                    head = newNode;
+                }
+                count++;
+        }   }
+
+        public void AddLast(T value)
+        {
+            Node<T> newNode = new Node<T>(value);
+            if (head == null)
+                head = tail = newNode;
             else
             {
-                Nodo actual = cabeza;
-                while (actual.Siguiente != null)
-                {
-                    actual = actual.Siguiente;
-                }
-                actual.Siguiente = nuevo;
+                tail.Next = newNode;
+                newNode.Previous = tail;
+                tail = newNode;
             }
-                       
+            count++;
         }
 
-        public void AgregarVarios(List<string> datos)
+        public void BulkAdd(IEnumerable<T> values)
         {
-            foreach (var dato in datos)
+            foreach(var value in values)
             {
-                Agregar(dato);
+                AddLast(value);
             }
         }
-
-        public void Eliminar(string dato)
+        public Node<T> Find(T value)
         {
-            if (cabeza == null) return;
-
-            if(cabeza.Dato == dato)
+            Node<T> current = head;
+            while (current != null)
             {
-                cabeza = cabeza.Siguiente;
+                if (current.Value.Equals(value))
+                    return current;
+                current = current.Next;
+            }
+            return null;
+        }
+
+        public void Remove(Node<T> node)
+        {
+            if (node == null) return;
+
+            if(node==head) head = node.Next;
+            if(node== tail) tail = node.Previous;
+            if(node.Previous!= null) node.Previous.Next = node.Next;
+            if(node.Next != null) node.Next.Previous = node.Previous;
+            count--;
+        }
+        public void ModifyAt(int position, T value)
+        {
+            if (position < 0 || position >= count) return;
+            Node<T> current = head;
+            for (int i = 0; i < position; i++)
+                current = current.Next;
+            current.Value = value;
+        }
+
+        public void Move(int fromPosition, int toPosition)
+        {
+            if (fromPosition < 0 || fromPosition >= count || toPosition < 0 || toPosition >= count || fromPosition == toPosition)
                 return;
-            }
 
-            Nodo actual = cabeza;
-            while (actual.Siguiente != null && actual.Siguiente.Dato != dato)
-            {
-                actual = actual.Siguiente;
-            }
+            Node<T> current = head;
+            for (int i = 0; i < fromPosition; i++)
+                current = current.Next;
 
-            if(actual.Siguiente != null)
-            {
-                actual.Siguiente = actual.Siguiente.Siguiente;
-            }
-        }
-        public void Modificar(string Datoviejo, string nuevoDato)
-        {
-            Nodo actual = cabeza;
-            while(actual !=null)
-            {
-                if (actual.Dato == Datoviejo)
-                {
-                    actual.Dato = nuevoDato;
-                    break;
-                }
-                actual = actual.Siguiente;
-            }
-
+            Remove(current);
+            Insert(toPosition, current.Value);
         }
 
-        public void Ordenar()
+        public void Insert(int position, T value)
         {
-            if (cabeza == null || cabeza.Siguiente == null) return;
+            if (position < 0 || position > count) return;
+            if (position == 0) { AddFirst(value); return; }
+            if (position == count) { AddLast(value); return; }
 
-            Nodo actual, siguiente;
-            string temp;
+            Node<T> current = head;
+            for (int i = 0; i < position; i++)
+                current = current.Next;
+
+            Node<T> newNode = new Node<T>(value);
+            newNode.Next = current;
+            newNode.Previous = current.Previous;
+            current.Previous.Next = newNode;
+            current.Previous = newNode;
+            count++;
+        }
+
+        public void Sort()
+        {
+            if (count <= 1) return;
             bool swapped;
-
             do
             {
                 swapped = false;
-                actual = cabeza;
-
-                while (actual.Siguiente != null)
+                Node<T> current = head;
+                while (current.Next != null)
                 {
-                    siguiente = actual.Siguiente;
-
-                    if(string.Compare(actual.Dato, siguiente.Dato) > 0)
+                    if (current.Value.CompareTo(current.Next.Value) > 0)
                     {
-                        temp = actual.Dato;
-                        actual.Dato= siguiente.Dato;
-                        siguiente.Dato = temp;
+                        T temp = current.Value;
+                        current.Value = current.Next.Value;
+                        current.Next.Value = temp;
                         swapped = true;
                     }
-                    actual = actual.Siguiente;
+                    current = current.Next;
                 }
-            }
-            while(swapped);
-        }
-        public List<string> ObtenerLista()
-        {
-            List<string> tareas = new List<string>();
-            Nodo actual = cabeza;
-            while(actual != null)
-            {
-                tareas.Add(actual.Dato);
-                actual = actual.Siguiente;
-            }
-            return tareas;
+            } while (swapped);
         }
 
-        
+        public void Clear()
+        {
+            head = tail = null;
+            count = 0;
+        }
+
+        public void ShowElements()
+        {
+            Node<T> current = head;
+            while (current != null)
+            {
+                Console.Write(current.Value + " <-> ");
+                current = current.Next;
+            }
+            Console.WriteLine("null");
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            Node<T> current = head;
+            while (current != null)
+            {
+                yield return current.Value;
+                current = current.Next;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
     }
 
-    
+
 }
+
+
+    
+
