@@ -14,9 +14,12 @@ namespace OrganiTask.Forms
 {
     public partial class Login : Form
     {
-        public Login()
+        private Main mainForm; // Manejar referencia de mainForm para no crear nuevas instancias
+
+        public Login(Main mainForm)
         {
             InitializeComponent();
+            this.mainForm = mainForm;
         }
 
         private void buttonLogin_Click(object sender, EventArgs e)
@@ -32,7 +35,6 @@ namespace OrganiTask.Forms
 
             // Mostrar algún indicador de carga
             buttonLogin.Enabled = false;
-
             bool loginSuccessfull = AuthService.Login(username, password);
 
             // Mostrar algún indicador de carga
@@ -41,13 +43,8 @@ namespace OrganiTask.Forms
             if (loginSuccessfull)
             {
                 User loggedInUser = SessionManager.Instance.CurrentUser;
-
                 MessageBox.Show($"Login exitoso. Bienvenido, {loggedInUser.Username}", "Bienvenido", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                
-                Main mainForm = new Main();
-                this.Hide();
-                mainForm.ShowDialog();
-                this.Visible = true;
+                this.Close(); // Cierra el Login y Main se vuelve a mostrar
             } else
             {
                 MessageBox.Show("Credenciales incorrectas","Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -56,9 +53,10 @@ namespace OrganiTask.Forms
 
         private void linkCreateAccount_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Register registerForm = new Register();
+            Register registerForm = new Register(this);
             this.Hide();
-            registerForm.Show();
+            registerForm.ShowDialog();
+            this.Show();
         }
     }
 }

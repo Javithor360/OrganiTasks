@@ -34,6 +34,29 @@ namespace OrganiTask.Forms
             InitializeComponent();
         }
 
+        private void Main_Load(object sender, EventArgs e)
+        {
+            if(!SessionManager.Instance.IsLoggedIn)
+            {
+                this.Hide();
+                //MessageBox.Show("Sin Sessión");
+
+                Login loginForm = new Login(this);
+                loginForm.ShowDialog(); // Pausa la siguiente ejecución de código
+
+                if(!SessionManager.Instance.IsLoggedIn)
+                {
+                    Environment.Exit(1); // Ciere forzoso de la aplicación
+                }
+                else
+                    this.Show();
+            }
+
+            // Cargar datos solo si hay sesión
+            Refresh();
+            label1.Text = SessionManager.Instance.CurrentUser.Username;
+        }
+
         private new void Refresh()
         {
             using (var context = new OrganiTaskDB())
@@ -49,17 +72,6 @@ namespace OrganiTask.Forms
 
                 // y los cargamos en el DataGridView con la información recopilada
                 dgvData.DataSource = users;
-            }
-        }
-
-        private void Main_Load(object sender, EventArgs e)
-        {
-            Refresh();
-        
-            if (SessionManager.Instance.IsLoggedIn)
-            {
-                User user = SessionManager.Instance.CurrentUser;
-                label1.Text = user.Username;
             }
         }
 
