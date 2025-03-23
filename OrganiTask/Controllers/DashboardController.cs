@@ -23,8 +23,10 @@ namespace OrganiTask.Controllers
         /// <returns>Modelo de vista del tablero Kanban.</returns>
         public DashboardViewModel LoadKanban(int dashboardId, string categoryTitle = "Status")
         {
+            // Instanciamos el modelo de vista
             DashboardViewModel viewModel = new DashboardViewModel();
 
+            // Usamos un bloque using para asegurarnos de que el contexto se libere al finalizar
             using (OrganiTaskDB context = new OrganiTaskDB())
             {
                 // Obtenemos el tablero

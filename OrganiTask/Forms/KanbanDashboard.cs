@@ -13,11 +13,16 @@ using System.Windows.Forms;
 
 namespace OrganiTask.Forms
 {
+    /// <summary>
+    /// Formulario para visualizar un tablero Kanban.
+    /// </summary>
     public partial class KanbanDashboard: Form
     {
+        // Propiedades para almacenar el identificador del tablero y el título de la categoría
         private int dashboardId;
-        private string categoryTitle;
+        private string categoryTitle; // default "Status"
 
+        // Constructor del formulario requiere identificar el tablero y la categoría con la que se ordenarán las tareas
         public KanbanDashboard(int dashboardId, string categoryTitle)
         {
             InitializeComponent();
@@ -25,22 +30,24 @@ namespace OrganiTask.Forms
             this.categoryTitle = categoryTitle;
         }
 
+        // Evento de carga del formulario
         private void KanbanDashboard_Load(object sender, EventArgs e)
         {
-            DashboardController controller = new DashboardController();
-            DashboardViewModel model = controller.LoadKanban(dashboardId, categoryTitle);
+            DashboardController controller = new DashboardController(); // Instanciar el controlador
+            DashboardViewModel model = controller.LoadKanban(dashboardId, categoryTitle); // Cargar el tablero
 
-            if (model == null)
+            if (model == null) // Mostrar error si no se encuentra el tablero
             {
                 MessageBox.Show("No se encontró el tablero especificado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Close();
                 return;
             }
 
-            lblDashboardTitle.Text = model.DashboardTitle;
-            RenderDashboard(model);
+            lblDashboardTitle.Text = model.DashboardTitle; // Asignar el título del tablero a la etiqueta
+            RenderDashboard(model); // Dibujar el tablero
         }
 
+        // Método para dibujar el tablero
         private void RenderDashboard(DashboardViewModel model)
         {
             // Limpiar columnas
@@ -63,9 +70,10 @@ namespace OrganiTask.Forms
             }
         }
 
+        // Método para crear una columna por cada categoría en el tablero
         private FlowLayoutPanel CreateColumnPanel(string name)
         {
-            // 
+            // Creamos un panel de flujo para la columna
             FlowLayoutPanel column = new FlowLayoutPanel
             {
                 FlowDirection = FlowDirection.TopDown,
@@ -75,20 +83,22 @@ namespace OrganiTask.Forms
                 Margin = new Padding(10)
             };
 
-            //
+            // Etiqueta con el nombre de la categoría
             Label lblTag = new Label()
             {
                 Text = name,
                 Font = new Font("Segoe UI", 12, FontStyle.Bold),
                 AutoSize = true
             };
-            column.Controls.Add(lblTag);
+            column.Controls.Add(lblTag); // Agregamos la etiqueta al panel
 
-            return column;
+            return column; // Retornamos la columna
         }
 
+        // Método para crear una tarjeta por cada tarea en la columna
         private Panel CreateTaskCard(TaskViewModel task)
         {
+            // Creamos un panel para la tarjeta
             Panel card = new Panel
             {
                 Width = 200,
@@ -105,9 +115,9 @@ namespace OrganiTask.Forms
                 AutoSize = true,
                 Location = new Point(5, 5)
             };
-            card.Controls.Add(lblTitle);
+            card.Controls.Add(lblTitle); // Agregamos el título a la tarjeta
 
-            // Descripción (opcional)
+            // Descripción de la tarea
             Label lblDesc = new Label
             {
                 Text = task.Description,
@@ -115,9 +125,9 @@ namespace OrganiTask.Forms
                 AutoSize = true,
                 Location = new Point(5, 25)
             };
-            card.Controls.Add(lblDesc);
+            card.Controls.Add(lblDesc); // Agregamos la descripción a la tarjeta
 
-            return card;
+            return card; // Retornamos la tarjeta
         }
     }
 }
