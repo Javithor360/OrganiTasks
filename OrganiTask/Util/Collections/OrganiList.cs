@@ -18,6 +18,18 @@ namespace OrganiTask.Util.Collections
         private Node<T> tail; // Nodo final de la lista
         private int count; // Cantidad de elementos en la lista
 
+        // Getter del primer elemento de la lista
+        public T First => head.Value;
+
+        // Getter del último elemento de la lista
+        public T Last => tail.Value;
+
+        // Getter de la cantidad de elementos en la lista
+        public int Count => count;
+
+        // Getter que indica si la lista está vacía
+        public bool IsEmpty => count == 0;
+
         /// <summary>
         /// Constructor default de la clase que inicializa sus elementos vacíos
         /// </summary>
@@ -407,18 +419,6 @@ namespace OrganiTask.Util.Collections
 
         // Getter de la interfaz IEnumerable para poder recorrer los elementos de la lista y que sea compatible con foreach
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-        // Getter del primer elemento de la lista
-        public T First => head.Value;
-
-        // Getter del último elemento de la lista
-        public T Last => tail.Value;
-
-        // Getter de la cantidad de elementos en la lista
-        public int Count => count;
-
-        // Getter que indica si la lista está vacía
-        public bool IsEmpty => count == 0;
     }
 }
 
