@@ -297,40 +297,6 @@ namespace OrganiTask.Util.Collections
         }
 
         /// <summary>
-        /// Ordena los elementos de la lista
-        /// NOTA: Este método solo funciona con tipos de datos que implementen la interfaz IComparable
-        /// </summary>
-        //public void Sort()
-        //{
-        //    // Si la cantidad de elementos es menor o igual a 1, no se hace nada
-        //    if (count <= 1) return;
-
-        //    // Variable que indica si se realizaron intercambios
-        //    bool swapped;
-
-        //    // Se realiza el ordenamiento de la lista en forma de burbuja
-        //    do
-        //    {
-        //        swapped = false; // Se inicializa la variable en falso
-        //        Node<T> current = head; // Nodo temporal que recorrerá la lista empezando por el nodo inicial
-
-        //        // Se recorre la lista comparando los elementos y realizando intercambios si es necesario
-        //        while (current.Next != null)
-        //        {
-        //            // Si el valor del nodo actual es mayor al valor del siguiente nodo, se intercambian los valores
-        //            if (current.Value.CompareTo(current.Next.Value) > 0)
-        //            {
-        //                T temp = current.Value; // Variable temporal para almacenar el valor del nodo actual
-        //                current.Value = current.Next.Value; // El valor del nodo actual es el valor del siguiente nodo
-        //                current.Next.Value = temp; // El valor del siguiente nodo es el valor temporal
-        //                swapped = true; // Se indica que se realizó un intercambio
-        //            }
-        //            current = current.Next; // Se avanza al siguiente nodo
-        //        }
-        //    } while (swapped); // Mientras se realicen intercambios, se sigue recorriendo la lista
-        //}
-
-        /// <summary>
         /// Busca un elemento en la lista y devuelve el nodo que lo contiene
         /// </summary>
         /// <param name="value">Valor que se desea buscar en la lista</param>
@@ -427,21 +393,6 @@ namespace OrganiTask.Util.Collections
                 array[arrayIndex++] = current.Value; // Se agrega el valor del nodo actual al arreglo
                 current = current.Next; // Se avanza al siguiente nodo
             }
-        }
-
-        /// <summary>
-        /// Muestra los elementos de la lista
-        /// NOTA: Este método es solo para fines de depuración y solo funciona en consola
-        /// </summary>
-        public void ShowElements()
-        {
-            Node<T> current = head;
-            while (current != null)
-            {
-                Console.Write(current.Value + " <-> ");
-                current = current.Next;
-            }
-            Console.WriteLine("null");
         }
 
         /// <summary>

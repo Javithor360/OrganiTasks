@@ -146,9 +146,9 @@
     <Compile Include="Util\CollectionAdapter.cs" />
     <Compile Include="Util\Collections\Node.cs" />
     <Compile Include="Util\Collections\OrganiList.cs" />
-    <Compile Include="Classes\SessionManager.cs" />
+    <Compile Include="Util\SessionManager.cs" />
     <Compile Include="Util\OrganiTaskDB.cs" />
-    <Compile Include="Services\AuthService.cs" />
+    <Compile Include="Controllers\Services\AuthService.cs" />
     <EmbeddedResource Include="Forms\Register.resx">
       <DependentUpon>Register.cs</DependentUpon>
     </EmbeddedResource>
