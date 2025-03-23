@@ -21,23 +21,44 @@ namespace OrganiTask.Forms
 
         private void buttonLogin_Click(object sender, EventArgs e)
         {
-            string username = textBoxUsername.Text;
-            string password = textBoxPassword.Text;
+            string username = textBoxUsername.Text.Trim();
+            string password = textBoxPassword.Text.Trim();
 
-            User user = AuthService.Login(username, password);
-
-            if (user != null)
+            if(username == "" || password == "")
             {
-                MessageBox.Show("Login exitoso", "Bienvenido", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Ingresa tus credenciales","Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Mostrar algún indicador de carga
+            buttonLogin.Enabled = false;
+
+            bool loginSuccessfull = AuthService.Login(username, password);
+
+            // Mostrar algún indicador de carga
+            buttonLogin.Enabled = true;
+
+            if (loginSuccessfull)
+            {
+                User loggedInUser = SessionManager.Instance.CurrentUser;
+
+                MessageBox.Show($"Login exitoso. Bienvenido, {loggedInUser.Username}", "Bienvenido", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 
                 Main mainForm = new Main();
-                mainForm.Show();
-                
                 this.Hide();
+                mainForm.ShowDialog();
+                this.Visible = true;
             } else
             {
                 MessageBox.Show("Credenciales incorrectas","Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void linkCreateAccount_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Register registerForm = new Register();
+            this.Hide();
+            registerForm.Show();
         }
     }
 }
