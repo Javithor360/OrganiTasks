@@ -41,6 +41,8 @@
             this.buttonRegister = new System.Windows.Forms.Button();
             this.linkForgotPassword = new System.Windows.Forms.LinkLabel();
             this.linkSignInAccount = new System.Windows.Forms.LinkLabel();
+            this.labelEmail = new System.Windows.Forms.Label();
+            this.textEmail = new System.Windows.Forms.TextBox();
             this.panelSide.SuspendLayout();
             this.panelMain.SuspendLayout();
             this.SuspendLayout();
@@ -80,7 +82,9 @@
             // panelMain
             // 
             this.panelMain.BackColor = System.Drawing.Color.White;
+            this.panelMain.Controls.Add(this.labelEmail);
             this.panelMain.Controls.Add(this.labelLogin);
+            this.panelMain.Controls.Add(this.textEmail);
             this.panelMain.Controls.Add(this.panelSide);
             this.panelMain.Controls.Add(this.labelUsername);
             this.panelMain.Controls.Add(this.textBoxUsername);
@@ -112,7 +116,7 @@
             this.labelUsername.AutoSize = true;
             this.labelUsername.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelUsername.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.labelUsername.Location = new System.Drawing.Point(50, 135);
+            this.labelUsername.Location = new System.Drawing.Point(50, 121);
             this.labelUsername.Name = "labelUsername";
             this.labelUsername.Size = new System.Drawing.Size(56, 19);
             this.labelUsername.TabIndex = 1;
@@ -121,7 +125,7 @@
             // textBoxUsername
             // 
             this.textBoxUsername.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxUsername.Location = new System.Drawing.Point(50, 155);
+            this.textBoxUsername.Location = new System.Drawing.Point(50, 141);
             this.textBoxUsername.Name = "textBoxUsername";
             this.textBoxUsername.Size = new System.Drawing.Size(300, 25);
             this.textBoxUsername.TabIndex = 2;
@@ -131,7 +135,7 @@
             this.labelPassword.AutoSize = true;
             this.labelPassword.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelPassword.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.labelPassword.Location = new System.Drawing.Point(50, 195);
+            this.labelPassword.Location = new System.Drawing.Point(50, 226);
             this.labelPassword.Name = "labelPassword";
             this.labelPassword.Size = new System.Drawing.Size(79, 19);
             this.labelPassword.TabIndex = 3;
@@ -140,7 +144,7 @@
             // textBoxPassword
             // 
             this.textBoxPassword.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxPassword.Location = new System.Drawing.Point(50, 215);
+            this.textBoxPassword.Location = new System.Drawing.Point(50, 246);
             this.textBoxPassword.Name = "textBoxPassword";
             this.textBoxPassword.PasswordChar = '•';
             this.textBoxPassword.Size = new System.Drawing.Size(300, 25);
@@ -151,7 +155,7 @@
             this.checkBoxRemember.AutoSize = true;
             this.checkBoxRemember.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxRemember.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.checkBoxRemember.Location = new System.Drawing.Point(50, 243);
+            this.checkBoxRemember.Location = new System.Drawing.Point(50, 286);
             this.checkBoxRemember.Name = "checkBoxRemember";
             this.checkBoxRemember.Size = new System.Drawing.Size(115, 19);
             this.checkBoxRemember.TabIndex = 5;
@@ -166,7 +170,7 @@
             this.buttonRegister.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonRegister.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonRegister.ForeColor = System.Drawing.Color.White;
-            this.buttonRegister.Location = new System.Drawing.Point(50, 268);
+            this.buttonRegister.Location = new System.Drawing.Point(50, 311);
             this.buttonRegister.Name = "buttonRegister";
             this.buttonRegister.Size = new System.Drawing.Size(300, 40);
             this.buttonRegister.TabIndex = 6;
@@ -179,7 +183,7 @@
             this.linkForgotPassword.AutoSize = true;
             this.linkForgotPassword.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkForgotPassword.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.linkForgotPassword.Location = new System.Drawing.Point(200, 243);
+            this.linkForgotPassword.Location = new System.Drawing.Point(200, 286);
             this.linkForgotPassword.Name = "linkForgotPassword";
             this.linkForgotPassword.Size = new System.Drawing.Size(141, 15);
             this.linkForgotPassword.TabIndex = 7;
@@ -192,13 +196,32 @@
             this.linkSignInAccount.AutoSize = true;
             this.linkSignInAccount.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkSignInAccount.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.linkSignInAccount.Location = new System.Drawing.Point(128, 321);
+            this.linkSignInAccount.Location = new System.Drawing.Point(128, 364);
             this.linkSignInAccount.Name = "linkSignInAccount";
             this.linkSignInAccount.Size = new System.Drawing.Size(148, 15);
             this.linkSignInAccount.TabIndex = 8;
             this.linkSignInAccount.TabStop = true;
             this.linkSignInAccount.Text = "Inicia Sesión con tu cuenta";
             this.linkSignInAccount.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkSignInAccount_LinkClicked);
+            // 
+            // labelEmail
+            // 
+            this.labelEmail.AutoSize = true;
+            this.labelEmail.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelEmail.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.labelEmail.Location = new System.Drawing.Point(50, 175);
+            this.labelEmail.Name = "labelEmail";
+            this.labelEmail.Size = new System.Drawing.Size(51, 19);
+            this.labelEmail.TabIndex = 11;
+            this.labelEmail.Text = "Correo";
+            // 
+            // textEmail
+            // 
+            this.textEmail.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textEmail.Location = new System.Drawing.Point(50, 195);
+            this.textEmail.Name = "textEmail";
+            this.textEmail.Size = new System.Drawing.Size(300, 25);
+            this.textEmail.TabIndex = 3;
             // 
             // Register
             // 
@@ -234,5 +257,7 @@
         private System.Windows.Forms.Button buttonRegister;
         private System.Windows.Forms.LinkLabel linkForgotPassword;
         private System.Windows.Forms.LinkLabel linkSignInAccount;
+        private System.Windows.Forms.Label labelEmail;
+        private System.Windows.Forms.TextBox textEmail;
     }
 }
