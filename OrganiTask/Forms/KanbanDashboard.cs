@@ -1,4 +1,6 @@
-﻿using OrganiTask.Entities;
+﻿using OrganiTask.Controllers;
+using OrganiTask.Entities;
+using OrganiTask.Entities.ViewModels;
 using OrganiTask.Util;
 using System;
 using System.Collections.Generic;
@@ -11,105 +13,121 @@ using System.Windows.Forms;
 
 namespace OrganiTask.Forms
 {
+    /// <summary>
+    /// Formulario para visualizar un tablero Kanban.
+    /// </summary>
     public partial class KanbanDashboard: Form
     {
+        // Propiedades para almacenar el identificador del tablero y el título de la categoría
         private int dashboardId;
-        private int selectedCategoryId;
+        private string categoryTitle; // default "Status"
 
-        public KanbanDashboard(int dashboardId, int selectedCategoryId)
+        // Constructor del formulario requiere identificar el tablero y la categoría con la que se ordenarán las tareas
+        public KanbanDashboard(int dashboardId, string categoryTitle)
         {
             InitializeComponent();
             this.dashboardId = dashboardId;
-            this.selectedCategoryId = selectedCategoryId;
+            this.categoryTitle = categoryTitle;
         }
 
+        // Evento de carga del formulario
         private void KanbanDashboard_Load(object sender, EventArgs e)
         {
-            using (var context = new OrganiTaskDB())
+            DashboardController controller = new DashboardController(); // Instanciar el controlador
+            DashboardViewModel model = controller.LoadKanban(dashboardId, categoryTitle); // Cargar el tablero
+
+            if (model == null) // Mostrar error si no se encuentra el tablero
             {
-                // Obtenemos la instancia del tablero
-                var dashboard = context.Dashboards.FirstOrDefault(b => b.Id == dashboardId);
-                lblDashboardTitle.Text = dashboard.Name;
+                MessageBox.Show("No se encontró el tablero especificado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+                return;
+            }
 
-                // Hacemos la búsqueda por el ID del tablero y el ID de la categoría seleccionada
-                var categories = context.Categories
-                    .Include("Tag") // Incluimos las etiquetas
-                    .FirstOrDefault(c => c.Id == selectedCategoryId && c.DashboardId == dashboardId);
+            lblDashboardTitle.Text = model.DashboardTitle; // Asignar el título del tablero a la etiqueta
+            RenderDashboard(model); // Dibujar el tablero
+        }
 
-                if (categories == null)
+        // Método para dibujar el tablero
+        private void RenderDashboard(DashboardViewModel model)
+        {
+            // Limpiar columnas
+            flpBoard.Controls.Clear();
+
+            // Dibujamos dinámicamente una columna por cada elemento en la lista de columnas
+            foreach (ColumnViewModel column in model.Columns)
+            {
+                FlowLayoutPanel columnPanel = CreateColumnPanel(column.TagName);
+
+                // Dibujamos dinámicamente una tarjeta por cada tarea en la lista de tareas
+                foreach (TaskViewModel task in column.Tasks)
                 {
-                    MessageBox.Show($"La categoría seleccionada no pudo ser encontrada en el tablero");
-                    return;
+                    Panel taskCard = CreateTaskCard(task); // Creamos la tarjeta
+                    columnPanel.Controls.Add(taskCard); // Agregamos la tarjeta a la columna
                 }
 
-                // Ahora, para etiqueta creamos una columna
-                foreach (var tag in categories.Tag)
-                {
-                    FlowLayoutPanel columnPanel = CreateColumnPanel(tag.Name);
-
-                    // Buscamos las tareas que tengan la etiqueta evaluada
-                    var tasksWithTag = context.Tasks
-                        .Where(t => t.DashboardId == dashboardId && t.TaskTag.Any(tt => tt.TagId == tag.Id))
-                        .ToList();
-
-                    // Crear una tarjeta para cada tarea
-                    foreach (var task in tasksWithTag)
-                    {
-                        var card = CreateTaskCard(task);
-                        columnPanel.Controls.Add(card);
-                    }
-
-                    flpBoard.Controls.Add(columnPanel);
-                }
-
+                // Agregamos la columna al panel principal
+                flpBoard.Controls.Add(columnPanel);
             }
         }
 
+        // Método para crear una columna por cada categoría en el tablero
         private FlowLayoutPanel CreateColumnPanel(string name)
         {
-            // 
-            FlowLayoutPanel column = new FlowLayoutPanel();
-            column.FlowDirection = FlowDirection.TopDown;
-            column.Width = 250;
-            column.Height = 200;
-            column.AutoScroll = true;
-            column.Margin = new Padding(10);
+            // Creamos un panel de flujo para la columna
+            FlowLayoutPanel column = new FlowLayoutPanel
+            {
+                FlowDirection = FlowDirection.TopDown,
+                Width = 250,
+                Height = flpBoard.Height - 30,
+                AutoScroll = true,
+                Margin = new Padding(10)
+            };
 
-            //
-            Label lblTag = new Label();
-            lblTag.Text = name;
-            lblTag.Font = new Font("Segoe UI", 12, FontStyle.Bold);
-            lblTag.AutoSize = true;
-            column.Controls.Add(lblTag);
+            // Etiqueta con el nombre de la categoría
+            Label lblTag = new Label()
+            {
+                Text = name,
+                Font = new Font("Segoe UI", 12, FontStyle.Bold),
+                AutoSize = true
+            };
+            column.Controls.Add(lblTag); // Agregamos la etiqueta al panel
 
-            return column;
+            return column; // Retornamos la columna
         }
 
-        private Panel CreateTaskCard(Task task)
+        // Método para crear una tarjeta por cada tarea en la columna
+        private Panel CreateTaskCard(TaskViewModel task)
         {
-            Panel card = new Panel();
-            card.Width = 200;
-            card.Height = 80;
-            card.BorderStyle = BorderStyle.FixedSingle;
-            card.Margin = new Padding(5);
+            // Creamos un panel para la tarjeta
+            Panel card = new Panel
+            {
+                Width = 200,
+                Height = 80,
+                BorderStyle = BorderStyle.FixedSingle,
+                Margin = new Padding(5)
+            };
 
             // Título de la tarea
-            Label lblTitle = new Label();
-            lblTitle.Text = task.Title;
-            lblTitle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-            lblTitle.AutoSize = true;
-            lblTitle.Location = new Point(5, 5);
-            card.Controls.Add(lblTitle);
+            Label lblTitle = new Label
+            {
+                Text = task.Title,
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                AutoSize = true,
+                Location = new Point(5, 5)
+            };
+            card.Controls.Add(lblTitle); // Agregamos el título a la tarjeta
 
-            // Descripción (opcional)
-            Label lblDesc = new Label();
-            lblDesc.Text = task.Description;
-            lblDesc.Font = new Font("Segoe UI", 9, FontStyle.Regular);
-            lblDesc.AutoSize = true;
-            lblDesc.Location = new Point(5, 25);
-            card.Controls.Add(lblDesc);
+            // Descripción de la tarea
+            Label lblDesc = new Label
+            {
+                Text = task.Description,
+                Font = new Font("Segoe UI", 9, FontStyle.Regular),
+                AutoSize = true,
+                Location = new Point(5, 25)
+            };
+            card.Controls.Add(lblDesc); // Agregamos la descripción a la tarjeta
 
-            return card;
+            return card; // Retornamos la tarjeta
         }
     }
 }
