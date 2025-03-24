@@ -8,7 +8,9 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace OrganiTask.Forms
@@ -103,8 +105,9 @@ namespace OrganiTask.Forms
             {
                 Width = 200,
                 Height = 80,
+                Cursor = Cursors.Hand,
                 BorderStyle = BorderStyle.FixedSingle,
-                Margin = new Padding(5)
+                Margin = new Padding(5),
             };
 
             // Título de la tarea
@@ -127,7 +130,24 @@ namespace OrganiTask.Forms
             };
             card.Controls.Add(lblDesc); // Agregamos la descripción a la tarjeta
 
+            // Agregar evento de clic a todos los controles de la tarjeta
+            // para que funcione al hacer clic en cualquier parte de la tarjeta
+            card.Click += (object sender, EventArgs e) => Card_ClickEvent(task);
+            lblTitle.Click += (object sender, EventArgs e) => Card_ClickEvent(task);
+            lblDesc.Click += (object sender, EventArgs e) => Card_ClickEvent(task);
+
             return card; // Retornamos la tarjeta
+        }
+
+        private void Card_ClickEvent(TaskViewModel task)
+        {
+            TaskDetails details = new TaskDetails(task, dashboardId); // Mostrar detalles de la tarea
+            details.TaskUpdated += (s, e) => // Evento para actualizar la tarea
+            {
+                KanbanDashboard_Load(s, e);
+            };
+
+            details.ShowDialog();
         }
     }
 }

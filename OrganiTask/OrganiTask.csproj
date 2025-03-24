@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
+    <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="Entities\Category.cs">
       <DependentUpon>OrganiTaskDB.tt</DependentUpon>
     </Compile>
@@ -109,8 +110,10 @@
     <Compile Include="Entities\User.cs">
       <DependentUpon>OrganiTaskDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\ViewModels\CategoryViewModel.cs" />
     <Compile Include="Entities\ViewModels\ColumnViewModel.cs" />
     <Compile Include="Entities\ViewModels\KanbanDashboardViewModel.cs" />
+    <Compile Include="Entities\ViewModels\TagViewModel.cs" />
     <Compile Include="Entities\ViewModels\MainViewModel.cs" />
     <Compile Include="Entities\ViewModels\TaskViewModel.cs" />
     <Compile Include="Forms\Register.cs">
@@ -136,6 +139,12 @@
     </Compile>
     <Compile Include="Forms\Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TaskDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TaskDetails.Designer.cs">
+      <DependentUpon>TaskDetails.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Test\CategoriesManagement.cs">
       <SubType>Form</SubType>
@@ -168,6 +177,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TaskDetails.resx">
+      <DependentUpon>TaskDetails.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Test\CategoriesManagement.resx">
       <DependentUpon>CategoriesManagement.cs</DependentUpon>

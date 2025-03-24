@@ -14,5 +14,7 @@ namespace OrganiTask.Entities.ViewModels
         public int Id { get; set; } // Identificador de la tarea
         public string Title { get; set; } // Título de la tarea
         public string Description { get; set; } // Descripción de la tarea
+        public DateTime StartDate { get; set; } // Fecha de inicio de la tarea
+        public DateTime EndDate { get; set; } // Fecha de vencimiento de la tarea
     }
 }
