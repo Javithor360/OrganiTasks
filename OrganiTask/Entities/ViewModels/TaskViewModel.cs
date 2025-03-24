@@ -16,5 +16,6 @@ namespace OrganiTask.Entities.ViewModels
         public string Description { get; set; } // Descripción de la tarea
         public DateTime StartDate { get; set; } // Fecha de inicio de la tarea
         public DateTime EndDate { get; set; } // Fecha de vencimiento de la tarea
+        public int DashboardId { get; set; } // Identificador del tablero al que pertenece la tarea
     }
 }

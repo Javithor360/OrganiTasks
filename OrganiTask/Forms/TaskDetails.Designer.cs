@@ -140,7 +140,6 @@ namespace OrganiTask.Forms
             this.flpMain.ResumeLayout(false);
             this.flpMain.PerformLayout();
             this.ResumeLayout(false);
-
         }
 
         #endregion
