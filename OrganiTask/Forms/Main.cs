@@ -13,6 +13,7 @@ using OrganiTask.Entities;
 using OrganiTask.Util;
 using OrganiTask.Forms.Test;
 
+
 /*
  * CONSIDERACIONES IMPORTANTES PARA TODO EL PROYECTO:
  * - Nombres de atributos, clases y métodos SIEMPRE en inglés
@@ -29,6 +30,7 @@ namespace OrganiTask.Forms
 {
     public partial class Main: Form
     {
+
         public Main()
         {
             InitializeComponent();
@@ -36,21 +38,21 @@ namespace OrganiTask.Forms
 
         private void Main_Load(object sender, EventArgs e)
         {
-            if(!SessionManager.Instance.IsLoggedIn)
-            {
-                this.Hide();
-                //MessageBox.Show("Sin Sessión");
+            //if(!SessionManager.Instance.IsLoggedIn)
+            //{
+            //    this.Hide();
+            //    //MessageBox.Show("Sin Sessión");
 
-                Login loginForm = new Login(this);
-                loginForm.ShowDialog(); // Pausa la siguiente ejecución de código
+            //    Login loginForm = new Login();
+            //    loginForm.ShowDialog(); // Pausa la siguiente ejecución de código
 
-                if(!SessionManager.Instance.IsLoggedIn)
-                {
-                    Environment.Exit(1); // Ciere forzoso de la aplicación
-                }
-                else
-                    this.Show();
-            }
+            //    if(!SessionManager.Instance.IsLoggedIn)
+            //    {
+            //        Environment.Exit(1); // Ciere forzoso de la aplicación
+            //    }
+            //    else
+            //        this.Show();
+            //}
 
             // Cargar datos solo si hay sesión
             Refresh();
@@ -74,6 +76,8 @@ namespace OrganiTask.Forms
                 dgvData.DataSource = users;
             }
         }
+
+        // Eventos =================================================================== | 
 
         private void btnMainTest_Click(object sender, EventArgs e)
         {

@@ -15,12 +15,12 @@ namespace OrganiTask.Forms
 {
     public partial class Login : Form
     {
-        private Main mainForm; // Manejar referencia de mainForm para no crear nuevas instancias
+        private Test.Main mainTestForm; // Manejar referencia de mainForm para no crear nuevas instancias
 
-        public Login(Main mainForm)
+        public Login(Test.Main mainTestForm)
         {
             InitializeComponent();
-            this.mainForm = mainForm;
+            this.mainTestForm = mainTestForm;
         }
 
         private void buttonLogin_Click(object sender, EventArgs e)
@@ -44,7 +44,7 @@ namespace OrganiTask.Forms
             if (loginSuccessfull)
             {
                 User loggedInUser = SessionManager.Instance.CurrentUser;
-                MessageBox.Show($"Login exitoso. Bienvenido, {loggedInUser.Username}", "Bienvenido", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"¡Bienvenido, {loggedInUser.Username}!", "Bienvenido", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.Close(); // Cierra el Login y Main se vuelve a mostrar
             } else
             {
