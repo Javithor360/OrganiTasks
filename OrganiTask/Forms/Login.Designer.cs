@@ -192,7 +192,7 @@
             this.linkCreateAccount.AutoSize = true;
             this.linkCreateAccount.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkCreateAccount.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.linkCreateAccount.Location = new System.Drawing.Point(149, 310);
+            this.linkCreateAccount.Location = new System.Drawing.Point(149, 317);
             this.linkCreateAccount.Name = "linkCreateAccount";
             this.linkCreateAccount.Size = new System.Drawing.Size(109, 15);
             this.linkCreateAccount.TabIndex = 8;
