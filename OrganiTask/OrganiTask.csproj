@@ -112,7 +112,7 @@
     </Compile>
     <Compile Include="Entities\ViewModels\CategoryViewModel.cs" />
     <Compile Include="Entities\ViewModels\ColumnViewModel.cs" />
-    <Compile Include="Entities\ViewModels\KanbanDashboardViewModel.cs" />
+    <Compile Include="Entities\ViewModels\DashboardViewModel.cs" />
     <Compile Include="Entities\ViewModels\TagViewModel.cs" />
     <Compile Include="Entities\ViewModels\MainViewModel.cs" />
     <Compile Include="Entities\ViewModels\TaskViewModel.cs" />

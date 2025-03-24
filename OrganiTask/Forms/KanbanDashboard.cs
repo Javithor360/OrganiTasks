@@ -45,7 +45,7 @@ namespace OrganiTask.Forms
                 return;
             }
 
-            lblDashboardTitle.Text = model.DashboardTitle; // Asignar el título del tablero a la etiqueta
+            lblDashboardTitle.Text = model.Title; // Asignar el título del tablero a la etiqueta
             RenderDashboard(model); // Dibujar el tablero
         }
 
@@ -58,7 +58,8 @@ namespace OrganiTask.Forms
             // Dibujamos dinámicamente una columna por cada elemento en la lista de columnas
             foreach (ColumnViewModel column in model.Columns)
             {
-                FlowLayoutPanel columnPanel = CreateColumnPanel(column.TagName);
+                // Creamos la columna y extraemos el nombre de la etiqueta y el conteo de tareas
+                FlowLayoutPanel columnPanel = CreateColumnPanel(column.TagName, column.Tasks.Count);
 
                 // Dibujamos dinámicamente una tarjeta por cada tarea en la lista de tareas
                 foreach (TaskViewModel task in column.Tasks)
@@ -73,7 +74,7 @@ namespace OrganiTask.Forms
         }
 
         // Método para crear una columna por cada categoría en el tablero
-        private FlowLayoutPanel CreateColumnPanel(string name)
+        private FlowLayoutPanel CreateColumnPanel(string name, int taskCount)
         {
             // Creamos un panel de flujo para la columna
             FlowLayoutPanel column = new FlowLayoutPanel
@@ -88,7 +89,7 @@ namespace OrganiTask.Forms
             // Etiqueta con el nombre de la categoría
             Label lblTag = new Label()
             {
-                Text = name,
+                Text = $"{name} ({taskCount})", // mostramos el nombre de la categoría y el conteo de tareas
                 Font = new Font("Segoe UI", 12, FontStyle.Bold),
                 AutoSize = true
             };

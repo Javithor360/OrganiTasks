@@ -41,6 +41,7 @@ namespace OrganiTask.Forms.Test
         {
             MainController controller = new MainController();  // Instanciar el controlador
             MainViewModel model = controller.LoadUserDashboards(session.CurrentUser.Id); // Cargar los tableros
+
             panelContent.Controls.Clear();
 
             if (model.DashboardPreviews.Count == 0)
@@ -121,7 +122,7 @@ namespace OrganiTask.Forms.Test
             // Etiqueta con el nombre del dashboard
             Label lblName = new Label
             {
-                Text = dashboard.DashboardTitle,
+                Text = $"{dashboard.Id} | {dashboard.Title}",
                 Font = new Font("Segoe UI", 14, FontStyle.Bold),
                 AutoSize = true,
                 Location = new Point(10, 10)
@@ -181,16 +182,16 @@ namespace OrganiTask.Forms.Test
             //}
 
             // Botón para abrir el dashboard
-            //Button btnOpen = new Button
-            //{
-            //    Text = "Abrir",
-            //    Size = new Size(70, 30),
-            //    Location = new Point(220, 10),
-            //    BackColor = Color.FromArgb(0, 122, 204),
-            //    ForeColor = Color.White,
-            //    FlatStyle = FlatStyle.Flat,
-            //    Tag = dashboard.Id  // Guardamos el ID del dashboard en el Tag
-            //};
+            Button btnOpen = new Button
+            {
+                Text = $"{dashboard.Id}",
+                Size = new Size(70, 30),
+                Location = new Point(220, 10),
+                BackColor = Color.FromArgb(0, 122, 204),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Tag = dashboard.Id  // Guardamos el ID del dashboard en el Tag
+            };
             //btnOpen.Click += BtnOpenDashboard_Click;  // Asignamos el evento Click
 
             // Agregamos todos los controles a la tarjeta
@@ -199,7 +200,7 @@ namespace OrganiTask.Forms.Test
             //card.Controls.Add(lblTaskCount);
             //card.Controls.Add(lblLastModified);
             //card.Controls.Add(categoriesPanel);
-            //card.Controls.Add(btnOpen);
+            card.Controls.Add(btnOpen);
 
             return card;
         }

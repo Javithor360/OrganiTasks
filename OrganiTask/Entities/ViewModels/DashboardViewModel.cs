@@ -12,7 +12,8 @@ namespace OrganiTask.Entities.ViewModels
     /// </summary>
     public class DashboardViewModel
     {
-        public string DashboardTitle { get; set; } // Título del tablero
+        public int Id { get; set; } // Identificador del tablero
+        public string Title { get; set; } // Título del tablero
         public OrganiList<ColumnViewModel> Columns { get; set; } = new OrganiList<ColumnViewModel>(); // Lista de columnas del tablero
     }
 }
