@@ -142,6 +142,11 @@ namespace OrganiTask.Forms
         private void Card_ClickEvent(TaskViewModel task)
         {
             TaskDetails details = new TaskDetails(task, dashboardId); // Mostrar detalles de la tarea
+            details.TaskUpdated += (s, e) => // Evento para actualizar la tarea
+            {
+                KanbanDashboard_Load(s, e);
+            };
+
             details.ShowDialog();
         }
     }

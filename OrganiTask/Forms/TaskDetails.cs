@@ -24,6 +24,7 @@ namespace OrganiTask.Forms
         private int dashboardId; // Identificador del tablero
         private bool isEditMode = false; // Indica si el formulario está en modo edición
 
+        public event EventHandler TaskUpdated; // Evento para notificar que la tarea ha sido actualizada
 
         // Campos para los controles de edición
         private TextBox txtTitle; // TextBox para el título
@@ -359,6 +360,7 @@ namespace OrganiTask.Forms
 
             // Cambiamos a modo vista y volvemos a dibujar la tarea
             isEditMode = false;
+            TaskUpdated?.Invoke(this, EventArgs.Empty);
             RenderTask();
         }
 
