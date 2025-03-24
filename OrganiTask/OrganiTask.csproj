@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Entities\Category.cs">
       <DependentUpon>OrganiTaskDB.tt</DependentUpon>
@@ -110,6 +111,7 @@
     </Compile>
     <Compile Include="Entities\ViewModels\ColumnViewModel.cs" />
     <Compile Include="Entities\ViewModels\KanbanDashboardViewModel.cs" />
+    <Compile Include="Entities\ViewModels\MainViewModel.cs" />
     <Compile Include="Entities\ViewModels\TaskViewModel.cs" />
     <Compile Include="Forms\Register.cs">
       <SubType>Form</SubType>

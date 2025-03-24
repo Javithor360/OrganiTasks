@@ -40,14 +40,13 @@
             this.panelLogo = new System.Windows.Forms.Panel();
             this.lblAppName = new System.Windows.Forms.Label();
             this.panelHeader = new System.Windows.Forms.Panel();
+            this.btnKanBan = new System.Windows.Forms.Button();
             this.btnLogout = new System.Windows.Forms.Button();
             this.lblPageTitle = new System.Windows.Forms.Label();
-            this.panelDashboards = new System.Windows.Forms.FlowLayoutPanel();
             this.panelContent = new System.Windows.Forms.Panel();
             this.panelNoData = new System.Windows.Forms.Panel();
             this.btnCreateDashboard = new System.Windows.Forms.Button();
             this.lblNoData = new System.Windows.Forms.Label();
-            this.btnKanBan = new System.Windows.Forms.Button();
             this.panelSidebar.SuspendLayout();
             this.panelUserInfo.SuspendLayout();
             this.panelLogo.SuspendLayout();
@@ -152,7 +151,7 @@
             this.btnHome.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
             this.btnHome.Size = new System.Drawing.Size(250, 50);
             this.btnHome.TabIndex = 2;
-            this.btnHome.Text = "Inicio";
+            this.btnHome.Text = "🏠 Inicio";
             this.btnHome.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnHome.UseVisualStyleBackColor = true;
             // 
@@ -220,6 +219,21 @@
             this.panelHeader.Size = new System.Drawing.Size(950, 70);
             this.panelHeader.TabIndex = 1;
             // 
+            // btnKanBan
+            // 
+            this.btnKanBan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnKanBan.FlatAppearance.BorderSize = 0;
+            this.btnKanBan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnKanBan.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnKanBan.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.btnKanBan.Location = new System.Drawing.Point(660, 20);
+            this.btnKanBan.Name = "btnKanBan";
+            this.btnKanBan.Size = new System.Drawing.Size(128, 30);
+            this.btnKanBan.TabIndex = 2;
+            this.btnKanBan.Text = "KanBan CRUD";
+            this.btnKanBan.UseVisualStyleBackColor = true;
+            this.btnKanBan.Click += new System.EventHandler(this.buttonOLD_Click);
+            // 
             // btnLogout
             // 
             this.btnLogout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -233,6 +247,7 @@
             this.btnLogout.TabIndex = 1;
             this.btnLogout.Text = "Cerrar Sesión";
             this.btnLogout.UseVisualStyleBackColor = true;
+            this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
             // 
             // lblPageTitle
             // 
@@ -245,22 +260,10 @@
             this.lblPageTitle.TabIndex = 0;
             this.lblPageTitle.Text = "Tableros (Kanban)";
             // 
-            // panelDashboards
-            // 
-            this.panelDashboards.AutoScroll = true;
-            this.panelDashboards.BackColor = System.Drawing.Color.White;
-            this.panelDashboards.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelDashboards.Location = new System.Drawing.Point(20, 20);
-            this.panelDashboards.Name = "panelDashboards";
-            this.panelDashboards.Padding = new System.Windows.Forms.Padding(10);
-            this.panelDashboards.Size = new System.Drawing.Size(910, 120);
-            this.panelDashboards.TabIndex = 2;
-            // 
             // panelContent
             // 
             this.panelContent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
             this.panelContent.Controls.Add(this.panelNoData);
-            this.panelContent.Controls.Add(this.panelDashboards);
             this.panelContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelContent.Location = new System.Drawing.Point(250, 70);
             this.panelContent.Name = "panelContent";
@@ -273,7 +276,7 @@
             this.panelNoData.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.panelNoData.Controls.Add(this.btnCreateDashboard);
             this.panelNoData.Controls.Add(this.lblNoData);
-            this.panelNoData.Location = new System.Drawing.Point(325, 250);
+            this.panelNoData.Location = new System.Drawing.Point(350, 205);
             this.panelNoData.Name = "panelNoData";
             this.panelNoData.Size = new System.Drawing.Size(300, 150);
             this.panelNoData.TabIndex = 3;
@@ -304,21 +307,6 @@
             this.lblNoData.TabIndex = 0;
             this.lblNoData.Text = "No tienes tableros disponibles";
             this.lblNoData.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btnKanBan
-            // 
-            this.btnKanBan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnKanBan.FlatAppearance.BorderSize = 0;
-            this.btnKanBan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnKanBan.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnKanBan.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.btnKanBan.Location = new System.Drawing.Point(660, 20);
-            this.btnKanBan.Name = "btnKanBan";
-            this.btnKanBan.Size = new System.Drawing.Size(128, 30);
-            this.btnKanBan.TabIndex = 2;
-            this.btnKanBan.Text = "KanBan CRUD";
-            this.btnKanBan.UseVisualStyleBackColor = true;
-            this.btnKanBan.Click += new System.EventHandler(this.buttonOLD_Click);
             // 
             // Main
             // 
@@ -364,7 +352,6 @@
         private System.Windows.Forms.Panel panelHeader;
         private System.Windows.Forms.Button btnLogout;
         private System.Windows.Forms.Label lblPageTitle;
-        private System.Windows.Forms.FlowLayoutPanel panelDashboards;
         private System.Windows.Forms.Panel panelContent;
         private System.Windows.Forms.Panel panelNoData;
         private System.Windows.Forms.Button btnCreateDashboard;

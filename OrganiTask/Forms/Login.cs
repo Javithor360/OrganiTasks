@@ -44,7 +44,7 @@ namespace OrganiTask.Forms
             if (loginSuccessfull)
             {
                 User loggedInUser = SessionManager.Instance.CurrentUser;
-                MessageBox.Show($"Login exitoso. Bienvenido, {loggedInUser.Username}", "Bienvenido", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"¡Bienvenido, {loggedInUser.Username}!", "Bienvenido", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.Close(); // Cierra el Login y Main se vuelve a mostrar
             } else
             {
