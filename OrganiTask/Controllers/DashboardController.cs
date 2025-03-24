@@ -34,7 +34,7 @@ namespace OrganiTask.Controllers
 
                 if (dashboard == null) return null;
 
-                viewModel.DashboardTitle = dashboard.Name; // Asignamos el título del tablero
+                viewModel.Title = dashboard.Name; // Asignamos el título del tablero
 
                 // Obtenemos la categoría para ordenar el tablero
                 // Las entidades generadas tienen propiedades de navegación que permiten acceder a las entidades relacionadas
@@ -58,7 +58,7 @@ namespace OrganiTask.Controllers
                     // y tienen asignada la etiqueta iterada (usando TaskTag)
                     OrganiList<Task> tasksWithTag = context.Tasks
                         .Where(t => t.DashboardId == dashboardId && t.TaskTag.Any(tt => tt.TagId == tag.Id))
-                        .ToOrganiList(); // Convertir a lista doblemente enlazada
+                        .ToOrganiList(); // Convertir a lista doblemente 
 
                     // Iteramos cada task a el modelo de vista de task
                     foreach (Task task in tasksWithTag)
