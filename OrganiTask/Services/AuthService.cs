@@ -12,20 +12,12 @@ namespace OrganiTask.Services
 {
     public class AuthService
     {
-        public static Boolean CheckUserNameExist(string username)
+        public static Boolean CheckUserDataExist(string username, string email)
         {
             using (var context = new OrganiTaskDB())
             {
-                // Search if username already exists on DB
-                var user = context.Users.SingleOrDefault(u => u.Username == username);
-
-                if (user != null)
-                {
-                    return true;
-                }
+                return context.Users.Any(u => u.Username == username || u.Email == email);
             }
-
-            return false;
         }
 
         public static bool Login(string username, string password)
@@ -60,7 +52,7 @@ namespace OrganiTask.Services
 
         public static User Register(string username, string password, string email )
         {
-            if (CheckUserNameExist(username))
+            if (CheckUserDataExist(username, email))
                 return null; // O lanzar una excepción
 
             using (var context = new OrganiTaskDB())

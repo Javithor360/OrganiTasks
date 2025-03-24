@@ -12,7 +12,7 @@ namespace OrganiTask.Util.Collections
     /// Representación de una lista doblemente enlazada como estructura de dato dinámica lineal
     /// </summary>
     /// <typeparam name="T">Tipo de dato que tendrán los elementos de la lista</typeparam>
-    public class OrganiList<T> : IEnumerable<T> where T : IComparable<T>
+    public class OrganiList<T> : ICollection<T>
     {
         private Node<T> head; // Nodo inicial de la lista
         private Node<T> tail; // Nodo final de la lista
@@ -29,6 +29,9 @@ namespace OrganiTask.Util.Collections
 
         // Getter que indica si la lista está vacía
         public bool IsEmpty => count == 0;
+
+        // Getter que indica si la lista es de solo lectura
+        public bool IsReadOnly => false;
 
         /// <summary>
         /// Constructor default de la clase que inicializa sus elementos vacíos
@@ -84,6 +87,15 @@ namespace OrganiTask.Util.Collections
 
             count++; // Se incrementa la cantidad de elementos en la lista
             return newNode; // Se devuelve el nodo insertado
+        }
+
+        /// <summary>
+        /// Método de ICollection que agrega un elemento a la lista sin retornar valor
+        /// </summary>
+        /// <param name="item">Elemento que se desea agregar a la lista</param>
+        public void Add(T item)
+        {
+            AddLast(item);
         }
 
         /// <summary>
@@ -207,6 +219,19 @@ namespace OrganiTask.Util.Collections
         }
 
         /// <summary>
+        /// Método de ICollection que elimina un elemento de la lista retornando booleano
+        /// </summary>
+        /// <param name="item">Elemento que se desea eliminar de la lista</param>
+        /// <returns>Verdadero si se eliminó el elemento, falso en caso contrario</returns>
+        public bool Remove(T item)
+        {
+            Node<T> node = Find(item); // Se busca el nodo que contiene el valor
+            if (node == null) return false; // Si no se encuentra el nodo, no se hace nada
+            Remove(node); // Se elimina el nodo de la lista
+            return true; // Se indica que se eliminó el nodo
+        }
+
+        /// <summary>
         /// Elimina un elemento de la lista en una posición específica
         /// </summary>
         /// <param name="position">Posición del elemento que se desea eliminar</param>
@@ -269,40 +294,6 @@ namespace OrganiTask.Util.Collections
 
             Remove(current); // Se elimina el nodo actual de la lista
             Insert(toPosition, current.Value); // Se inserta el nodo en la nueva posición
-        }
-
-        /// <summary>
-        /// Ordena los elementos de la lista
-        /// NOTA: Este método solo funciona con tipos de datos que implementen la interfaz IComparable
-        /// </summary>
-        public void Sort()
-        {
-            // Si la cantidad de elementos es menor o igual a 1, no se hace nada
-            if (count <= 1) return;
-
-            // Variable que indica si se realizaron intercambios
-            bool swapped;
-
-            // Se realiza el ordenamiento de la lista en forma de burbuja
-            do
-            {
-                swapped = false; // Se inicializa la variable en falso
-                Node<T> current = head; // Nodo temporal que recorrerá la lista empezando por el nodo inicial
-
-                // Se recorre la lista comparando los elementos y realizando intercambios si es necesario
-                while (current.Next != null)
-                {
-                    // Si el valor del nodo actual es mayor al valor del siguiente nodo, se intercambian los valores
-                    if (current.Value.CompareTo(current.Next.Value) > 0)
-                    {
-                        T temp = current.Value; // Variable temporal para almacenar el valor del nodo actual
-                        current.Value = current.Next.Value; // El valor del nodo actual es el valor del siguiente nodo
-                        current.Next.Value = temp; // El valor del siguiente nodo es el valor temporal
-                        swapped = true; // Se indica que se realizó un intercambio
-                    }
-                    current = current.Next; // Se avanza al siguiente nodo
-                }
-            } while (swapped); // Mientras se realicen intercambios, se sigue recorriendo la lista
         }
 
         /// <summary>
@@ -386,18 +377,22 @@ namespace OrganiTask.Util.Collections
         }
 
         /// <summary>
-        /// Muestra los elementos de la lista
-        /// NOTA: Este método es solo para fines de depuración y solo funciona en consola
+        /// Método de ICollection que copia los elementos de la lista a un arreglo
         /// </summary>
-        public void ShowElements()
+        /// <param name="array">Arreglo al que se copiarán los elementos de la lista</param>
+        /// <param name="arrayIndex">Índice en el que se iniciará la copia de los elementos</param>
+        public void CopyTo(T[] array, int arrayIndex)
         {
-            Node<T> current = head;
+            // Si el arreglo es nulo, el índice es inválido o no hay espacio suficiente, no se hace nada
+            if (array == null || arrayIndex < 0 || (array.Length - arrayIndex < count)) return;
+
+            Node<T> current = head; // Nodo temporal que recorrerá la lista empezando por el nodo inicial
+            // Mientras el nodo actual no sea nulo se recorre la lista
             while (current != null)
             {
-                Console.Write(current.Value + " <-> ");
-                current = current.Next;
+                array[arrayIndex++] = current.Value; // Se agrega el valor del nodo actual al arreglo
+                current = current.Next; // Se avanza al siguiente nodo
             }
-            Console.WriteLine("null");
         }
 
         /// <summary>
@@ -421,7 +416,3 @@ namespace OrganiTask.Util.Collections
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }
-
-
-    
-

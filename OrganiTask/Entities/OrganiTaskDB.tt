@@ -1,6 +1,6 @@
 ﻿<#@ template language="C#" debug="false" hostspecific="true"#>
-<#@ include file="EF6.Utility.CS.ttinclude"#><#@ 
- output extension=".cs"#><#
+<#@ include file="EF6.Utility.CS.ttinclude"#>
+<#@ output extension=".cs"#><#
 
 const string inputFile = @"OrganiTaskDB.edmx";
 var textTransform = DynamicTextTransformation.Create(this);
@@ -48,7 +48,7 @@ foreach (var entity in typeMapper.GetItemsToGenerate<EntityType>(itemCollection)
         foreach (var navigationProperty in collectionNavigationProperties)
         {
 #>
-        this.<#=code.Escape(navigationProperty)#> = new HashSet<<#=typeMapper.GetTypeName(navigationProperty.ToEndMember.GetEntityType())#>>();
+        this.<#=code.Escape(navigationProperty)#> = new OrganiTask.Util.Collections.OrganiList<<#=typeMapper.GetTypeName(navigationProperty.ToEndMember.GetEntityType())#>>();
 <#
         }
 
@@ -300,7 +300,7 @@ public class CodeStringGenerator
             CultureInfo.InvariantCulture,
             "{0} {1} {2} {{ {3}get; {4}set; }}",
             AccessibilityAndVirtual(Accessibility.ForNavigationProperty(navProp)),
-            navProp.ToEndMember.RelationshipMultiplicity == RelationshipMultiplicity.Many ? ("ICollection<" + endType + ">") : endType,
+            navProp.ToEndMember.RelationshipMultiplicity == RelationshipMultiplicity.Many ? ("OrganiTask.Util.Collections.OrganiList<" + endType + ">") : endType,
             _code.Escape(navProp),
             _code.SpaceAfter(Accessibility.ForGetter(navProp)),
             _code.SpaceAfter(Accessibility.ForSetter(navProp)));

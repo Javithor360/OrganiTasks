@@ -17,7 +17,7 @@ namespace OrganiTask.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Category()
         {
-            this.Tag = new HashSet<Tag>();
+            this.Tag = new OrganiTask.Util.Collections.OrganiList<Tag>();
         }
     
         public int Id { get; set; }
@@ -26,6 +26,6 @@ namespace OrganiTask.Entities
     
         public virtual Dashboard Dashboard { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Tag> Tag { get; set; }
+        public virtual OrganiTask.Util.Collections.OrganiList<Tag> Tag { get; set; }
     }
 }

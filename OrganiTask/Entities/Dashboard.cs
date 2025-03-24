@@ -17,8 +17,8 @@ namespace OrganiTask.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Dashboard()
         {
-            this.Category = new HashSet<Category>();
-            this.Task = new HashSet<Task>();
+            this.Category = new OrganiTask.Util.Collections.OrganiList<Category>();
+            this.Task = new OrganiTask.Util.Collections.OrganiList<Task>();
         }
     
         public int Id { get; set; }
@@ -27,9 +27,9 @@ namespace OrganiTask.Entities
         public int UserId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Category> Category { get; set; }
+        public virtual OrganiTask.Util.Collections.OrganiList<Category> Category { get; set; }
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Task> Task { get; set; }
+        public virtual OrganiTask.Util.Collections.OrganiList<Task> Task { get; set; }
     }
 }

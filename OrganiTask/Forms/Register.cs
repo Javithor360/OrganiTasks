@@ -1,5 +1,5 @@
-﻿using OrganiTask.Entities;
-using OrganiTask.Services;
+﻿using OrganiTask.Controllers.Services;
+using OrganiTask.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,36 +14,38 @@ namespace OrganiTask.Forms
 {
     public partial class Register : Form
     {
-        public Register()
+        private Login loginForm; // Manejar referencia de loginForm para no crear nuevas instancias
+
+        public Register(Login loginForm)
         {
             InitializeComponent();
+            this.loginForm = loginForm;
         }
 
         private void buttonRegister_Click(object sender, EventArgs e)
         {
-            string username = textBoxUsername.Text;
-            string password = textBoxPassword.Text;
+            string username = textBoxUsername.Text.Trim();
+            string password = textBoxPassword.Text.Trim();
+            string email = textEmail.Text.Trim();
 
-            User user = AuthService.Register(username, password, "test1234@email.com");
+            User user = AuthService.Register(username, password, email);
 
             if (user != null)
             {
                 MessageBox.Show("Registro exitoso", "Bienvenido", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                
-                Main mainForm = new Main();
-                mainForm.ShowDialog();
-                
-                this.Visible = true;
+                closeForm();
             } else
-            {
-                MessageBox.Show("Hubo un error","Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+                MessageBox.Show("Usuario o Email ya registrado 🚨", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void linkSignInAccount_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Login loginForm = new Login();
-            this.Hide();
+            closeForm();
+        }
+
+        private void closeForm()
+        {
+            this.Close();
             loginForm.Show();
         }
     }

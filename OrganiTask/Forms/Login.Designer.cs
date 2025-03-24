@@ -112,7 +112,7 @@
             this.labelUsername.AutoSize = true;
             this.labelUsername.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelUsername.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.labelUsername.Location = new System.Drawing.Point(50, 135);
+            this.labelUsername.Location = new System.Drawing.Point(50, 130);
             this.labelUsername.Name = "labelUsername";
             this.labelUsername.Size = new System.Drawing.Size(56, 19);
             this.labelUsername.TabIndex = 1;
@@ -121,7 +121,7 @@
             // textBoxUsername
             // 
             this.textBoxUsername.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxUsername.Location = new System.Drawing.Point(50, 155);
+            this.textBoxUsername.Location = new System.Drawing.Point(50, 150);
             this.textBoxUsername.Name = "textBoxUsername";
             this.textBoxUsername.Size = new System.Drawing.Size(300, 25);
             this.textBoxUsername.TabIndex = 2;
@@ -131,7 +131,7 @@
             this.labelPassword.AutoSize = true;
             this.labelPassword.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelPassword.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.labelPassword.Location = new System.Drawing.Point(50, 195);
+            this.labelPassword.Location = new System.Drawing.Point(50, 190);
             this.labelPassword.Name = "labelPassword";
             this.labelPassword.Size = new System.Drawing.Size(79, 19);
             this.labelPassword.TabIndex = 3;
@@ -140,7 +140,7 @@
             // textBoxPassword
             // 
             this.textBoxPassword.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxPassword.Location = new System.Drawing.Point(50, 215);
+            this.textBoxPassword.Location = new System.Drawing.Point(50, 210);
             this.textBoxPassword.Name = "textBoxPassword";
             this.textBoxPassword.PasswordChar = '•';
             this.textBoxPassword.Size = new System.Drawing.Size(300, 25);
@@ -151,7 +151,7 @@
             this.checkBoxRemember.AutoSize = true;
             this.checkBoxRemember.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxRemember.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.checkBoxRemember.Location = new System.Drawing.Point(50, 243);
+            this.checkBoxRemember.Location = new System.Drawing.Point(50, 242);
             this.checkBoxRemember.Name = "checkBoxRemember";
             this.checkBoxRemember.Size = new System.Drawing.Size(115, 19);
             this.checkBoxRemember.TabIndex = 5;
@@ -166,7 +166,7 @@
             this.buttonLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonLogin.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonLogin.ForeColor = System.Drawing.Color.White;
-            this.buttonLogin.Location = new System.Drawing.Point(50, 268);
+            this.buttonLogin.Location = new System.Drawing.Point(50, 267);
             this.buttonLogin.Name = "buttonLogin";
             this.buttonLogin.Size = new System.Drawing.Size(300, 40);
             this.buttonLogin.TabIndex = 6;
@@ -179,7 +179,7 @@
             this.linkForgotPassword.AutoSize = true;
             this.linkForgotPassword.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkForgotPassword.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.linkForgotPassword.Location = new System.Drawing.Point(200, 243);
+            this.linkForgotPassword.Location = new System.Drawing.Point(200, 242);
             this.linkForgotPassword.Name = "linkForgotPassword";
             this.linkForgotPassword.Size = new System.Drawing.Size(141, 15);
             this.linkForgotPassword.TabIndex = 7;
@@ -192,7 +192,7 @@
             this.linkCreateAccount.AutoSize = true;
             this.linkCreateAccount.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkCreateAccount.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.linkCreateAccount.Location = new System.Drawing.Point(149, 320);
+            this.linkCreateAccount.Location = new System.Drawing.Point(149, 317);
             this.linkCreateAccount.Name = "linkCreateAccount";
             this.linkCreateAccount.Size = new System.Drawing.Size(109, 15);
             this.linkCreateAccount.TabIndex = 8;
