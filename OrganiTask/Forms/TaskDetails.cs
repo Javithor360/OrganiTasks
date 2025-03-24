@@ -47,7 +47,10 @@ namespace OrganiTask.Forms
         // Evento de carga del formulario
         private void TaskDetails_Load(object sender, EventArgs e)
         {
-            task = taskController.LoadTaskDetails(task.Id, dashboardId); // Cargar la tarea
+            if (task.Id != 0)
+            {
+                task = taskController.LoadTaskDetails(task.Id, dashboardId); // Cargar la tarea
+            }
             RenderTask(); // Dibujar la tarea
         }
 
@@ -330,9 +333,7 @@ namespace OrganiTask.Forms
         // Evento de clic en el botón de edición
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            // Únicamente cambiamos a modo edición y volvemos a dibujar la tarea
-            isEditMode = true;
-            RenderTask();
+            SetEditMode(true); // Cambiar a modo edición
         }
 
         // Evento de clic en el botón de guardar
@@ -356,20 +357,24 @@ namespace OrganiTask.Forms
                 }
             }
 
-            taskController.UpdateTask(task, updatedTags); // Actualizar la tarea
+            if (task.Id == 0)
+            {
+                taskController.InsertTask(task, updatedTags); // Crear la tarea
+            }
+            else
+            {
+                taskController.UpdateTask(task, updatedTags); // Actualizar la tarea
+            }
 
             // Cambiamos a modo vista y volvemos a dibujar la tarea
-            isEditMode = false;
             TaskUpdated?.Invoke(this, EventArgs.Empty);
-            RenderTask();
+            SetEditMode(false); // Cambiar a modo vista
         }
 
         // Evento de clic en el botón de cancelar
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            // Únicamente cambiamos a modo vista y volvemos a dibujar la tarea
-            isEditMode = false;
-            RenderTask();
+            SetEditMode(false); // Cambiar a modo vista
         }
 
         /*
@@ -399,6 +404,13 @@ namespace OrganiTask.Forms
             catch { } // Ignoramos cualquier error y retornamos Gray por defecto
 
             return Color.Gray;
+        }
+
+        // Método para cambiar el modo de edición del formulario
+        public void SetEditMode(bool editMode)
+        {
+            isEditMode = editMode;
+            RenderTask();
         }
     }
 }

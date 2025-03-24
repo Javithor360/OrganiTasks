@@ -166,6 +166,48 @@ namespace OrganiTask.Controllers
         }
 
         /// <summary>
+        /// Inserta una nueva tarea y sus relaciones de etiquetas.
+        /// </summary>
+        /// <param name="newTask">Modelo de vista de la nueva tarea.</param>
+        /// <param name="tags">Lista de modelos de vista de etiquetas.</param>
+        public void InsertTask(TaskViewModel newTask, OrganiList<TagViewModel> tags)
+        {
+            // Usamos un bloque using para asegurarnos de que el contexto se libere al finalizar
+            using (OrganiTaskDB context = new OrganiTaskDB())
+            {
+                // Creamos la entidad a partir del modelo de vista de la tarea
+                Task task = new Task
+                {
+                    Title = newTask.Title,
+                    Description = newTask.Description,
+                    StartDate = newTask.StartDate,
+                    EndDate = newTask.EndDate,
+                    DashboardId = newTask.DashboardId
+                };
+
+                context.Tasks.Add(task); // Agregamos la tarea al contexto
+                context.SaveChanges(); // Guardamos los cambios
+
+                newTask.Id = task.Id; // Asignamos el identificador de la tarea al modelo de vista
+
+                // Para cada TagViewModel, solo si se ha seleccionado una etiqueta, creamos una nueva TaskTag
+                foreach (TagViewModel tagVM in tags)
+                {
+                    if (tagVM.Id > 0)
+                    {
+                        TaskTag newTT = new TaskTag
+                        {
+                            TaskId = newTask.Id,
+                            TagId = tagVM.Id
+                        };
+                        context.TaskTags.Add(newTT); // Agregamos la nueva TaskTag
+                    }
+                }
+                context.SaveChanges(); // Guardamos los cambios
+            }
+        }
+
+        /// <summary>
         /// Actualiza la tarea y las relaciones de etiquetas.
         /// Se encarga de actualizar el título, descripción, fechas y rehacer las relaciones de TaskTag.
         /// </summary>

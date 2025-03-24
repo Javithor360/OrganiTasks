@@ -78,6 +78,7 @@ namespace OrganiTask.Forms
             this.btnDashboardAdd.TabIndex = 3;
             this.btnDashboardAdd.Text = "➕ Nueva tarea";
             this.btnDashboardAdd.UseVisualStyleBackColor = true;
+            this.btnDashboardAdd.Click += new System.EventHandler(this.btnAddTask_Click);
             // 
             // btnDashboardSort
             // 

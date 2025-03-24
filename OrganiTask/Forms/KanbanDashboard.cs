@@ -149,5 +149,26 @@ namespace OrganiTask.Forms
 
             details.ShowDialog();
         }
+
+        private void btnAddTask_Click(object sender, EventArgs e)
+        {
+            TaskViewModel newTask = new TaskViewModel
+            {
+                Id = 0,
+                Title = "",
+                Description = "",
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now,
+                DashboardId = this.dashboardId
+            };
+
+            TaskDetails details = new TaskDetails(newTask, dashboardId); // Mostrar detalles de la tarea
+            details.SetEditMode(true); // Habilitar modo de edición
+            details.TaskUpdated += (s, ev) => // Evento para actualizar la tarea
+            {
+                KanbanDashboard_Load(s, ev);
+            };
+            details.ShowDialog();
+        }   
     }
 }
