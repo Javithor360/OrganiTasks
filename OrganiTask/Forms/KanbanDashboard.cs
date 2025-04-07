@@ -92,7 +92,7 @@ namespace OrganiTask.Forms
         {
             // Instanciamos un panel de columna para la categoría
             KanbanColumnPanel column = new KanbanColumnPanel(tag);
-            column.ColumnUpdated += KanbanDashboard_Load; // Evento para actualizar el tablero al soltar una tarjeta
+            column.ColumnUpdated += EventRefreshDashboard; // Evento para actualizar el tablero al soltar una tarjeta
 
             return column; // Retornamos la columna
         }
@@ -134,6 +134,16 @@ namespace OrganiTask.Forms
 
             return card; // Retornamos la tarjeta
         }
+        private void RefreshDashboard()
+        {
+            DashboardController controller = new DashboardController();
+            DashboardViewModel model = controller.LoadKanban(dashboardId, categoryTitle);
+            if (model != null)
+            {
+                lblDashboardTitle.Text = model.DashboardTitle;
+                RenderDashboard(model);
+            }
+        }
 
         // Evento para manejar el click en el botón de agregar tarea
         private void btnNewTask_Click(object sender, EventArgs e)
@@ -150,7 +160,7 @@ namespace OrganiTask.Forms
 
             TaskDetails details = new TaskDetails(newTask, dashboardId); // Mostrar detalles de la tarea
             details.SetEditMode(true); // Habilitar modo de edición
-            details.TaskUpdated += Details_TaskUpdated; // Evento para cuando se actualiza una tarea
+            details.TaskUpdated += EventRefreshDashboard; // Evento para cuando se actualiza una tarea
             details.ShowDialog(); // Mostrar el formulario de detalles
         }
 
@@ -158,7 +168,7 @@ namespace OrganiTask.Forms
         {
             showHiddenColumn = !showHiddenColumn; // Alternar la visibilidad de la columna "Sin Etiquetar"
             btnShowHidden.Text = showHiddenColumn ? "🔎 Esconder ocultos" : "🔎 Mostrar ocultos"; // Cambiar el texto del botón
-            KanbanDashboard_Load(sender, e); // Recargar el tablero
+            RefreshDashboard(); // Recargar el tablero
         }
 
         /*
@@ -169,7 +179,7 @@ namespace OrganiTask.Forms
         private void Card_ClickEvent(TaskViewModel task)
         {
             TaskDetails details = new TaskDetails(task, dashboardId); // Mostrar detalles de la tarea
-            details.TaskUpdated += Details_TaskUpdated; // Evento para cuando se actualiza una tarea
+            details.TaskUpdated += EventRefreshDashboard; // Evento para cuando se actualiza una tarea
 
             details.ShowDialog(); // Mostramos el formulario de detalles
         }
@@ -247,11 +257,10 @@ namespace OrganiTask.Forms
             }
         }
 
-        // Evento para manejar la actualización de la vista de tareas
-        private void Details_TaskUpdated(object sender, EventArgs e)
+        private void EventRefreshDashboard(object sender, EventArgs e)
         {
-            // Recargamos el tablero cuando se actualiza una tarea
-            KanbanDashboard_Load(sender, e);
+            // Recargamos el tablero cuando se actualiza una columna
+            RefreshDashboard();
         }
 
         // Método para iniciar el temporizador que actualiza la posición del formulario de arrastre
