@@ -9,7 +9,7 @@ namespace OrganiTask.Forms.Controls
     public class TaskCardPanel : Panel
     {
         // Propiedades para almacenar la información de la tarjeta
-        public TaskViewModel TaskData { get; set; } // Informaciónn de la tarea
+        public TaskViewModel TaskData { get; set; } // Información de la tarea
         public int CurrentTagId { get; set; } // ID de la etiqueta que se está usando para renderizar el tablero asignada a tarea
 
         // Constructor que aplica el estilo estándar a la tarjeta
