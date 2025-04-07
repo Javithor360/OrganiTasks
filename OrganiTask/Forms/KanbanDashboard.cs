@@ -24,6 +24,9 @@ namespace OrganiTask.Forms
         private DragForm _dragForm;
         private Timer _dragTimer;
 
+        // 
+        private bool showHiddenColumn = false;
+
         // Constructor del formulario requiere identificar el tablero y la categoría con la que se ordenarán las tareas
         public KanbanDashboard(int dashboardId, string categoryTitle)
         {
@@ -58,6 +61,15 @@ namespace OrganiTask.Forms
             // Dibujamos dinámicamente una columna por cada elemento en la lista de columnas
             foreach (ColumnViewModel column in model.Columns)
             {
+                // Si la columna es "Sin Etiquetar", verificamos si se debe mostrar
+                if (column.Tag.Name == "Sin Etiquetar")
+                {
+                    // Si no se debe mostrar, continuamos con la siguiente iteración
+                    if (!showHiddenColumn)
+                        continue;
+                }
+
+                // Si no, creamos la columna
                 FlowLayoutPanel columnPanel = CreateColumnPanel(column.Tag);
 
                 // Dibujamos dinámicamente una tarjeta por cada tarea en la lista de tareas
@@ -143,7 +155,7 @@ namespace OrganiTask.Forms
         }
 
         // Evento para manejar el click en el botón de agregar tarea
-        private void btnAddTask_Click(object sender, EventArgs e)
+        private void btnNewTask_Click(object sender, EventArgs e)
         {
             TaskViewModel newTask = new TaskViewModel
             {
@@ -159,6 +171,13 @@ namespace OrganiTask.Forms
             details.SetEditMode(true); // Habilitar modo de edición
             details.TaskUpdated += Details_TaskUpdated; // Evento para cuando se actualiza una tarea
             details.ShowDialog(); // Mostrar el formulario de detalles
+        }
+
+        private void btnShowHidden_Click(object sender, EventArgs e)
+        {
+            showHiddenColumn = !showHiddenColumn; // Alternar la visibilidad de la columna "Sin Etiquetar"
+            btnShowHidden.Text = showHiddenColumn ? "🔎 Esconder ocultos" : "🔎 Mostrar ocultos"; // Cambiar el texto del botón
+            KanbanDashboard_Load(sender, e); // Recargar el tablero
         }
 
         /*

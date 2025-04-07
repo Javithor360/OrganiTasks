@@ -101,11 +101,7 @@ namespace OrganiTask.Controllers
                     });
                 }
 
-                // Agregamos la columna de tareas sin etiqueta al modelo de vista solo si tiene tareas
-                if (noTagColumn.Tasks.Count > 0)
-                {
-                    viewModel.Columns.AddLast(noTagColumn);
-                }
+                viewModel.Columns.AddLast(noTagColumn); // Agregar la columna de tareas sin etiqueta al modelo de vista
             }
 
             return viewModel;
