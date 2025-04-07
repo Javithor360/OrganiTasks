@@ -13,6 +13,7 @@ using OrganiTask.Entities;
 using OrganiTask.Util;
 using OrganiTask.Forms.Test;
 
+
 /*
  * CONSIDERACIONES IMPORTANTES PARA TODO EL PROYECTO:
  * - Nombres de atributos, clases y métodos SIEMPRE en inglés
@@ -29,9 +30,33 @@ namespace OrganiTask.Forms
 {
     public partial class Main: Form
     {
+
         public Main()
         {
             InitializeComponent();
+        }
+
+        private void Main_Load(object sender, EventArgs e)
+        {
+            //if(!SessionManager.Instance.IsLoggedIn)
+            //{
+            //    this.Hide();
+            //    //MessageBox.Show("Sin Sessión");
+
+            //    Login loginForm = new Login();
+            //    loginForm.ShowDialog(); // Pausa la siguiente ejecución de código
+
+            //    if(!SessionManager.Instance.IsLoggedIn)
+            //    {
+            //        Environment.Exit(1); // Ciere forzoso de la aplicación
+            //    }
+            //    else
+            //        this.Show();
+            //}
+
+            // Cargar datos solo si hay sesión
+            Refresh();
+            label1.Text = SessionManager.Instance.CurrentUser.Username;
         }
 
         private new void Refresh()
@@ -52,20 +77,11 @@ namespace OrganiTask.Forms
             }
         }
 
-        private void Main_Load(object sender, EventArgs e)
-        {
-            Refresh();
-        
-            if (SessionManager.Instance.IsLoggedIn)
-            {
-                User user = SessionManager.Instance.CurrentUser;
-                label1.Text = user.Username;
-            }
-        }
+        // Eventos =================================================================== | 
 
         private void btnMainTest_Click(object sender, EventArgs e)
         {
-            KanbanDashboard kanban = new KanbanDashboard(2, 4);
+            KanbanDashboard kanban = new KanbanDashboard(1, "Status");
             kanban.Show();
         }
 

@@ -71,6 +71,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\MainController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
+    <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="Entities\Category.cs">
       <DependentUpon>OrganiTaskDB.tt</DependentUpon>
     </Compile>
@@ -107,6 +110,12 @@
     <Compile Include="Entities\User.cs">
       <DependentUpon>OrganiTaskDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\ViewModels\CategoryViewModel.cs" />
+    <Compile Include="Entities\ViewModels\ColumnViewModel.cs" />
+    <Compile Include="Entities\ViewModels\KanbanDashboardViewModel.cs" />
+    <Compile Include="Entities\ViewModels\TagViewModel.cs" />
+    <Compile Include="Entities\ViewModels\MainViewModel.cs" />
+    <Compile Include="Entities\ViewModels\TaskViewModel.cs" />
     <Compile Include="Forms\Register.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -131,19 +140,32 @@
     <Compile Include="Forms\Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\TaskDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TaskDetails.Designer.cs">
+      <DependentUpon>TaskDetails.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Test\CategoriesManagement.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Test\CategoriesManagement.Designer.cs">
       <DependentUpon>CategoriesManagement.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Test\Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Test\Main.Designer.cs">
+      <DependentUpon>Main.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\CollectionAdapter.cs" />
     <Compile Include="Util\Collections\Node.cs" />
     <Compile Include="Util\Collections\OrganiList.cs" />
-    <Compile Include="Classes\SessionManager.cs" />
+    <Compile Include="Util\SessionManager.cs" />
     <Compile Include="Util\OrganiTaskDB.cs" />
-    <Compile Include="Services\AuthService.cs" />
+    <Compile Include="Controllers\Services\AuthService.cs" />
     <EmbeddedResource Include="Forms\Register.resx">
       <DependentUpon>Register.cs</DependentUpon>
     </EmbeddedResource>
@@ -156,8 +178,14 @@
     <EmbeddedResource Include="Forms\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TaskDetails.resx">
+      <DependentUpon>TaskDetails.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Test\CategoriesManagement.resx">
       <DependentUpon>CategoriesManagement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Test\Main.resx">
+      <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -203,5 +231,6 @@
       <LastGenOutput>OrganiTaskDB.cs</LastGenOutput>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
