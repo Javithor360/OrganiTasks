@@ -29,7 +29,8 @@ namespace OrganiTask.Controllers
                 // Obtenemos el tablero
                 Dashboard dashboard = context.Dashboards.FirstOrDefault(d => d.Id == dashboardId);
 
-                if (dashboard == null) return null;
+                if (dashboard == null) 
+                    return null;
 
                 viewModel.DashboardTitle = dashboard.Name; // Asignamos el título del tablero
 
@@ -71,6 +72,39 @@ namespace OrganiTask.Controllers
                     }
 
                     viewModel.Columns.AddLast(column); // Agregar la columna al modelo de vista
+                }
+
+                // Ahora, creamos una columna adicional para aquellas tareas que no tienen
+                // etiqueta asignada en esta categoría particular
+                ColumnViewModel noTagColumn = new ColumnViewModel
+                {
+                    Tag = new Tag { Name = "Sin Etiqueta" }, // Título de la columna
+                    Tasks = new OrganiList<TaskViewModel>() // Inicializar la lista de tareas
+                };
+
+                // Realizamos la consulta para obtener dichas tareas que NO poseen ningún
+                // TaskTag asociado a la categoría actual
+                OrganiList<Task> taskWithoutTag = context.Tasks
+                    .Where(t => t.DashboardId == dashboardId && !t.TaskTag.Any(tt => tt.Tag.CategoryId == category.Id))
+                    .ToOrganiList();
+
+                // Iteramos cada task a el modelo de vista de task
+                foreach (Task task in taskWithoutTag)
+                {
+                    noTagColumn.Tasks.AddLast(new TaskViewModel
+                    {
+                        Id = task.Id,
+                        Title = task.Title,
+                        Description = task.Description,
+                        StartDate = (DateTime)task.StartDate,
+                        EndDate = (DateTime)task.EndDate
+                    });
+                }
+
+                // Agregamos la columna de tareas sin etiqueta al modelo de vista solo si tiene tareas
+                if (noTagColumn.Tasks.Count > 0)
+                {
+                    viewModel.Columns.AddLast(noTagColumn);
                 }
             }
 
