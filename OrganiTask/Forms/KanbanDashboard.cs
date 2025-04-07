@@ -21,6 +21,8 @@ namespace OrganiTask.Forms
         private Point _dragStartPoint; // Punto de inicio del arrastre
         private bool _dragStarted = false; // Bandera para indicar si se ha iniciado el arrastre
         private int _sourceTagId = 0; // ID de la etiqueta de origen (columna)
+        private DragForm _dragForm;
+        private Timer _dragTimer;
 
         // Constructor del formulario requiere identificar el tablero y la categoría con la que se ordenarán las tareas
         public KanbanDashboard(int dashboardId, string categoryTitle)
@@ -236,7 +238,34 @@ namespace OrganiTask.Forms
                 {
                     _dragStarted = true; // Marcamos que el arrastre ha comenzado
                     TaskCardPanel card = sender as TaskCardPanel; // Obtenemos la tarjeta con sus datos
-                    card.DoDragDrop(card.TaskData, DragDropEffects.Move); // Iniciamos el arrastre de la tarjeta
+
+                    // Capturar la imagen de la tarjeta
+                    Bitmap bitmap = new Bitmap(card.Width, card.Height);
+                    card.DrawToBitmap(bitmap, new Rectangle(0, 0, card.Width, card.Height));
+
+                    // Crear DragForm con la imagen capturada
+                    Point screenPos = card.PointToScreen(e.Location);
+                    _dragForm = new DragForm(bitmap);
+                    _dragForm.Location = new Point(screenPos.X - bitmap.Width / 2, screenPos.Y - bitmap.Height / 2);
+                    _dragForm.Show(); // Mostrar el formulario de arrastre
+
+                    StartDragTimer();
+
+                    try
+                    {
+                        card.DoDragDrop(card.TaskData, DragDropEffects.Move); // Iniciamos el arrastre de la tarjeta
+                    }
+                    finally
+                    {
+                        StopDragTimer();
+                        // Ocultamos el formulario de arrastre al soltar
+                        if (_dragForm != null)
+                        {
+                            _dragForm.Close();
+                            _dragForm.Dispose();
+                            _dragForm = null; // Limpiamos la referencia
+                        }
+                    }
                 }
             }
         }
@@ -259,6 +288,31 @@ namespace OrganiTask.Forms
         {
             // Recargamos el tablero cuando se actualiza una tarea
             KanbanDashboard_Load(sender, e);
+        }
+
+        private void StartDragTimer()
+        {
+            _dragTimer = new Timer();
+            _dragTimer.Interval = 20; // Actualiza cada 20 ms
+            _dragTimer.Tick += (s, e) =>
+            {
+                if (_dragForm != null)
+                {
+                    Point pos = Cursor.Position;
+                    _dragForm.Location = new Point(pos.X - _dragForm.Width / 2, pos.Y - _dragForm.Height / 2);
+                }
+            };
+            _dragTimer.Start();
+        }
+
+        private void StopDragTimer()
+        {
+            if (_dragTimer != null)
+            {
+                _dragTimer.Stop();
+                _dragTimer.Dispose();
+                _dragTimer = null;
+            }
         }
     }
 }

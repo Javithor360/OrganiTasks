@@ -116,6 +116,9 @@
     <Compile Include="Entities\ViewModels\TagViewModel.cs" />
     <Compile Include="Entities\ViewModels\MainViewModel.cs" />
     <Compile Include="Entities\ViewModels\TaskViewModel.cs" />
+    <Compile Include="Forms\Controls\DragForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\Controls\TaskCardPanel.cs">
       <SubType>Component</SubType>
     </Compile>
