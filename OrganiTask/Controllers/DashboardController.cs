@@ -4,10 +4,7 @@ using OrganiTask.Forms;
 using OrganiTask.Util;
 using OrganiTask.Util.Collections;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Task = OrganiTask.Entities.Task;
 
 namespace OrganiTask.Controllers
@@ -50,7 +47,7 @@ namespace OrganiTask.Controllers
                 {
                     ColumnViewModel column = new ColumnViewModel
                     {
-                        TagName = tag.Name,
+                        Tag = tag,
                         Tasks = new OrganiList<TaskViewModel>() // Inicializar la lista de tareas
                     };
 

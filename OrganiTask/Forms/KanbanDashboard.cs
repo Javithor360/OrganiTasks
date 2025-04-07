@@ -1,16 +1,9 @@
 ﻿using OrganiTask.Controllers;
 using OrganiTask.Entities;
 using OrganiTask.Entities.ViewModels;
-using OrganiTask.Util;
+using OrganiTask.Forms.Controls;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace OrganiTask.Forms
@@ -23,6 +16,11 @@ namespace OrganiTask.Forms
         // Propiedades para almacenar el identificador del tablero y el título de la categoría
         private int dashboardId;
         private string categoryTitle; // default "Status"
+
+        // Propiedades auxiliares para controlar el drag y click de las tarjetas
+        private Point _dragStartPoint; // Punto de inicio del arrastre
+        private bool _dragStarted = false; // Bandera para indicar si se ha iniciado el arrastre
+        private int _sourceTagId = 0; // ID de la etiqueta de origen (columna)
 
         // Constructor del formulario requiere identificar el tablero y la categoría con la que se ordenarán las tareas
         public KanbanDashboard(int dashboardId, string categoryTitle)
@@ -58,12 +56,12 @@ namespace OrganiTask.Forms
             // Dibujamos dinámicamente una columna por cada elemento en la lista de columnas
             foreach (ColumnViewModel column in model.Columns)
             {
-                FlowLayoutPanel columnPanel = CreateColumnPanel(column.TagName);
+                FlowLayoutPanel columnPanel = CreateColumnPanel(column.Tag);
 
                 // Dibujamos dinámicamente una tarjeta por cada tarea en la lista de tareas
                 foreach (TaskViewModel task in column.Tasks)
                 {
-                    Panel taskCard = CreateTaskCard(task); // Creamos la tarjeta
+                    Panel taskCard = CreateTaskCard(task, column.Tag.Id); // Creamos la tarjeta
                     columnPanel.Controls.Add(taskCard); // Agregamos la tarjeta a la columna
                 }
 
@@ -73,8 +71,10 @@ namespace OrganiTask.Forms
         }
 
         // Método para crear una columna por cada categoría en el tablero
-        private FlowLayoutPanel CreateColumnPanel(string name)
+        private FlowLayoutPanel CreateColumnPanel(Tag tag)
         {
+            TaskController taskController = new TaskController(); // Instanciar el controlador de tareas
+
             // Creamos un panel de flujo para la columna
             FlowLayoutPanel column = new FlowLayoutPanel
             {
@@ -82,13 +82,53 @@ namespace OrganiTask.Forms
                 Width = 250,
                 Height = flpBoard.Height - 30,
                 AutoScroll = true,
-                Margin = new Padding(10)
+                Margin = new Padding(10),
+                AllowDrop = true,
+                Tag = tag.Id
+            };
+
+            // Evento para manejar el arrastre de tareas en la columna
+            column.DragEnter += (s, e) =>
+            {
+                if (e.Data.GetDataPresent(typeof(TaskViewModel))) // Comprobamos que el panel sea una tarea
+                {
+                    e.Effect = DragDropEffects.Move; // Permitimos el arrastre
+                }
+                else // Si no es una tarea, bloqueamos el arrastre
+                {
+                    e.Effect = DragDropEffects.None;
+                }
+            };
+
+            // Evento para manejar la caída de tareas en la columna
+            column.DragDrop += (s, e) =>
+            {
+                // Comprobamos que el panel sea una tarea
+                if (e.Data.GetDataPresent(typeof(TaskViewModel)))
+                {
+                    // Obtenemos la tarea arrastrada
+                    TaskViewModel draggedTask = (TaskViewModel) e.Data.GetData(typeof(TaskViewModel));
+
+                    int destinationTagId = (int)((FlowLayoutPanel)s).Tag; // Obtenemos el ID de la etiqueta de destino
+
+                    // Ejecutamos si y solo si el tag (columna) arrastrada no es la misma que la de destino
+                    if (_sourceTagId != destinationTagId)
+                    {
+                        // Obtenemos el ID de la categoría de la etiqueta de destino
+                        int categoryId = taskController.GetCategoryIdFromTagId(destinationTagId);
+
+                        // Actualizamos la tarea en la base de datos
+                        taskController.UpdateTagCategoryForTask(draggedTask.Id, destinationTagId,categoryId);
+
+                        KanbanDashboard_Load(s, e); // Recargamos el tablero
+                    }
+                }
             };
 
             // Etiqueta con el nombre de la categoría
             Label lblTag = new Label()
             {
-                Text = name,
+                Text = tag.Name,
                 Font = new Font("Segoe UI", 12, FontStyle.Bold),
                 AutoSize = true
             };
@@ -98,17 +138,19 @@ namespace OrganiTask.Forms
         }
 
         // Método para crear una tarjeta por cada tarea en la columna
-        private Panel CreateTaskCard(TaskViewModel task)
+        private TaskCardPanel CreateTaskCard(TaskViewModel task, int tagId)
         {
-            // Creamos un panel para la tarjeta
-            Panel card = new Panel
+            // Instanciamos un panel de tarjeta para la tarea
+            TaskCardPanel card = new TaskCardPanel
             {
-                Width = 200,
-                Height = 80,
-                Cursor = Cursors.Hand,
-                BorderStyle = BorderStyle.FixedSingle,
-                Margin = new Padding(5),
+                TaskData = task,
+                CurrentTagId = tagId,
             };
+
+            // Adherimos los eventos de click, arrastre y soltar del mouse
+            card.MouseDown += Card_MouseDown;
+            card.MouseMove += Card_MouseMove;
+            card.MouseUp += Card_MouseUp;
 
             // Título de la tarea
             Label lblTitle = new Label
@@ -130,26 +172,67 @@ namespace OrganiTask.Forms
             };
             card.Controls.Add(lblDesc); // Agregamos la descripción a la tarjeta
 
-            // Agregar evento de clic a todos los controles de la tarjeta
-            // para que funcione al hacer clic en cualquier parte de la tarjeta
-            card.Click += (object sender, EventArgs e) => Card_ClickEvent(task);
-            lblTitle.Click += (object sender, EventArgs e) => Card_ClickEvent(task);
-            lblDesc.Click += (object sender, EventArgs e) => Card_ClickEvent(task);
-
             return card; // Retornamos la tarjeta
         }
 
+        // Evento para manejar el click en la tarjeta
         private void Card_ClickEvent(TaskViewModel task)
         {
             TaskDetails details = new TaskDetails(task, dashboardId); // Mostrar detalles de la tarea
             details.TaskUpdated += (s, e) => // Evento para actualizar la tarea
             {
-                KanbanDashboard_Load(s, e);
+                KanbanDashboard_Load(s, e); // Recargamos el tablero solo si se actualiza la tarea
             };
 
-            details.ShowDialog();
+            details.ShowDialog(); // Mostramos el formulario de detalles
         }
 
+        // Eventos para manejar el arrastre
+        private void Card_MouseDown(object sender, MouseEventArgs e)
+        {
+            // Comprobamos que el botón izquierdo del mouse haya sido presionado
+            if (e.Button == MouseButtons.Left)
+            {
+                TaskCardPanel card = sender as TaskCardPanel; // Obtenemos la tarjeta con sus datos
+                _dragStartPoint = e.Location; // Capturamos el punto de inicio del arrastre
+                _dragStarted = false; // Reiniciamos la bandera de arrastre
+                _sourceTagId = card.CurrentTagId; // Guardamos el ID de la etiqueta de origen
+            }
+        }
+
+        // Evento para manejar el movimiento del mouse
+        private void Card_MouseMove(object sender, MouseEventArgs e)
+        {
+            // Comprobamos que el botón izquierdo del mouse haya sido presionado y que el arrastre no haya comenzado
+            if (e.Button == MouseButtons.Left && !_dragStarted)
+            {
+                // Comprobamos si el movimiento del mouse es mayor al tamaño de arrastre
+                // Para hacer esto, comparamos la distancia entre el punto de inicio y el punto actual
+                // Si la distancia es mayor al tamaño de arrastre, iniciamos el arrastre
+                if (Math.Abs(e.X - _dragStartPoint.X) >= SystemInformation.DragSize.Width ||
+                    Math.Abs(e.Y - _dragStartPoint.Y) >= SystemInformation.DragSize.Height)
+                {
+                    _dragStarted = true; // Marcamos que el arrastre ha comenzado
+                    TaskCardPanel card = sender as TaskCardPanel; // Obtenemos la tarjeta con sus datos
+                    card.DoDragDrop(card.TaskData, DragDropEffects.Move); // Iniciamos el arrastre de la tarjeta
+                }
+            }
+        }
+
+        // Evento para manejar el soltar el mouse
+        private void Card_MouseUp(object sender, MouseEventArgs e)
+        {
+            // Verificamos que el arrastre no haya comenzado
+            if (!_dragStarted)
+            {
+                // Si el arrastre no ha comenzado, significa que el usuario hizo click en la tarjeta
+                TaskCardPanel card = sender as TaskCardPanel;
+                // Llama al evento click para mostrar los detalles de la tarea
+                Card_ClickEvent(card.TaskData);
+            }
+        }
+
+        // Evento para manejar el click en el botón de agregar tarea
         private void btnAddTask_Click(object sender, EventArgs e)
         {
             TaskViewModel newTask = new TaskViewModel

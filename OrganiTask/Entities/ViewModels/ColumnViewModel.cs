@@ -1,9 +1,4 @@
 ﻿using OrganiTask.Util.Collections;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OrganiTask.Entities.ViewModels
 {
@@ -12,7 +7,7 @@ namespace OrganiTask.Entities.ViewModels
     /// </summary>
     public class ColumnViewModel
     {
-        public string TagName { get; set; } // Nombre de la etiqueta
+        public Tag Tag { get; set; } // Identificador de la etiqueta
         public OrganiList<TaskViewModel> Tasks { get; set; } = new OrganiList<TaskViewModel>(); // Lista de tareas de la columna
     }
 }

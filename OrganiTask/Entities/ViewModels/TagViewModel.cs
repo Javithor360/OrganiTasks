@@ -10,6 +10,7 @@ namespace OrganiTask.Entities.ViewModels
     {
         public int Id { get; set; } // Identificador de la etiqueta
         public string Name { get; set; } // Nombre de la etiqueta
+        public string Description { get; set; } // Descripción de la etiqueta
         public string Color { get; set; } // Color de la etiqueta
         public int CategoryId { get; set; } // Identificador de la categoría
 
