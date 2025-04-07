@@ -79,9 +79,10 @@ namespace OrganiTask.Forms
             FlowLayoutPanel column = new FlowLayoutPanel
             {
                 FlowDirection = FlowDirection.TopDown,
+                WrapContents = false,
+                AutoScroll = true,
                 Width = 250,
                 Height = flpBoard.Height - 30,
-                AutoScroll = true,
                 Margin = new Padding(10),
                 AllowDrop = true,
                 Tag = tag.Id
