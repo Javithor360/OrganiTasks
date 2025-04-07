@@ -4,6 +4,7 @@ using OrganiTask.Util;
 using OrganiTask.Util.Collections;
 using System;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace OrganiTask.Controllers
 {
@@ -288,13 +289,9 @@ namespace OrganiTask.Controllers
                     .Where(tt => tt.TaskId == taskId && tt.Tag.CategoryId == categoryId)
                     .ToOrganiList();
 
-                foreach (TaskTag tt in existing)
-                {
-                    context.TaskTags.Remove(tt); // Remover la relación existente
-                }
-                context.SaveChanges(); // Guardar los cambios
+                context.TaskTags.RemoveRange(existing);
 
-                // Ahora, sí el ID de la nueva etiqueta es válido, creamos la relación
+                // Ahora, si el ID de la nueva etiqueta es válido, creamos la relación
                 if (newTagId > 0)
                 {
                     TaskTag newTT = new TaskTag
@@ -303,8 +300,9 @@ namespace OrganiTask.Controllers
                         TagId = newTagId
                     };
                     context.TaskTags.Add(newTT); // Agregar la nueva relación
-                    context.SaveChanges(); // Guardar los cambios
                 }
+
+                context.SaveChanges(); // Guardar los cambios
             }
         }
     }

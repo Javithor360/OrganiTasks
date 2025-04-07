@@ -78,7 +78,11 @@ namespace OrganiTask.Controllers
                 // etiqueta asignada en esta categoría particular
                 ColumnViewModel noTagColumn = new ColumnViewModel
                 {
-                    Tag = new Tag { Name = "Sin Etiquetar" }, // Título de la columna
+                    Tag = new Tag {
+                        Id = -1, // ID ficticio para la columna sin etiqueta
+                        Name = "Sin Etiquetar", // Título de la columna
+                        CategoryId = category.Id, // Asignar la categoría
+                    },
                     Tasks = new OrganiList<TaskViewModel>() // Inicializar la lista de tareas
                 };
 

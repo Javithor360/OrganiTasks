@@ -17,15 +17,18 @@ namespace OrganiTask.Forms
         private int dashboardId;
         private string categoryTitle; // default "Status"
 
-        // Propiedades auxiliares para controlar el drag y click de las tarjetas
-        private Point _dragStartPoint; // Punto de inicio del arrastre
-        private bool _dragStarted = false; // Bandera para indicar si se ha iniciado el arrastre
-        private int _sourceTagId = 0; // ID de la etiqueta de origen (columna)
-        private DragForm _dragForm;
-        private Timer _dragTimer;
-
-        // 
+        // Propiedad para controlar la visibilidad de la columna "Sin Etiquetar"
         private bool showHiddenColumn = false;
+
+        // Propiedades auxiliares para controlar el drag y click de las tarjetas
+        private bool _dragStarted = false; // Bandera para indicar si se ha iniciado el arrastre
+        private Point _dragStartPoint; // Punto de inicio del arrastre
+        private Timer _dragTimer; // Temporizador para actualizar la posición del formulario de arrastre
+
+        // Formulario que muestra la tarjeta arrastrada
+        private DragForm _dragForm;
+
+        public int SourceTagId { get; set; } // ID de la etiqueta de origen de la tarjeta arrastrada
 
         // Constructor del formulario requiere identificar el tablero y la categoría con la que se ordenarán las tareas
         public KanbanDashboard(int dashboardId, string categoryTitle)
@@ -62,7 +65,7 @@ namespace OrganiTask.Forms
             foreach (ColumnViewModel column in model.Columns)
             {
                 // Si la columna es "Sin Etiquetar", verificamos si se debe mostrar
-                if (column.Tag.Name == "Sin Etiquetar")
+                if (column.Tag.Id == -1)
                 {
                     // Si no se debe mostrar, continuamos con la siguiente iteración
                     if (!showHiddenColumn)
@@ -85,33 +88,11 @@ namespace OrganiTask.Forms
         }
 
         // Método para crear una columna por cada categoría en el tablero
-        private FlowLayoutPanel CreateColumnPanel(Tag tag)
+        private KanbanColumnPanel CreateColumnPanel(Tag tag)
         {
-            // Creamos un panel de flujo para la columna
-            FlowLayoutPanel column = new FlowLayoutPanel
-            {
-                FlowDirection = FlowDirection.TopDown,
-                WrapContents = false,
-                AutoScroll = true,
-                Width = 250,
-                Height = flpBoard.Height - 30,
-                Margin = new Padding(10),
-                AllowDrop = true,
-                Tag = tag.Id
-            };
-
-            // Evento para manejar el arrastre y caída de tareas en la columna
-            column.DragEnter += ColumnDragEnter;
-            column.DragDrop += ColumnDragDrop;
-
-            // Etiqueta con el nombre de la categoría
-            Label lblTag = new Label()
-            {
-                Text = tag.Name,
-                Font = new Font("Segoe UI", 12, FontStyle.Bold),
-                AutoSize = true
-            };
-            column.Controls.Add(lblTag); // Agregamos la etiqueta al panel
+            // Instanciamos un panel de columna para la categoría
+            KanbanColumnPanel column = new KanbanColumnPanel(tag);
+            column.ColumnUpdated += KanbanDashboard_Load; // Evento para actualizar el tablero al soltar una tarjeta
 
             return column; // Retornamos la columna
         }
@@ -184,44 +165,6 @@ namespace OrganiTask.Forms
          * EVENT LISTENERS PERSONALIZADOS
          */
 
-        private void ColumnDragEnter(object sender, DragEventArgs e)
-        {
-            // Comprobamos que el panel sea una tarea
-            if (e.Data.GetDataPresent(typeof(TaskViewModel)))
-            {
-                e.Effect = DragDropEffects.Move; // Permitimos el arrastre
-            }
-            else // Si no es una tarea, bloqueamos el arrastre
-            {
-                e.Effect = DragDropEffects.None;
-            }
-        }
-
-        private void ColumnDragDrop(object sender, DragEventArgs e)
-        {
-            TaskController taskController = new TaskController(); // Instanciar el controlador de tareas
-
-            if (e.Data.GetDataPresent(typeof(TaskViewModel)))
-            {
-                // Obtenemos la tarea arrastrada
-                TaskViewModel draggedTask = (TaskViewModel)e.Data.GetData(typeof(TaskViewModel));
-
-                int destinationTagId = (int)((FlowLayoutPanel)sender).Tag; // Obtenemos el ID de la etiqueta de destino
-
-                // Ejecutamos si y solo si el tag (columna) arrastrada no es la misma que la de destino
-                if (_sourceTagId != destinationTagId)
-                {
-                    // Obtenemos el ID de la categoría de la etiqueta de destino
-                    int categoryId = taskController.GetCategoryIdFromTagId(destinationTagId);
-
-                    // Actualizamos la tarea en la base de datos
-                    taskController.UpdateTagCategoryForTask(draggedTask.Id, destinationTagId, categoryId);
-
-                    KanbanDashboard_Load(sender, e); // Recargamos el tablero
-                }
-            }
-        }
-
         // Evento para manejar el click en la tarjeta
         private void Card_ClickEvent(TaskViewModel task)
         {
@@ -240,7 +183,7 @@ namespace OrganiTask.Forms
                 TaskCardPanel card = sender as TaskCardPanel; // Obtenemos la tarjeta con sus datos
                 _dragStartPoint = e.Location; // Capturamos el punto de inicio del arrastre
                 _dragStarted = false; // Reiniciamos la bandera de arrastre
-                _sourceTagId = card.CurrentTagId; // Guardamos el ID de la etiqueta de origen
+                SourceTagId = card.CurrentTagId; // Guardamos el ID de la etiqueta de origen
             }
         }
 
@@ -265,11 +208,11 @@ namespace OrganiTask.Forms
 
                     // Crear DragForm con la imagen capturada
                     Point screenPos = card.PointToScreen(e.Location);
-                    _dragForm = new DragForm(bitmap);
+                    _dragForm = new DragForm(bitmap); // Asignamos la instancia de DragForm al bitmap
                     _dragForm.Location = new Point(screenPos.X - bitmap.Width / 2, screenPos.Y - bitmap.Height / 2);
                     _dragForm.Show(); // Mostrar el formulario de arrastre
 
-                    StartDragTimer();
+                    StartDragTimer(); // Iniciar el temporizador para actualizar la posición del formulario de arrastre
 
                     try
                     {
@@ -277,7 +220,8 @@ namespace OrganiTask.Forms
                     }
                     finally
                     {
-                        StopDragTimer();
+                        StopDragTimer(); // Detenemos el temporizador al finalizar el arrastre
+
                         // Ocultamos el formulario de arrastre al soltar
                         if (_dragForm != null)
                         {
@@ -310,6 +254,7 @@ namespace OrganiTask.Forms
             KanbanDashboard_Load(sender, e);
         }
 
+        // Método para iniciar el temporizador que actualiza la posición del formulario de arrastre
         private void StartDragTimer()
         {
             _dragTimer = new Timer();
@@ -325,6 +270,7 @@ namespace OrganiTask.Forms
             _dragTimer.Start();
         }
 
+        // Método para detener el temporizador que actualiza la posición del formulario de arrastre
         private void StopDragTimer()
         {
             if (_dragTimer != null)
