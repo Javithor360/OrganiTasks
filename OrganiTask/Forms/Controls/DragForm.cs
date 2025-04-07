@@ -3,8 +3,14 @@ using System.Windows.Forms;
 
 namespace OrganiTask.Forms.Controls
 {
+    /// <summary>
+    /// Clase que representa un formulario de arrastre.
+    /// Este formulario de arrastre es usado para crear una ventana "fantasma" que se muestra
+    /// al arrastrar una tarea en el tablero Kanban, mejorando la experiencia de usuario.
+    /// </summary>
     public class DragForm : Form
     {
+        // Constructor que define el estilo estándar de la ventana de arrastre
         public DragForm(Image dragImage)
         {
             this.FormBorderStyle = FormBorderStyle.None;
@@ -16,6 +22,8 @@ namespace OrganiTask.Forms.Controls
             this.ClientSize = dragImage.Size;
         }
 
+        // Sobrecarga de CreateParams para permitir que la ventana sea "transparente" a los eventos de mouse,
+        // es decir, que los eventos de mouse se envíen a la ventana subyacente (que los ignore)
         protected override CreateParams CreateParams
         {
             get
