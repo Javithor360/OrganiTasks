@@ -3,9 +3,8 @@ using OrganiTask.Entities.ViewModels;
 using OrganiTask.Util;
 using OrganiTask.Util.Collections;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Windows.Forms;
 
 namespace OrganiTask.Controllers
 {
@@ -252,6 +251,57 @@ namespace OrganiTask.Controllers
                         context.TaskTags.Add(newTaskTag); // Agregar la nueva TaskTag
                     }
                 }
+                context.SaveChanges(); // Guardar los cambios
+            }
+        }
+
+        /// <summary>
+        /// Obtiene el ID de la categoría asociada a una etiqueta por medio del ID de la etiqueta.
+        /// </summary>
+        /// <param name="tagId">ID de la etiqueta.</param>
+        /// <returns>ID de la categoría asociada a la etiqueta.</returns>
+        public int GetCategoryIdFromTagId(int tagId)
+        {
+            using (OrganiTaskDB context = new OrganiTaskDB())
+            {
+                // Obtener la categoría asociada a la etiqueta
+                Tag tag = context.Tags.FirstOrDefault(t => t.Id == tagId);
+                if (tag != null)
+                {
+                    return tag.CategoryId; // Retornar el identificador de la categoría
+                }
+                return 0; // Retornar cero si no se encuentra la etiqueta
+            }
+        }
+
+        /// <summary>
+        /// Actualiza la relación entre una tarea y una etiqueta en una categoría específica por medio de sus ID.
+        /// </summary>
+        /// <param name="taskId">ID de la tarea.</param>
+        /// <param name="newTagId">ID de la nueva etiqueta.</param>
+        /// <param name="categoryId">ID de la categoría.</param>
+        public void UpdateTagCategoryForTask(int taskId, int newTagId, int categoryId)
+        {
+            using (OrganiTaskDB context = new OrganiTaskDB())
+            {
+                // Primeramente eliminamos cualquier relación existente para la tarea en la categoría
+                OrganiList<TaskTag> existing = context.TaskTags
+                    .Where(tt => tt.TaskId == taskId && tt.Tag.CategoryId == categoryId)
+                    .ToOrganiList();
+
+                context.TaskTags.RemoveRange(existing);
+
+                // Ahora, si el ID de la nueva etiqueta es válido, creamos la relación
+                if (newTagId > 0)
+                {
+                    TaskTag newTT = new TaskTag
+                    {
+                        TaskId = taskId,
+                        TagId = newTagId
+                    };
+                    context.TaskTags.Add(newTT); // Agregar la nueva relación
+                }
+
                 context.SaveChanges(); // Guardar los cambios
             }
         }
