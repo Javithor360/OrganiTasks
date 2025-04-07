@@ -11,7 +11,7 @@ namespace OrganiTask.Forms
     /// <summary>
     /// Formulario para visualizar un tablero Kanban.
     /// </summary>
-    public partial class KanbanDashboard: Form
+    public partial class KanbanDashboard : Form
     {
         // Propiedades para almacenar el identificador del tablero y el título de la categoría
         private int dashboardId;
@@ -73,8 +73,6 @@ namespace OrganiTask.Forms
         // Método para crear una columna por cada categoría en el tablero
         private FlowLayoutPanel CreateColumnPanel(Tag tag)
         {
-            TaskController taskController = new TaskController(); // Instanciar el controlador de tareas
-
             // Creamos un panel de flujo para la columna
             FlowLayoutPanel column = new FlowLayoutPanel
             {
@@ -87,43 +85,9 @@ namespace OrganiTask.Forms
                 Tag = tag.Id
             };
 
-            // Evento para manejar el arrastre de tareas en la columna
-            column.DragEnter += (s, e) =>
-            {
-                if (e.Data.GetDataPresent(typeof(TaskViewModel))) // Comprobamos que el panel sea una tarea
-                {
-                    e.Effect = DragDropEffects.Move; // Permitimos el arrastre
-                }
-                else // Si no es una tarea, bloqueamos el arrastre
-                {
-                    e.Effect = DragDropEffects.None;
-                }
-            };
-
-            // Evento para manejar la caída de tareas en la columna
-            column.DragDrop += (s, e) =>
-            {
-                // Comprobamos que el panel sea una tarea
-                if (e.Data.GetDataPresent(typeof(TaskViewModel)))
-                {
-                    // Obtenemos la tarea arrastrada
-                    TaskViewModel draggedTask = (TaskViewModel) e.Data.GetData(typeof(TaskViewModel));
-
-                    int destinationTagId = (int)((FlowLayoutPanel)s).Tag; // Obtenemos el ID de la etiqueta de destino
-
-                    // Ejecutamos si y solo si el tag (columna) arrastrada no es la misma que la de destino
-                    if (_sourceTagId != destinationTagId)
-                    {
-                        // Obtenemos el ID de la categoría de la etiqueta de destino
-                        int categoryId = taskController.GetCategoryIdFromTagId(destinationTagId);
-
-                        // Actualizamos la tarea en la base de datos
-                        taskController.UpdateTagCategoryForTask(draggedTask.Id, destinationTagId,categoryId);
-
-                        KanbanDashboard_Load(s, e); // Recargamos el tablero
-                    }
-                }
-            };
+            // Evento para manejar el arrastre y caída de tareas en la columna
+            column.DragEnter += ColumnDragEnter;
+            column.DragDrop += ColumnDragDrop;
 
             // Etiqueta con el nombre de la categoría
             Label lblTag = new Label()
@@ -175,14 +139,72 @@ namespace OrganiTask.Forms
             return card; // Retornamos la tarjeta
         }
 
+        // Evento para manejar el click en el botón de agregar tarea
+        private void btnAddTask_Click(object sender, EventArgs e)
+        {
+            TaskViewModel newTask = new TaskViewModel
+            {
+                Id = 0,
+                Title = "",
+                Description = "",
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now,
+                DashboardId = this.dashboardId
+            };
+
+            TaskDetails details = new TaskDetails(newTask, dashboardId); // Mostrar detalles de la tarea
+            details.SetEditMode(true); // Habilitar modo de edición
+            details.TaskUpdated += Details_TaskUpdated; // Evento para cuando se actualiza una tarea
+            details.ShowDialog(); // Mostrar el formulario de detalles
+        }
+
+        /*
+         * EVENT LISTENERS PERSONALIZADOS
+         */
+
+        private void ColumnDragEnter(object sender, DragEventArgs e)
+        {
+            // Comprobamos que el panel sea una tarea
+            if (e.Data.GetDataPresent(typeof(TaskViewModel)))
+            {
+                e.Effect = DragDropEffects.Move; // Permitimos el arrastre
+            }
+            else // Si no es una tarea, bloqueamos el arrastre
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void ColumnDragDrop(object sender, DragEventArgs e)
+        {
+            TaskController taskController = new TaskController(); // Instanciar el controlador de tareas
+
+            if (e.Data.GetDataPresent(typeof(TaskViewModel)))
+            {
+                // Obtenemos la tarea arrastrada
+                TaskViewModel draggedTask = (TaskViewModel)e.Data.GetData(typeof(TaskViewModel));
+
+                int destinationTagId = (int)((FlowLayoutPanel)sender).Tag; // Obtenemos el ID de la etiqueta de destino
+
+                // Ejecutamos si y solo si el tag (columna) arrastrada no es la misma que la de destino
+                if (_sourceTagId != destinationTagId)
+                {
+                    // Obtenemos el ID de la categoría de la etiqueta de destino
+                    int categoryId = taskController.GetCategoryIdFromTagId(destinationTagId);
+
+                    // Actualizamos la tarea en la base de datos
+                    taskController.UpdateTagCategoryForTask(draggedTask.Id, destinationTagId, categoryId);
+
+                    KanbanDashboard_Load(sender, e); // Recargamos el tablero
+                }
+            }
+        }
+
         // Evento para manejar el click en la tarjeta
         private void Card_ClickEvent(TaskViewModel task)
         {
             TaskDetails details = new TaskDetails(task, dashboardId); // Mostrar detalles de la tarea
-            details.TaskUpdated += (s, e) => // Evento para actualizar la tarea
-            {
-                KanbanDashboard_Load(s, e); // Recargamos el tablero solo si se actualiza la tarea
-            };
+            details.TaskUpdated += Details_TaskUpdated; // Evento para cuando se actualiza una tarea
 
             details.ShowDialog(); // Mostramos el formulario de detalles
         }
@@ -232,26 +254,11 @@ namespace OrganiTask.Forms
             }
         }
 
-        // Evento para manejar el click en el botón de agregar tarea
-        private void btnAddTask_Click(object sender, EventArgs e)
+        // Evento para manejar la actualización de la vista de tareas
+        private void Details_TaskUpdated(object sender, EventArgs e)
         {
-            TaskViewModel newTask = new TaskViewModel
-            {
-                Id = 0,
-                Title = "",
-                Description = "",
-                StartDate = DateTime.Now,
-                EndDate = DateTime.Now,
-                DashboardId = this.dashboardId
-            };
-
-            TaskDetails details = new TaskDetails(newTask, dashboardId); // Mostrar detalles de la tarea
-            details.SetEditMode(true); // Habilitar modo de edición
-            details.TaskUpdated += (s, ev) => // Evento para actualizar la tarea
-            {
-                KanbanDashboard_Load(s, ev);
-            };
-            details.ShowDialog();
-        }   
+            // Recargamos el tablero cuando se actualiza una tarea
+            KanbanDashboard_Load(sender, e);
+        }
     }
 }
