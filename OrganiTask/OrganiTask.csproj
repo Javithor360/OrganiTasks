@@ -155,6 +155,12 @@
     <Compile Include="Forms\TaskDetails.Designer.cs">
       <DependentUpon>TaskDetails.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Test\DashboardsManagement.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Test\DashboardsManagement.Designer.cs">
+      <DependentUpon>DashboardsManagement.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Test\CategoriesManagement.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -189,6 +195,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TaskDetails.resx">
       <DependentUpon>TaskDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Test\DashboardsManagement.resx">
+      <DependentUpon>DashboardsManagement.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Test\CategoriesManagement.resx">
       <DependentUpon>CategoriesManagement.cs</DependentUpon>

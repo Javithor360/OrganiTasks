@@ -110,6 +110,79 @@ namespace OrganiTask.Controllers
 
             return viewModel;
         }
+
+        /// <summary>
+        /// Carga los detalles de un tablero.
+        /// </summary>
+        /// <param name="dashboardId">Identificador del tablero.</param>
+        /// <returns>Modelo de vista del tablero.</returns>
+        public DashboardViewModel LoadDashboardDetails(int dashboardId)
+        {
+            using(OrganiTaskDB context = new OrganiTaskDB())
+            {
+                // Buscar el tablero por su ID
+                Dashboard dashboard = context.Dashboards.FirstOrDefault(d => d.Id == dashboardId);
+                if (dashboard == null) return null;
+
+                // Crear y retornar el modelo de vista
+                return new DashboardViewModel
+                {
+                    Id = dashboard.Id,
+                    DashboardTitle = dashboard.Name,
+                    Description = dashboard.Description,
+                    UserId = dashboard.UserId
+                };
+            }
+        }
+
+
+        /// <summary>
+        /// Crea un nuevo tablero.
+        /// </summary>
+        /// <param name="newDashboard">Modelo de vista del nuevo tablero.</param>
+        public void CreateDashboard(DashboardViewModel newDashboard)
+        {
+            // Bloque using para liberación de contexto al finalizar bloque de codigo
+            using(OrganiTaskDB context = new OrganiTaskDB())
+            {
+                // Crear la entidad a partir del modelo de la vista del tablero
+                Dashboard dashboard = new Dashboard
+                {
+                    Name = newDashboard.DashboardTitle,
+                    Description = newDashboard.Description,
+                    UserId = newDashboard.UserId
+                };
+
+                context.Dashboards.Add(dashboard); // Agregar el tablero al contexto
+                context.SaveChanges(); // Guardar los cambios
+
+                newDashboard.Id = dashboard.Id; // Asignar el ID generado al modelo de la vista
+            }
+        }
+
+
+        /// <summary>
+        /// Modificar la información un tablero existente.
+        /// </summary>
+        /// <param name="updatedDashboard">Modelo de vista del tablero actualizado.</param>
+        public void UpdateDashboard(DashboardViewModel updatedDashboard)
+        {
+            using(OrganiTaskDB context = new OrganiTaskDB())
+            {
+                // Buscar el tablero por su ID
+                var dashboard = context.Dashboards.FirstOrDefault(d => d.Id == updatedDashboard.Id);
+                if (dashboard == null) return;
+
+                // Actualizar los datos del tablero
+                dashboard.Name = updatedDashboard.DashboardTitle;
+                dashboard.Description = updatedDashboard.Description;
+                
+                // Guardar los cambios
+                context.SaveChanges();
+            }
+        }
     }
+
+
 }
  

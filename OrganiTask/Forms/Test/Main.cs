@@ -19,6 +19,11 @@ namespace OrganiTask.Forms.Test
     public partial class Main : Form
     {
         SessionManager session = SessionManager.Instance;
+        private const int CARD_WIDTH = 300;
+        private const int CARD_HEIGHT = 200;
+        private const int CARD_MARGIN = 20;
+        private const int CARDS_PER_ROW = 3;
+
 
         public Main()
         {
@@ -43,65 +48,85 @@ namespace OrganiTask.Forms.Test
             MainViewModel model = controller.LoadUserDashboards(session.CurrentUser.Id); // Cargar los tableros
             panelContent.Controls.Clear();
 
-            if (model.DashboardPreviews.Count == 0)
+            // Creación de FlowLayoutPanel para mostrar tarjetas en estructura de grid
+            FlowLayoutPanel flowPanel = new FlowLayoutPanel
             {
-                Panel cardNoData = CreateCardNoData();
-                panelContent.Controls.Add(cardNoData);
-                return;
-            }
+                Width = panelContent.Width - 20, // Margin
+                Height = panelContent.Height - 20,
+                Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom,
+                Location = new Point(10, 10),
+                AutoScroll = true,
+                WrapContents = true,
+                FlowDirection = FlowDirection.LeftToRight
+            };
 
-            Panel panelContainer = new Panel();
-            panelContent.Controls.Add(panelContainer);
+            panelContent.Controls.Add(flowPanel);
 
+            // Crear siempre primer tarjeta para nuevos tableros
+            Panel createNewCard = CreateNewDashboardCard();
+            flowPanel.Controls.Add(createNewCard);
+
+            // Agregar el resto de tableros
             foreach (DashboardViewModel dashboard in model.DashboardPreviews)
             {
                 Panel dashboardCard = CreateDashboardCard(dashboard);
-                panelContainer.Controls.Add(dashboardCard);
+                flowPanel.Controls.Add(dashboardCard);
             }
+
         }
 
-        private Panel CreateCardNoData()
+        private Panel CreateNewDashboardCard()
         {
-            // Crear panelNoData dinámicamente
-            Panel panelNoData = new Panel
+            Panel card = new Panel
             {
-                Name = "panelNoData",
-                Size = new Size(300, 150),
-                Location = new Point(700, 350),
-                Anchor = AnchorStyles.None,
-                Visible = true,
+                Width = CARD_WIDTH,
+                Height = CARD_HEIGHT,
+                BorderStyle = BorderStyle.None, 
+                Margin = new Padding(CARD_MARGIN),
+                BackColor = Color.White,
+                Cursor = Cursors.Hand
             };
 
-            Label lblNoData = new Label
+            // Estilo dotted
+            card.Paint += (sender, e) => {
+                using (Pen pen = new Pen(Color.FromArgb(41, 128, 185)))
+                {
+                    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+                    e.Graphics.DrawRectangle(pen, 0, 0, card.Width - 1, card.Height - 1);
+                }
+            };
+
+            Label lblPlus = new Label
             {
-                Name = "lblNoData",
-                Text = "No tienes tableros disponibles",
+                Text = "+",
+                Font = new Font("Segoe UI", 48, FontStyle.Regular),
+                ForeColor = Color.FromArgb(41, 128, 185),
+                Size = new Size(80, 80),
+                Location = new Point((card.Width - 80) / 2, (card.Height - 120) / 2),
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+
+            Label lblCreate = new Label
+            {
+                Text = "Crear nuevo tablero",
+                Font = new Font("Segoe UI", 14, FontStyle.Regular),
+                ForeColor = Color.FromArgb(41, 128, 185),
                 AutoSize = false,
-                Size = new Size(280, 30),
-                Location = new Point(10, 30),
-                TextAlign = ContentAlignment.MiddleCenter,
-                Font = new Font("Segoe UI", 12F, FontStyle.Regular)
+                Size = new Size(card.Width - 20, 30),
+                Location = new Point(10, lblPlus.Bottom + 5),
+                TextAlign = ContentAlignment.MiddleCenter
             };
 
-            Button btnCreateDashboard = new Button
+            card.Controls.Add(lblPlus);
+            card.Controls.Add(lblCreate);
+
+            card.Click += BtnCreateDashboard_Click;
+            foreach (Control control in card.Controls)
             {
-                Name = "btnCreateDashboard",
-                Text = "CREAR TABLERO",
-                Size = new Size(120, 35),
-                Location = new Point(90, 80),
-                BackColor = Color.FromArgb(41, 128, 185),
-                TextAlign= ContentAlignment.MiddleCenter,
-                FlatStyle = FlatStyle.Flat,
-                ForeColor = Color.White,
-                Font = new Font("Segoe UI", 12, FontStyle.Bold, GraphicsUnit.Point) // Se aplicó la misma fuente
-            };
-            btnCreateDashboard.FlatAppearance.BorderSize = 1; // Mantener el borde del botón
+                control.Click += (s, e) => BtnCreateDashboard_Click(card, e);
+            }
 
-            // Agregar controles al panel
-            panelNoData.Controls.Add(lblNoData);
-            panelNoData.Controls.Add(btnCreateDashboard);
-
-            return panelNoData;
+            return card;
         }
 
         // Método para crear una tarjeta visual para cada dashboard
@@ -110,13 +135,18 @@ namespace OrganiTask.Forms.Test
             // Creamos un panel para la tarjeta
             Panel card = new Panel
             {
-                Width = 300,
-                Height = 200,
+                Width = CARD_WIDTH,
+                Height = CARD_HEIGHT,
                 BorderStyle = BorderStyle.FixedSingle,
-                Margin = new Padding(10),
+                Margin = new Padding(CARD_MARGIN),
                 Padding = new Padding(10),
-                BackColor = Color.White
+                BackColor = Color.White,
+                Tag = dashboard.Id  // Guardamos el ID del dashboard en el Tag
             };
+
+            // Efecto Hover
+            card.MouseEnter += (s, e) => card.BackColor = Color.FromArgb(245, 245, 245);
+            card.MouseLeave += (s, e) => card.BackColor = Color.White;
 
             // Etiqueta con el nombre del dashboard
             Label lblName = new Label
@@ -128,81 +158,50 @@ namespace OrganiTask.Forms.Test
             };
 
             // Etiqueta con la descripción
-            //Label lblDescription = new Label
-            //{
-            //    Text = dashboard.Description,
-            //    Font = new Font("Segoe UI", 10),
-            //    AutoSize = true,
-            //    MaximumSize = new Size(280, 50),
-            //    Location = new Point(10, 40)
-            //};
-
-            //// Etiqueta con el conteo de tareas
-            //Label lblTaskCount = new Label
-            //{
-            //    Text = $"Tareas: {dashboard.TaskCount}",
-            //    Font = new Font("Segoe UI", 9),
-            //    AutoSize = true,
-            //    Location = new Point(10, 100)
-            //};
-
-            //// Etiqueta con la fecha de última modificación
-            //Label lblLastModified = new Label
-            //{
-            //    Text = $"Última modificación: {dashboard.LastModified.ToString("dd/MM/yyyy HH:mm")}",
-            //    Font = new Font("Segoe UI", 9),
-            //    AutoSize = true,
-            //    Location = new Point(10, 120)
-            //};
-
-            // FlowLayoutPanel para mostrar las categorías disponibles
-            FlowLayoutPanel categoriesPanel = new FlowLayoutPanel
+            Label lblDescription = new Label
             {
-                FlowDirection = FlowDirection.LeftToRight,
-                Width = 180,
-                Height = 15,
-                Location = new Point(10, 150),
-                WrapContents = true
+                Text = dashboard.Description,
+                Font = new Font("Segoe UI", 10),
+                AutoSize = true,
+                MaximumSize = new Size(card.Width - 100, 50),
+                Location = new Point(10, 40)
             };
 
-            // Agregamos labels para cada categoría
-            //foreach (string category in dashboard.Categories)
-            //{
-            //    Label lblCategory = new Label
-            //    {
-            //        Text = category,
-            //        Font = new Font("Segoe UI", 8),
-            //        AutoSize = true,
-            //        BackColor = Color.LightGray,
-            //        Padding = new Padding(5, 3, 5, 3),
-            //        Margin = new Padding(2)
-            //    };
-            //    categoriesPanel.Controls.Add(lblCategory);
-            //}
-
             // Botón para abrir el dashboard
-            //Button btnOpen = new Button
-            //{
-            //    Text = "Abrir",
-            //    Size = new Size(70, 30),
-            //    Location = new Point(220, 10),
-            //    BackColor = Color.FromArgb(0, 122, 204),
-            //    ForeColor = Color.White,
-            //    FlatStyle = FlatStyle.Flat,
-            //    Tag = dashboard.Id  // Guardamos el ID del dashboard en el Tag
-            //};
-            //btnOpen.Click += BtnOpenDashboard_Click;  // Asignamos el evento Click
+            Button btnOpen = new Button
+            {
+                Text = "Abrir",
+                Size = new Size(70, 30),
+                Location = new Point(card.Width - 90, 10),
+                BackColor = Color.FromArgb(0, 122, 204),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+            };
+            btnOpen.FlatAppearance.BorderSize = 0;
 
-            // Agregamos todos los controles a la tarjeta
+            // Evento de click para la tarjeta completa
+            //card.Click += (s, e) => HandleDashboardClick(dashboard.Id);
+            //lblName.Click += (s, e) => HandleDashboardClick(dashboard.Id);
+            //lblDescription.Click += (s, e) => HandleDashboardClick(dashboard.Id);
+            //btnOpen.Click += (s, e) => HandleDashboardClick(dashboard.Id);
+
+            btnOpen.Click += (s, e) => MessageBox.Show($"ID del tablero: {dashboard.Id}", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+
+            // Agregar controles al panel
             card.Controls.Add(lblName);
-            //card.Controls.Add(lblDescription);
-            //card.Controls.Add(lblTaskCount);
-            //card.Controls.Add(lblLastModified);
-            //card.Controls.Add(categoriesPanel);
-            //card.Controls.Add(btnOpen);
+            card.Controls.Add(lblDescription);
+            card.Controls.Add(btnOpen);
 
             return card;
         }
+
+        private void HandleDashboardClick(int dashboardId)
+        {
+            KanbanDashboard kanban = new KanbanDashboard(dashboardId, "Status");
+            kanban.Show();
+        }
+
 
         // Navigation ============================================================================ |
 
@@ -224,6 +223,12 @@ namespace OrganiTask.Forms.Test
         }
 
         // Events ============================================================================ |
+        private void BtnCreateDashboard_Click(object sender, EventArgs e)
+        {
+            DashboardsManagement createDashboardForm = new DashboardsManagement(session.CurrentUser.Id);
+            createDashboardForm.DashboardStored += (s, args) => LoadDashBoards(); // Suscribirse al evento
+            createDashboardForm.ShowDialog(); // Mostrar el formulario como modal
+        }
 
         private void buttonOLD_Click(object sender, EventArgs e)
         {
@@ -235,6 +240,16 @@ namespace OrganiTask.Forms.Test
         {
             session.Logout();
             ReloadLoginForm();
+        }
+
+        // Window Resize ===================================================================== |
+        private void Main_Resize(object sender, EventArgs e)
+        {
+            // Reload dashboards to adjust layout when form is resized
+            if (session.IsLoggedIn)
+            {
+                LoadDashBoards();
+            }
         }
     }
 }
