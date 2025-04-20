@@ -184,6 +184,26 @@ namespace OrganiTask.Controllers
         }
 
         /// <summary>
+        /// Devuelve el título de la primera categoría de un tablero,
+        /// o "Status" si no hay ninguna.
+        /// </summary>
+        /// <param name="dashboardId">Identificador del tablero.</param>
+        /// <returns>Título de la primera categoría o "Status".</returns>   
+        public string GetDefaultCategory(int dashboardId)
+        {
+            using (OrganiTaskDB context = new OrganiTaskDB())
+            {
+                string firstCategory = context.Categories
+                    .Where(c => c.DashboardId == dashboardId)
+                    .OrderBy(c => c.Title)
+                    .Select(c => c.Title)
+                    .FirstOrDefault();
+
+                return firstCategory ?? "Status"; // Retorna "Status" si no hay categorías
+            }
+        }
+
+        /// <summary>
         /// Obtiene las categorías asociadas a un tablero específico.
         /// </summary>
         /// <param name="dashboardId">Identificador del tablero.</param>

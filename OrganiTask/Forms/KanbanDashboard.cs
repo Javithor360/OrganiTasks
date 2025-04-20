@@ -31,17 +31,19 @@ namespace OrganiTask.Forms
 
         public int SourceTagId { get; set; } // ID de la etiqueta de origen de la tarjeta arrastrada
 
+        DashboardController controller = new DashboardController(); // Instancia del controlador de tableros
+
         // Constructor del formulario requiere identificar el tablero y la categoría con la que se ordenarán las tareas
-        public KanbanDashboard(int dashboardId, string categoryTitle)
+        public KanbanDashboard(int dashboardId)
         {
             InitializeComponent();
             this.dashboardId = dashboardId;
-            this.categoryTitle = categoryTitle;
         }
 
         // Evento de carga del formulario
         private void KanbanDashboard_Load(object sender, EventArgs e)
         {
+            categoryTitle = controller.GetDefaultCategory(dashboardId); // Obtenemos la categoría por defecto del tablero
             RefreshDashboard(); // Cargamos el tablero al iniciar el formulario
         }
 

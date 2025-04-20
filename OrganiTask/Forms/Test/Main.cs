@@ -198,7 +198,8 @@ namespace OrganiTask.Forms.Test
 
         private void HandleDashboardClick(int dashboardId)
         {
-            KanbanDashboard kanban = new KanbanDashboard(dashboardId, "Status");
+            //KanbanDashboard kanban = new KanbanDashboard(dashboardId, "Status");
+            KanbanDashboard kanban = new KanbanDashboard(dashboardId);
             kanban.Show();
         }
 
@@ -232,7 +233,7 @@ namespace OrganiTask.Forms.Test
 
         private void buttonOLD_Click(object sender, EventArgs e)
         {
-            KanbanDashboard kanban = new KanbanDashboard(1, "Status");
+            KanbanDashboard kanban = new KanbanDashboard(1);
             kanban.Show();
         }
 
