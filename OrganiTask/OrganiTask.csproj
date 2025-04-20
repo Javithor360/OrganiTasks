@@ -125,6 +125,12 @@
     <Compile Include="Forms\Controls\TaskCardPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Forms\DashboardSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DashboardSettings.Designer.cs">
+      <DependentUpon>DashboardSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Register.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -181,6 +187,9 @@
     <Compile Include="Util\SessionManager.cs" />
     <Compile Include="Util\OrganiTaskDB.cs" />
     <Compile Include="Controllers\Services\AuthService.cs" />
+    <EmbeddedResource Include="Forms\DashboardSettings.resx">
+      <DependentUpon>DashboardSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Register.resx">
       <DependentUpon>Register.cs</DependentUpon>
     </EmbeddedResource>

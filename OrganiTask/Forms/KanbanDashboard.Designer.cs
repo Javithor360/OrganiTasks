@@ -122,19 +122,6 @@ namespace OrganiTask.Forms
             this.btnSort.UseVisualStyleBackColor = false;
             this.btnSort.Click += new System.EventHandler(this.btnSort_Click);
             // 
-            // cboSort
-            //
-            this.cboSort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboSort.Font = this.btnSort.Font;
-            this.cboSort.FormattingEnabled = true;
-            this.cboSort.Location = this.btnSort.Location;
-            this.cboSort.Size = this.btnSort.Size;
-            this.cboSort.Visible = false;
-            this.cboSort.TabIndex = this.btnSort.TabIndex;
-            cboSort.SelectionChangeCommitted += cboSort_SelectionChangeCommitted;
-            cboSort.DropDownClosed += cboSort_DropDownClosed;
-            cboSort.LostFocus += cboSort_LostFocus;
-            // 
             // btnSettings
             // 
             this.btnSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
@@ -150,6 +137,7 @@ namespace OrganiTask.Forms
             this.btnSettings.Text = "⚙️ Configurar tablero";
             this.btnSettings.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnSettings.UseVisualStyleBackColor = false;
+            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
             // 
             // btnShowHidden
             // 
@@ -192,6 +180,17 @@ namespace OrganiTask.Forms
             this.pnlSidebar.Name = "pnlSidebar";
             this.pnlSidebar.Size = new System.Drawing.Size(250, 530);
             this.pnlSidebar.TabIndex = 8;
+            // 
+            // cboSort
+            // 
+            this.cboSort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboSort.Font = this.btnSort.Font;
+            this.cboSort.FormattingEnabled = true;
+            this.cboSort.Location = this.btnSort.Location;
+            this.cboSort.Name = "cboSort";
+            this.cboSort.Size = this.btnSort.Size;
+            this.cboSort.TabIndex = this.btnSort.TabIndex;
+            this.cboSort.Visible = false;
             // 
             // KanbanDashboard
             // 

@@ -345,5 +345,11 @@ namespace OrganiTask.Forms
 
             cboSort.Items.Clear(); // Limpiamos los elementos del combo box
         }
+
+        private void btnSettings_Click(object sender, EventArgs e)
+        {
+            DashboardSettings settings = new DashboardSettings(dashboardId); // Mostrar configuración del tablero
+            settings.ShowDialog();
+        }
     }
 }

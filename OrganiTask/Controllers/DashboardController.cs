@@ -5,6 +5,7 @@ using OrganiTask.Util;
 using OrganiTask.Util.Collections;
 using System;
 using System.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using Task = OrganiTask.Entities.Task;
 
 namespace OrganiTask.Controllers
@@ -197,6 +198,22 @@ namespace OrganiTask.Controllers
                     .OrderBy(c => c.Title) // Ordenar por el título de la categoría 
                     .Select(c => c.Title) // Seleccionar solo el título 
                     .ToOrganiList(); // Convertir a lista doblemente enlazada
+            }
+        }
+
+        /// <summary>
+        /// Obtiene el nombre de usuario del propietario del tablero a partir de su ID.
+        /// </summary>
+        /// <param name="ownerId">ID del propietario del tablero.</param>
+        /// <returns>Nombre de usuario del propietario.</returns>
+        public string GetUsernameFromDashboardOwnerId(int ownerId)
+        {
+            using (OrganiTaskDB context = new OrganiTaskDB())
+            {
+                return context.Users
+                    .Where(u => u.Id == ownerId)
+                    .Select(u => u.Username)
+                    .FirstOrDefault();
             }
         }
     }
