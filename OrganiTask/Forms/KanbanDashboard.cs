@@ -16,7 +16,7 @@ namespace OrganiTask.Forms
     {
         // Propiedades para almacenar el identificador del tablero y el título de la categoría
         private int dashboardId;
-        private string categoryTitle; // default "Status"
+        private CategoryViewModel selectedCategory; // default "Status"
 
         // Propiedad para controlar la visibilidad de la columna "Sin Etiquetar"
         private bool showHiddenColumn = false;
@@ -43,7 +43,7 @@ namespace OrganiTask.Forms
         // Evento de carga del formulario
         private void KanbanDashboard_Load(object sender, EventArgs e)
         {
-            categoryTitle = controller.GetDefaultCategory(dashboardId); // Obtenemos la categoría por defecto del tablero
+            selectedCategory = controller.GetDefaultCategory(dashboardId); // Obtenemos la categoría por defecto del tablero
             RefreshDashboard(); // Cargamos el tablero al iniciar el formulario
         }
 
@@ -128,8 +128,7 @@ namespace OrganiTask.Forms
         }
         private void RefreshDashboard()
         {
-            DashboardController controller = new DashboardController();
-            DashboardViewModel model = controller.LoadKanban(dashboardId, categoryTitle);
+            DashboardViewModel model = controller.LoadKanban(dashboardId, selectedCategory.Title);
 
             if (model == null) // Mostrar error si no se encuentra el tablero
             {
@@ -147,16 +146,17 @@ namespace OrganiTask.Forms
             btnSort.Visible = false; // Ocultamos el botón de ordenamiento  
             cboSort.Items.Clear(); // Limpiamos los elementos del combo box 
 
-            // Instanciamos el controlador
-            DashboardController controller = new DashboardController();
-            OrganiList<CategoryViewModel> reordered = ReorderCategories(controller.GetDashboardCategories(dashboardId), categoryTitle); // Reordenamos las categorías
+            // Obtener la lista de categorías del tablero
+            // Pero directamente ordenamos la lista de tal manera que la categoría seleccionada esté al inicio
+            OrganiList<CategoryViewModel> categories = ReorderCategories(controller.GetDashboardCategories(dashboardId), selectedCategory); // Reordenamos las categorías
 
+            // Indicamos al combobox que se usará para mostrar las categorías
             cboSort.DisplayMember = nameof(CategoryViewModel.Title);
             cboSort.ValueMember = nameof(CategoryViewModel.Id);
 
-            cboSort.Items.AddRange(reordered.ToArray()); // Agregamos los títulos al combo box
-            if (reordered.Count > 0)
-                cboSort.SelectedIndex = 0;
+            cboSort.Items.AddRange(categories.ToArray()); // Agregamos los títulos al combo box
+            if (categories.Count > 0)
+                cboSort.SelectedIndex = 0; // Seleccionamos el primer elemento por defecto  
 
             cboSort.Visible = true; // Mostramos el combo box
             cboSort.Focus(); // Focamos el combo box
@@ -200,9 +200,9 @@ namespace OrganiTask.Forms
             CategoryViewModel selected = cboSort.SelectedItem as CategoryViewModel; // Obtenemos el elemento seleccionado
 
             // Validamos que no sea nulo y que sea diferente al la categoría actual
-            if (selected != null && selected.Title != categoryTitle)
+            if (selected != null && selected.Id != selectedCategory.Id)
             {
-                categoryTitle = selected.Title; // Asignamos la nueva categoría
+                selectedCategory = selected; // Asignamos la nueva categoría
                 RefreshDashboard(); // Recargamos el tablero
             }
 
@@ -350,28 +350,22 @@ namespace OrganiTask.Forms
         }
 
         // Reordenar la lista de categorías poniendo la categoría actual al frente
-        private OrganiList<CategoryViewModel> ReorderCategories(OrganiList<CategoryViewModel> original, string currentTitle)
+        private OrganiList<CategoryViewModel> ReorderCategories(OrganiList<CategoryViewModel> categories, CategoryViewModel selected)
         {
             OrganiList<CategoryViewModel> reordered = new OrganiList<CategoryViewModel>();
 
-            // Reordenamos la lista de categorías poniendo la categoría actual al frente
-            foreach (var cat in original)
+            // Ubicamos la categoría actual al inicio
+            reordered.AddLast(selected);
+
+            // Agregamos el resto de las categorías
+            foreach (CategoryViewModel category in categories)
             {
-                if (cat.Title == currentTitle)
+                if (category.Id != selected.Id)
                 {
-                    reordered.AddLast(cat);
-                    break;
+                    reordered.AddLast(category);
                 }
             }
 
-            // Agregamos el resto de las categorías
-            foreach (var cat in original)
-            {
-                if (cat.Title != currentTitle)
-                    reordered.AddLast(cat);
-            }
-
-            // Retornamos la lista reordenada
             return reordered;
         }
 

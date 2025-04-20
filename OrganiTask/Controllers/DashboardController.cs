@@ -189,17 +189,26 @@ namespace OrganiTask.Controllers
         /// </summary>
         /// <param name="dashboardId">Identificador del tablero.</param>
         /// <returns>Título de la primera categoría o "Status".</returns>   
-        public string GetDefaultCategory(int dashboardId)
+        public CategoryViewModel GetDefaultCategory(int dashboardId)
         {
             using (OrganiTaskDB context = new OrganiTaskDB())
             {
-                string firstCategory = context.Categories
+                CategoryViewModel firstCategory = context.Categories
                     .Where(c => c.DashboardId == dashboardId)
                     .OrderBy(c => c.Title)
-                    .Select(c => c.Title)
+                    .Select(c => new CategoryViewModel
+                    {
+                        Id = c.Id, // Asignamos ID
+                        Title = c.Title, // Asignamos título
+                        // Los demás campos quedan nulos ya que no se necesitan
+                    })
                     .FirstOrDefault();
 
-                return firstCategory ?? "Status"; // Retorna "Status" si no hay categorías
+                return firstCategory ?? new CategoryViewModel
+                {
+                    Id = -1, // ID ficticio para la categoría por defecto
+                    Title = "Status" // Título por defecto
+                };
             }
         }
 
