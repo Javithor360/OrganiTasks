@@ -374,7 +374,13 @@ namespace OrganiTask.Forms
         // Evento de clic en el botón de cancelar
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            SetEditMode(false); // Cambiar a modo vista
+            if (task.Id != 0)
+            {
+                SetEditMode(false); // Cambiar a modo vista
+            } else
+            {
+                this.Close(); // Cerrar el formulario si no hay tarea
+            }
         }
 
         /*
