@@ -180,10 +180,10 @@ namespace OrganiTask.Forms.Test
             btnOpen.FlatAppearance.BorderSize = 0;
 
             // Evento de click para la tarjeta completa
-            //card.Click += (s, e) => HandleDashboardClick(dashboard.Id);
-            //lblName.Click += (s, e) => HandleDashboardClick(dashboard.Id);
-            //lblDescription.Click += (s, e) => HandleDashboardClick(dashboard.Id);
-            //btnOpen.Click += (s, e) => HandleDashboardClick(dashboard.Id);
+            card.Click += (s, e) => HandleDashboardClick(dashboard.Id);
+            lblName.Click += (s, e) => HandleDashboardClick(dashboard.Id);
+            lblDescription.Click += (s, e) => HandleDashboardClick(dashboard.Id);
+            btnOpen.Click += (s, e) => HandleDashboardClick(dashboard.Id);
 
             btnOpen.Click += (s, e) => MessageBox.Show($"ID del tablero: {dashboard.Id}", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
