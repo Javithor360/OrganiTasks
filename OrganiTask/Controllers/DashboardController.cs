@@ -184,20 +184,24 @@ namespace OrganiTask.Controllers
         }
 
         /// <summary>
-        /// Obtiene los nombres de los títulos para cada columna del tablero.
+        /// Obtiene las categorías asociadas a un tablero específico.
         /// </summary>
         /// <param name="dashboardId">Identificador del tablero.</param>
-        /// <returns>Lista de títulos de columnas.</returns>
-        public OrganiList<string> GetColumnTitles(int dashboardId)
+        /// <returns>Lista categorías relacionadas al tablero.</returns>
+        public OrganiList<CategoryViewModel> GetDashboardCategories(int dashboardId)
         {
-            // Usamos un bloque using para asegurarnos de que el contexto se libere al finalizar
             using (OrganiTaskDB context = new OrganiTaskDB())
             {
+                // Obtener las categorías asociadas al tablero
                 return context.Categories
-                    .Where(c => c.DashboardId == dashboardId) // Filtrar por el ID del tablero
-                    .OrderBy(c => c.Title) // Ordenar por el título de la categoría 
-                    .Select(c => c.Title) // Seleccionar solo el título 
-                    .ToOrganiList(); // Convertir a lista doblemente enlazada
+                    .Where(c => c.DashboardId == dashboardId)
+                    .Select(c => new CategoryViewModel
+                    {
+                        Id = c.Id, // Asignamos ID
+                        Title = c.Title, // Asignamos título
+                        // Los demás campos quedan nulos ya que no se necesitan
+                    })
+                    .ToOrganiList();
             }
         }
 

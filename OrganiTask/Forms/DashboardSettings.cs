@@ -62,18 +62,19 @@ namespace OrganiTask.Forms
             tblCategories.RowStyles.Clear();
             tblCategories.RowCount = 0;
 
-            OrganiList<string> columnTitles = controller.GetColumnTitles(dashboardId);
+            OrganiList<CategoryViewModel> columnTitles = controller.GetDashboardCategories(dashboardId);
 
             int row = 0;
-            foreach (var title in columnTitles)
+            foreach (var column in columnTitles)
             {
                 var lbl = new Label
                 {
-                    Text = title,
+                    Text = column.Title,
                     AutoSize = true,
                     Font = new Font("Segoe UI", 10F),
                     Dock = DockStyle.Fill,
-                    Margin = new Padding(3)
+                    Margin = new Padding(3),
+                    Tag = column.Id
                 };
                 tblCategories.RowCount++;
                 tblCategories.RowStyles.Add(new RowStyle(SizeType.AutoSize));
@@ -83,7 +84,7 @@ namespace OrganiTask.Forms
                 {
                     Text = "Editar",
                     AutoSize = true,
-                    Tag = title, // TODO: Recibir ID
+                    Tag = column.Id,
                     Margin = new Padding(3)
                 };
                 btn.Click += (s, e) =>

@@ -191,6 +191,9 @@ namespace OrganiTask.Forms
             this.cboSort.Size = this.btnSort.Size;
             this.cboSort.TabIndex = this.btnSort.TabIndex;
             this.cboSort.Visible = false;
+            this.cboSort.SelectionChangeCommitted += new System.EventHandler(this.cboSort_SelectionChangeCommitted);
+            this.cboSort.DropDownClosed += new System.EventHandler(this.cboSort_DropDownClosed);
+            this.cboSort.LostFocus += new System.EventHandler(this.cboSort_LostFocus);
             // 
             // KanbanDashboard
             // 

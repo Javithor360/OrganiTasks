@@ -147,13 +147,14 @@ namespace OrganiTask.Forms
 
             // Instanciamos el controlador
             DashboardController controller = new DashboardController();
-            OrganiList<string> titles = controller.GetColumnTitles(dashboardId); // Obtenemos los títulos de las columnas
+            OrganiList<CategoryViewModel> reordered = ReorderCategories(controller.GetDashboardCategories(dashboardId), categoryTitle); // Reordenamos las categorías
 
-            if (titles.Remove(categoryTitle))
-                titles.Insert(0, categoryTitle); // Mueve la categoría actual al inicio de la lista
+            cboSort.DisplayMember = nameof(CategoryViewModel.Title);
+            cboSort.ValueMember = nameof(CategoryViewModel.Id);
 
-            cboSort.Items.AddRange(titles.ToArray()); // Agregamos los títulos al combo box
-            cboSort.SelectedItem = categoryTitle; // Seleccionamos la categoría actual
+            cboSort.Items.AddRange(reordered.ToArray()); // Agregamos los títulos al combo box
+            if (reordered.Count > 0)
+                cboSort.SelectedIndex = 0;
 
             cboSort.Visible = true; // Mostramos el combo box
             cboSort.Focus(); // Focamos el combo box
@@ -194,12 +195,12 @@ namespace OrganiTask.Forms
         // Se usa ChangeCommited para evitar que se ejecute al abrir el combo
         private void cboSort_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            string selected = cboSort.SelectedItem as string; // Obtenemos el elemento seleccionado en string
+            CategoryViewModel selected = cboSort.SelectedItem as CategoryViewModel; // Obtenemos el elemento seleccionado
 
             // Validamos que no sea nulo y que sea diferente al la categoría actual
-            if (!string.IsNullOrEmpty(selected) && selected != categoryTitle)
+            if (selected != null && selected.Title != categoryTitle)
             {
-                categoryTitle = selected; // Asignamos la nueva categoría
+                categoryTitle = selected.Title; // Asignamos la nueva categoría
                 RefreshDashboard(); // Recargamos el tablero
             }
 
@@ -344,6 +345,32 @@ namespace OrganiTask.Forms
             btnSort.Visible = true; // Mostramos el botón de ordenamiento
 
             cboSort.Items.Clear(); // Limpiamos los elementos del combo box
+        }
+
+        // Reordenar la lista de categorías poniendo la categoría actual al frente
+        private OrganiList<CategoryViewModel> ReorderCategories(OrganiList<CategoryViewModel> original, string currentTitle)
+        {
+            OrganiList<CategoryViewModel> reordered = new OrganiList<CategoryViewModel>();
+
+            // Reordenamos la lista de categorías poniendo la categoría actual al frente
+            foreach (var cat in original)
+            {
+                if (cat.Title == currentTitle)
+                {
+                    reordered.AddLast(cat);
+                    break;
+                }
+            }
+
+            // Agregamos el resto de las categorías
+            foreach (var cat in original)
+            {
+                if (cat.Title != currentTitle)
+                    reordered.AddLast(cat);
+            }
+
+            // Retornamos la lista reordenada
+            return reordered;
         }
 
         private void btnSettings_Click(object sender, EventArgs e)
