@@ -106,9 +106,10 @@ namespace OrganiTask.Forms
                 btn.Click += (s, e) =>
                 {
                     int catId = (int)((Button)s).Tag;
-                    CategorySettings categoryView = new CategorySettings(catId);
+                    CategorySettings categoryView = new CategorySettings(catId, dashboardId);
                     categoryView.TagsChanged += (sender, args) =>
                     {
+                        LoadCategoriesTable();
                         DashboardInfoChanged?.Invoke(this, EventArgs.Empty);
                     };
                     categoryView.ShowDialog();
@@ -132,11 +133,18 @@ namespace OrganiTask.Forms
             // Y le asignamos el evento Click
             btnNew.Click += (s, e) =>
             {
-                MessageBox.Show("Vamos a crear una nueva categoría…");
+                CategorySettings categoryView = new CategorySettings(dashboardId);
+                categoryView.CategoryUpdated += (sender, ev) =>
+                {
+                    LoadCategoriesTable(); // Recargamos la tabla de categorías
+                    DashboardInfoChanged?.Invoke(this, EventArgs.Empty); // Disparamos el evento de guardado
+                };
+
+                categoryView.ShowDialog();
             };
 
             tblCategories.Controls.Add(btnNew, 0, row);
-            tblCategories.SetColumnSpan(btnNew, 2);
+            tblCategories.SetColumnSpan(btnNew, 2); // Hacemos que el botón ocupe dos columnas
         }
 
         private void btnSave_Click(object sender, EventArgs e)

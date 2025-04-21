@@ -389,6 +389,42 @@ namespace OrganiTask.Controllers
                 context.SaveChanges(); // Guardar los cambios
             }
         }
+
+        /// <summary>
+        /// Crea una nueva categoría asociada a un tablero específico.
+        /// </summary>
+        /// <param name="category">Modelo de vista de la categoría a crear.</param>
+        public void CreateCategory(CategoryViewModel category)
+        {
+            using (OrganiTaskDB context = new OrganiTaskDB())
+            {
+                Category cat = new Category
+                {
+                    Title = category.Title,
+                    DashboardId = category.DashboardId
+                };
+                context.Categories.Add(cat);
+                context.SaveChanges();
+                category.Id = cat.Id;
+            }
+        }
+
+        /// <summary>
+        /// Actualiza los datos de una categoría existente.
+        /// </summary>
+        /// <param name="category">Modelo de vista de la categoría a actualizar.</param>
+        public void UpdateCategory(CategoryViewModel category)
+        {
+            using (OrganiTaskDB context = new OrganiTaskDB())
+            {
+                Category cat = context.Categories.FirstOrDefault(c => c.Id == category.Id);
+
+                if (cat == null) return;
+
+                cat.Title = category.Title;
+                context.SaveChanges();
+            }
+        }
     }
 }
  

@@ -20,32 +20,107 @@ namespace OrganiTask.Forms
     /// </summary>
     public partial class CategorySettings : Form
     {
-        private readonly int categoryId;
-        private readonly DashboardController controller = new DashboardController();
+        private readonly DashboardController controller = new DashboardController(); // Instancia del controlador
 
-        public event EventHandler<int> TagEditRequested;
+        private int categoryId; // ID de la categoría
+        private int dashboardId; // ID del tablero al que pertenece la categoría
+        private bool isNew, isEditing; // Bandera para indicar si estamos en modo edición
+
+        // Eventos propios
+        public event EventHandler CategoryUpdated;
         public event EventHandler TagsChanged;
 
-        public CategorySettings(int categoryId)
+        // Primer constructor, para crear una nueva categoría
+        public CategorySettings(int dashboardId)
+        {
+            InitializeComponent();
+            this.dashboardId = dashboardId;
+            this.isNew = true;
+        }
+
+        // Segundo constructor, para editar una categoría existente o ver su información
+        public CategorySettings(int categoryId, int dashboardId)
         {
             InitializeComponent();
             this.categoryId = categoryId;
+            this.dashboardId = dashboardId;
+            this.isNew = false;
         }
 
         private void CategorySettings_Load(object sender, EventArgs e)
         {
-            LoadCategoryDetails();
+            if (isNew) // Si es una nueva categoría, mostramos el formulario en modo edición
+                EnterEditMode();
+            else // Si no, cargamos la información de la categoría
+                LoadCategoryDetails();
         }
 
         private void LoadCategoryDetails()
         {
             // Carga el título de la categoría desde el controlador
             CategoryViewModel cat = controller.LoadCategoryById(categoryId);
-            lblHeader.Text = $"Información de {cat.Title}";
+            lblHeader.Text = cat.Title;
+
+            // Definimos qué controles se tienen que mostrar y qué otros no
+            txtName.Visible = false;
+            btnSave.Visible = false;
+
+            lblHeader.Visible = true;
+            btnEdit.Visible = true;
+            flpTags.Visible = true;
+            btnClose.Visible = true;
 
             // Carga las etiquetas de la categoría desde el controlador
             OrganiList<TagViewModel> tags = controller.GetTagsForCategory(categoryId);
             RenderTags(tags); // Prepara y renderiza las etiquetas en el panel
+        }
+
+        private void EnterEditMode()
+        {
+            isEditing = true; // Activamos el modo edición
+
+            // Ajustamos los controles según conveniencia
+            txtName.Text = isNew ? "" : lblHeader.Text;
+            txtName.Visible = true;
+            btnSave.Visible = true;
+
+            lblHeader.Visible = false;
+            btnEdit.Visible = false;
+            flpTags.Visible = false;
+            btnClose.Visible = false;
+        }
+
+        private void SaveCategory()
+        {
+            // Validamos el nombre de la categoría
+            string name = txtName.Text.Trim();
+            if (string.IsNullOrEmpty(name))
+            {
+                MessageBox.Show("El nombre no puede estar vacío.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (isNew) // Si es una nueva categoría, creamos su modelo
+            {
+                CategoryViewModel newCategory = new CategoryViewModel 
+                { 
+                    DashboardId = dashboardId, 
+                    Title = name 
+                };
+
+                controller.CreateCategory(newCategory); // y lo enviamos al controlador
+                categoryId = newCategory.Id; // Guardamos el ID de la nueva categoría
+                isNew = false; // Indicamos que la categoría ya no es nueva
+            }
+            else // Si no es nueva, simplemente actualizamos su título
+            {
+                // Actualizamos el título de la categoría
+                controller.UpdateCategory(new CategoryViewModel { Id = categoryId, Title = name });
+            }
+
+            isEditing = false; // Salimos del modo edición
+            CategoryUpdated?.Invoke(this, EventArgs.Empty); // Disparamos el evento de actualización de categoría
+            LoadCategoryDetails(); // Recargamos la información de la categoría
         }
 
         private void RenderTags(OrganiList<TagViewModel> tags)
@@ -232,16 +307,14 @@ namespace OrganiTask.Forms
             this.Close();
         }
 
-        private void btnNewTag_Click(object sender, EventArgs e)
+        private void btnEdit_Click(object sender, EventArgs e)
         {
-            TagDetails tagCreation = new TagDetails(categoryId);
-            tagCreation.TagSaved += (s, ev) =>
-            {
-                LoadCategoryDetails();
-                TagsChanged?.Invoke(this, EventArgs.Empty);
-            };
+            EnterEditMode();
+        }
 
-            tagCreation.ShowDialog();
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            SaveCategory();
         }
     }
 }
