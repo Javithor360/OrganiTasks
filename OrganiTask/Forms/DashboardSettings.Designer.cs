@@ -170,8 +170,9 @@ namespace OrganiTask.Forms
             // tblCategories
             // 
             this.tblCategories.AutoSize = true;
-            this.tblCategories.ColumnCount = 2;
+            this.tblCategories.ColumnCount = 3;
             this.tblCategories.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tblCategories.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(SizeType.AutoSize));
             this.tblCategories.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(SizeType.AutoSize));
             this.tblCategories.Location = new System.Drawing.Point(20, 321);
             this.tblCategories.Margin = new System.Windows.Forms.Padding(0, 5, 0, 10);

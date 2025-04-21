@@ -425,6 +425,36 @@ namespace OrganiTask.Controllers
                 context.SaveChanges();
             }
         }
+
+        /// <summary>
+        /// Elimina una categoría y todas las etiquetas asociadas a ella.
+        /// </summary>
+        /// <param name="categoryId">Identificador de la categoría a eliminar.</param>
+        public void DeleteCategory(int categoryId)
+        {
+            using (OrganiTaskDB context = new OrganiTaskDB())
+            {
+                // Primero obtenemos todas las etiquetas asociadas a la categoría
+                OrganiList<int> tagIds = context.Tags
+                    .Where(t => t.CategoryId == categoryId)
+                    .Select(t => t.Id)
+                    .ToOrganiList();
+
+                // Luego, eliminamos las relaciones entre las etiquetas y las tareas
+                foreach (int tagId in tagIds)
+                {
+                    DeleteTag(tagId); // Eliminar cada etiqueta asociada a la categoría
+                }
+
+                // Ahora eliminamos la categoría en sí
+                Category category = context.Categories.FirstOrDefault(c => c.Id == categoryId);
+                if (category != null)
+                {
+                    context.Categories.Remove(category); // Eliminar la categoría
+                    context.SaveChanges(); // Guardar los cambios
+                }
+            }
+        }
     }
 }
  

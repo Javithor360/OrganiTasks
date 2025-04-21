@@ -84,18 +84,19 @@ namespace OrganiTask.Forms
                 Label lbl = new Label
                 {
                     Text = column.Title,
-                    AutoSize = true,
+                    AutoSize = false,
                     Font = new Font("Segoe UI", 10F),
                     Dock = DockStyle.Fill,
                     Margin = new Padding(3),
-                    Tag = column.Id
+                    Tag = column.Id,
+                    TextAlign = ContentAlignment.MiddleLeft
                 };
                 tblCategories.RowCount++;
-                tblCategories.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+                tblCategories.RowStyles.Add(new RowStyle(SizeType.AutoSize));
                 tblCategories.Controls.Add(lbl, 0, row);
 
                 // Construimos un Button para editar la categoría
-                Button btn = new Button
+                Button btnView = new Button
                 {
                     Text = "Ver",
                     AutoSize = true,
@@ -103,7 +104,7 @@ namespace OrganiTask.Forms
                     Margin = new Padding(3)
                 };
                 // Asignamos el evento Click al botón
-                btn.Click += (s, e) =>
+                btnView.Click += (s, e) =>
                 {
                     int catId = (int)((Button)s).Tag;
                     CategorySettings categoryView = new CategorySettings(catId, dashboardId);
@@ -114,7 +115,31 @@ namespace OrganiTask.Forms
                     };
                     categoryView.ShowDialog();
                 };
-                tblCategories.Controls.Add(btn, 1, row);
+                tblCategories.Controls.Add(btnView, 1, row);
+
+                // Construimos un Button para eliminar la categoría
+                Button btnDelete = new Button
+                {
+                    Text = "Eliminar",
+                    AutoSize = true,
+                    Tag = column.Id,
+                    Margin = new Padding(3),
+                    ForeColor = Color.White,
+                    BackColor = Color.FromArgb(200, 80, 80)
+                };
+                // Asignamos el evento Click al botón
+                btnDelete.Click += (s, e) =>
+                {
+                    int catId = (int)((Button)s).Tag;
+                    DialogResult result = MessageBox.Show("¿Estás seguro de que deseas eliminar esta categoría?", "Eliminar categoría", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (result == DialogResult.Yes)
+                    {
+                        controller.DeleteCategory(catId); // Llamamos al controlador para eliminar la categoría
+                        LoadCategoriesTable(); // Recargamos la tabla de categorías
+                        DashboardInfoChanged?.Invoke(this, EventArgs.Empty); // Disparamos el evento de guardado
+                    }
+                };
+                tblCategories.Controls.Add(btnDelete, 2, row);
 
                 row++;
             }
