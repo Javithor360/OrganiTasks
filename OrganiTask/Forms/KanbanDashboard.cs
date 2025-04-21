@@ -372,7 +372,7 @@ namespace OrganiTask.Forms
         private void btnSettings_Click(object sender, EventArgs e)
         {
             DashboardSettings settings = new DashboardSettings(dashboardId); // Mostrar configuración del tablero
-            settings.DashboardInfoSaved += EventRefreshDashboard;
+            settings.DashboardInfoChanged += EventRefreshDashboard;
             settings.ShowDialog();
         }
     }

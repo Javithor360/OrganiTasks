@@ -24,6 +24,7 @@ namespace OrganiTask.Forms
         private readonly DashboardController controller = new DashboardController();
 
         public event EventHandler<int> TagEditRequested;
+        public event EventHandler TagsChanged;
 
         public CategorySettings(int categoryId)
         {
@@ -67,8 +68,18 @@ namespace OrganiTask.Forms
                 EventHandler handler = (s, e) =>
                 {
                     TagDetails editor = new TagDetails(tag);
-                    editor.TagSaved += (sender, updated) => LoadCategoryDetails();
-                    editor.TagDeleted += (sender, deletedId) => LoadCategoryDetails();
+                    editor.TagSaved += (sender, updated) =>
+                    {
+                        LoadCategoryDetails();
+                        TagsChanged?.Invoke(this, EventArgs.Empty);
+                    };
+
+                    editor.TagDeleted += (sender, deletedId) =>
+                    {
+                        LoadCategoryDetails();
+                        TagsChanged?.Invoke(this, EventArgs.Empty);
+                    };
+
                     editor.ShowDialog();
                 };
 
@@ -100,7 +111,12 @@ namespace OrganiTask.Forms
         private void btnNewTag_Click(object sender, EventArgs e)
         {
             TagDetails tagCreation = new TagDetails(categoryId);
-            tagCreation.TagSaved += (s, ev) => LoadCategoryDetails();
+            tagCreation.TagSaved += (s, ev) =>
+            {
+                LoadCategoryDetails();
+                TagsChanged?.Invoke(this, EventArgs.Empty);
+            };
+
             tagCreation.ShowDialog();
         }
     }

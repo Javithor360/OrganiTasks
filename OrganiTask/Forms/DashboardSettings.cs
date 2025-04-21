@@ -25,7 +25,7 @@ namespace OrganiTask.Forms
 
         private bool _isEditMode = false; // Bandera para indicar si estamos en modo edición
 
-        public event EventHandler DashboardInfoSaved; // Evento que se dispara cuando se guarda la información del tablero
+        public event EventHandler DashboardInfoChanged; // Evento que se dispara cuando se guarda la información del tablero
 
         public DashboardSettings(int dashboardId)
         {
@@ -107,6 +107,10 @@ namespace OrganiTask.Forms
                 {
                     int catId = (int)((Button)s).Tag;
                     CategorySettings categoryView = new CategorySettings(catId);
+                    categoryView.TagsChanged += (sender, args) =>
+                    {
+                        DashboardInfoChanged?.Invoke(this, EventArgs.Empty);
+                    };
                     categoryView.ShowDialog();
                 };
                 tblCategories.Controls.Add(btn, 1, row);
@@ -150,7 +154,7 @@ namespace OrganiTask.Forms
 
             // Utilizamos el controlador para actualizar la información del tablero
             controller.UpdateDashboard(dashboardId, title, description);
-            DashboardInfoSaved?.Invoke(this, EventArgs.Empty); // Disparamos el evento de guardado
+            DashboardInfoChanged?.Invoke(this, EventArgs.Empty); // Disparamos el evento de guardado
 
             // Para evitar refrescar toda la información del tablero, simplemente actualizamos los labels visualmente
             lblHeader.Text = $"Información de {title}";
