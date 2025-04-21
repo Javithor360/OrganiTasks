@@ -105,8 +105,9 @@ namespace OrganiTask.Forms
                 // Asignamos el evento Click al botón
                 btn.Click += (s, e) =>
                 {
-                    // TODO: Implementar la lógica para editar la categoría 
-                    MessageBox.Show($"Editar «{((Button)s).Tag}»");
+                    int catId = (int)((Button)s).Tag;
+                    CategorySettings categoryView = new CategorySettings(catId);
+                    categoryView.ShowDialog();
                 };
                 tblCategories.Controls.Add(btn, 1, row);
 

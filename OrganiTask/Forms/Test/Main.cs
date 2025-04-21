@@ -83,13 +83,13 @@ namespace OrganiTask.Forms.Test
                 Height = CARD_HEIGHT,
                 BorderStyle = BorderStyle.None, 
                 Margin = new Padding(CARD_MARGIN),
-                BackColor = Color.White,
+                BackColor = System.Drawing.Color.White,
                 Cursor = Cursors.Hand
             };
 
             // Estilo dotted
             card.Paint += (sender, e) => {
-                using (Pen pen = new Pen(Color.FromArgb(41, 128, 185)))
+                using (Pen pen = new Pen(System.Drawing.Color.FromArgb(41, 128, 185)))
                 {
                     pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
                     e.Graphics.DrawRectangle(pen, 0, 0, card.Width - 1, card.Height - 1);
@@ -100,7 +100,7 @@ namespace OrganiTask.Forms.Test
             {
                 Text = "+",
                 Font = new Font("Segoe UI", 48, FontStyle.Regular),
-                ForeColor = Color.FromArgb(41, 128, 185),
+                ForeColor = System.Drawing.Color.FromArgb(41, 128, 185),
                 Size = new Size(80, 80),
                 Location = new Point((card.Width - 80) / 2, (card.Height - 120) / 2),
                 TextAlign = ContentAlignment.MiddleCenter
@@ -110,7 +110,7 @@ namespace OrganiTask.Forms.Test
             {
                 Text = "Crear nuevo tablero",
                 Font = new Font("Segoe UI", 14, FontStyle.Regular),
-                ForeColor = Color.FromArgb(41, 128, 185),
+                ForeColor = System.Drawing.Color.FromArgb(41, 128, 185),
                 AutoSize = false,
                 Size = new Size(card.Width - 20, 30),
                 Location = new Point(10, lblPlus.Bottom + 5),
@@ -140,13 +140,13 @@ namespace OrganiTask.Forms.Test
                 BorderStyle = BorderStyle.FixedSingle,
                 Margin = new Padding(CARD_MARGIN),
                 Padding = new Padding(10),
-                BackColor = Color.White,
+                BackColor = System.Drawing.Color.White,
                 Tag = dashboard.Id  // Guardamos el ID del dashboard en el Tag
             };
 
             // Efecto Hover
-            card.MouseEnter += (s, e) => card.BackColor = Color.FromArgb(245, 245, 245);
-            card.MouseLeave += (s, e) => card.BackColor = Color.White;
+            card.MouseEnter += (s, e) => card.BackColor = System.Drawing.Color.FromArgb(245, 245, 245);
+            card.MouseLeave += (s, e) => card.BackColor = System.Drawing.Color.White;
 
             // Etiqueta con el nombre del dashboard
             Label lblName = new Label
@@ -173,8 +173,8 @@ namespace OrganiTask.Forms.Test
                 Text = "Abrir",
                 Size = new Size(70, 30),
                 Location = new Point(card.Width - 90, 10),
-                BackColor = Color.FromArgb(0, 122, 204),
-                ForeColor = Color.White,
+                BackColor = System.Drawing.Color.FromArgb(0, 122, 204),
+                ForeColor = System.Drawing.Color.White,
                 FlatStyle = FlatStyle.Flat,
             };
             btnOpen.FlatAppearance.BorderSize = 0;

@@ -277,8 +277,97 @@ namespace OrganiTask.Controllers
                 context.SaveChanges(); // Guardar los cambios en la base de datos
             }   
         }
+
+        /// <summary>
+        /// Carga los datos de una categoría por medio de su ID
+        /// </summary>
+        /// <param name="categoryId">Identificador de la categoría.</param>
+        /// <returns>Modelo de vista de la categoría.</returns>    
+        public CategoryViewModel LoadCategoryById(int categoryId)
+        {
+            // Usamos un bloque using para asegurarnos de que el contexto se libere al finalizar
+            using (OrganiTaskDB context = new OrganiTaskDB())
+            {
+                // Buscamos la categoría por su ID
+                CategoryViewModel cat = context.Categories
+                    .Where(c => c.Id == categoryId)
+                    .Select(c => new CategoryViewModel // Seleccionamos los campos necesarios
+                    {
+                        Id = c.Id,
+                        Title = c.Title,
+                    })
+                    .FirstOrDefault();
+
+                // Si no se encuentra la categoría, retornamos un modelo vacío
+                return cat ?? new CategoryViewModel { Id = categoryId, Title = string.Empty };
+            }
+        }
+
+        /// <summary>
+        /// Obtiene las etiquetas asociadas a una categoría específica.
+        /// </summary>
+        /// <param name="categoryId">Identificador de la categoría.</param>
+        /// <returns>Lista de etiquetas asociadas a la categoría.</returns>
+        public OrganiList<TagViewModel> GetTagsForCategory(int categoryId)
+        {
+            // Usamos un bloque using para asegurarnos de que el contexto se libere al finalizar
+            using (OrganiTaskDB context = new OrganiTaskDB())
+            {
+                return context.Tags
+                    .Where(t => t.CategoryId == categoryId)
+                    .Select(t => new TagViewModel
+                    {
+                        Id = t.Id,
+                        Name = t.Name,
+                        Color = t.Color,
+                        CategoryId = t.CategoryId
+                    })
+                    .ToOrganiList();
+            }
+        }
+
+        /// <summary>
+        /// Actualiza los datos de una etiqueta existente.
+        /// </summary>
+        /// <param name="updateTag">Modelo de vista de la etiqueta a actualizar.</param>
+        public void UpdateTag(TagViewModel updateTag)
+        {
+            // Usamos un bloque using para asegurarnos de que el contexto se libere al finalizar
+            using (OrganiTaskDB context = new OrganiTaskDB())
+            {
+                // Buscamos la etiqueta por su ID
+                Tag tag = context.Tags.FirstOrDefault(t => t.Id == updateTag.Id);
+                if (tag == null) return; // Si no se encuentra la etiqueta, no hacemos nada
+
+                // Actualizamos los datos de la etiqueta
+                tag.Name = updateTag.Name;
+                tag.Color = updateTag.Color;
+                context.SaveChanges(); // Guardar los cambios
+            }
+        }
+
+        /// <summary>
+        /// Elimina una etiqueta y sus relaciones con las tareas.
+        /// </summary>
+        /// <param name="tagId">Identificador de la etiqueta a eliminar.</param>
+        public void DeleteTag(int tagId)
+        {
+            // Usamos un bloque using para asegurarnos de que el contexto se libere al finalizar
+            using (OrganiTaskDB context = new OrganiTaskDB())
+            {
+                // Buscamos las relaciones entre la etiqueta y las tareas
+                OrganiList<TaskTag> links = context.TaskTags.Where(tt => tt.Id == tagId).ToOrganiList();
+                if (links.Any())
+                    context.TaskTags.RemoveRange(links); // Eliminar los enlaces de la etiqueta a las tareas
+
+                // Una vez eliminada las relaciones, eliminamos la etiqueta
+                Tag tag = context.Tags.FirstOrDefault(t => t.Id == tagId);
+                if (tag != null) 
+                    context.Tags.Remove(tag); // Eliminar la etiqueta
+
+                context.SaveChanges(); // Guardar los cambios
+            }
+        }
     }
-
-
 }
  

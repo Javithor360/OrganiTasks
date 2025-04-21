@@ -214,8 +214,8 @@ namespace OrganiTask.Forms
             // Si hay un color, lo aplicamos al label de la etiqueta
             if (!string.IsNullOrEmpty(valueText) && !string.IsNullOrWhiteSpace(color))
             {
-                lblValue.ForeColor = Color.White;
-                lblValue.BackColor = ParseColor(color);
+                lblValue.ForeColor = System.Drawing.Color.White;
+                lblValue.BackColor = ColorUtil.ParseColor(color);
                 lblValue.Padding = new Padding(2, 1, 2, 1);
             }
 
@@ -386,31 +386,6 @@ namespace OrganiTask.Forms
         /*
          * Métodos complementarios
          */
-
-        // Método complementario para convertir un string en un color
-        // NOTA: Este método podría ir en una clase de utilidades
-        private Color ParseColor(string colorString)
-        {
-            try
-            {
-                Color known = Color.FromName(colorString);
-                if (known.A != 0) // Si el color es conocido y no es transparente
-                    return known;
-
-                // Si no, probamos con hex
-                if (colorString.StartsWith("#"))
-                {
-                    // Removemos el #
-                    colorString = colorString.Substring(1);
-                    // parse RRGGBB
-                    int argb = int.Parse(colorString, System.Globalization.NumberStyles.HexNumber);
-                    return Color.FromArgb(255, (argb >> 16) & 0xFF, (argb >> 8) & 0xFF, argb & 0xFF);
-                }
-            }
-            catch { } // Ignoramos cualquier error y retornamos Gray por defecto
-
-            return Color.Gray;
-        }
 
         // Método para cambiar el modo de edición del formulario
         public void SetEditMode(bool editMode)
