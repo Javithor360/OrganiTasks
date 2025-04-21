@@ -38,7 +38,6 @@ namespace OrganiTask.Forms
             this.flpMain = new System.Windows.Forms.FlowLayoutPanel();
             this.lblHeader = new System.Windows.Forms.Label();
             this.flpTags = new System.Windows.Forms.FlowLayoutPanel();
-            this.btnNewTag = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.flpMain.SuspendLayout();
             this.SuspendLayout();
@@ -48,7 +47,6 @@ namespace OrganiTask.Forms
             this.flpMain.AutoScroll = true;
             this.flpMain.Controls.Add(this.lblHeader);
             this.flpMain.Controls.Add(this.flpTags);
-            this.flpMain.Controls.Add(this.btnNewTag);
             this.flpMain.Controls.Add(this.btnClose);
             this.flpMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flpMain.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
@@ -79,17 +77,6 @@ namespace OrganiTask.Forms
             this.flpTags.Size = new System.Drawing.Size(760, 300);
             this.flpTags.TabIndex = 1;
             // 
-            // btnNewTag
-            // 
-            this.btnNewTag.AutoSize = true;
-            this.btnNewTag.Location = new System.Drawing.Point(20, 385);
-            this.btnNewTag.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.btnNewTag.Name = "btnNewTag";
-            this.btnNewTag.Size = new System.Drawing.Size(90, 23);
-            this.btnNewTag.TabIndex = 3;
-            this.btnNewTag.Text = "Nueva etiqueta";
-            this.btnNewTag.Click += new System.EventHandler(this.btnNewTag_Click);
-            // 
             // btnClose
             // 
             this.btnClose.AutoSize = true;
@@ -116,7 +103,5 @@ namespace OrganiTask.Forms
         }
 
         #endregion
-
-        private Button btnNewTag;
     }
 }
