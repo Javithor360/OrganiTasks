@@ -28,7 +28,6 @@ namespace OrganiTask.Forms
 
         // Eventos propios
         public event EventHandler CategoryUpdated;
-        public event EventHandler TagsChanged;
 
         // Primer constructor, para crear una nueva categoría
         public CategorySettings(int dashboardId)
@@ -186,14 +185,14 @@ namespace OrganiTask.Forms
 
                 // Listener para el evento de guardar
                 tagDetails.TagSaved += (ss, updated) => { 
-                    LoadCategoryDetails(); 
-                    TagsChanged?.Invoke(this, EventArgs.Empty); 
+                    LoadCategoryDetails();
+                    CategoryUpdated?.Invoke(this, EventArgs.Empty); 
                 };
 
                 // Listener para el evento de eliminar
                 tagDetails.TagDeleted += (ss, deletedId) => { 
-                    LoadCategoryDetails(); 
-                    TagsChanged?.Invoke(this, EventArgs.Empty); 
+                    LoadCategoryDetails();
+                    CategoryUpdated?.Invoke(this, EventArgs.Empty); 
                 };
 
                 tagDetails.ShowDialog();
@@ -286,7 +285,7 @@ namespace OrganiTask.Forms
 
                 // Recargamos la categoría y disparamos el evento de cambio
                 LoadCategoryDetails();
-                TagsChanged?.Invoke(this, EventArgs.Empty);
+                CategoryUpdated?.Invoke(this, EventArgs.Empty);
             };
             plusCard.Controls.Add(btnOk); // agregamos el botón de guardar al panel
 

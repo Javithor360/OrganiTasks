@@ -108,11 +108,12 @@ namespace OrganiTask.Forms
                 {
                     int catId = (int)((Button)s).Tag;
                     CategorySettings categoryView = new CategorySettings(catId, dashboardId);
-                    categoryView.TagsChanged += (sender, args) =>
+                    categoryView.CategoryUpdated += (sender, args) =>
                     {
                         LoadCategoriesTable();
                         DashboardInfoChanged?.Invoke(this, EventArgs.Empty);
                     };
+
                     categoryView.ShowDialog();
                 };
                 tblCategories.Controls.Add(btnView, 1, row);
