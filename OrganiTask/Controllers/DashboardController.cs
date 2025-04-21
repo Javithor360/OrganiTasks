@@ -5,6 +5,7 @@ using OrganiTask.Util;
 using OrganiTask.Util.Collections;
 using System;
 using System.Linq;
+using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using Task = OrganiTask.Entities.Task;
 
@@ -30,7 +31,7 @@ namespace OrganiTask.Controllers
                 // Obtenemos el tablero
                 Dashboard dashboard = context.Dashboards.FirstOrDefault(d => d.Id == dashboardId);
 
-                if (dashboard == null) 
+                if (dashboard == null)
                     return null;
 
                 viewModel.DashboardTitle = dashboard.Name; // Asignamos el título del tablero
@@ -41,7 +42,7 @@ namespace OrganiTask.Controllers
                     .Include("Tag") // Cargar las etiquetas de la categoría
                     .FirstOrDefault(c => c.Title == categoryTitle && c.DashboardId == dashboardId);
 
-                if (category == null) 
+                if (category == null)
                     return viewModel; // Si no se encuentra la categoría, se retorna el modelo de vista sin columnas
 
                 // Para cada etiqueta en la categoría se crea una columna
@@ -67,8 +68,8 @@ namespace OrganiTask.Controllers
                             Id = task.Id,
                             Title = task.Title,
                             Description = task.Description,
-                            StartDate = (DateTime) task.StartDate,
-                            EndDate = (DateTime) task.EndDate
+                            StartDate = (DateTime)task.StartDate,
+                            EndDate = (DateTime)task.EndDate
                         });
                     }
 
@@ -119,7 +120,7 @@ namespace OrganiTask.Controllers
         /// <returns>Modelo de vista del tablero.</returns>
         public DashboardViewModel LoadDashboardDetails(int dashboardId)
         {
-            using(OrganiTaskDB context = new OrganiTaskDB())
+            using (OrganiTaskDB context = new OrganiTaskDB())
             {
                 // Buscar el tablero por su ID
                 Dashboard dashboard = context.Dashboards.FirstOrDefault(d => d.Id == dashboardId);
@@ -144,7 +145,7 @@ namespace OrganiTask.Controllers
         public void CreateDashboard(DashboardViewModel newDashboard)
         {
             // Bloque using para liberación de contexto al finalizar bloque de codigo
-            using(OrganiTaskDB context = new OrganiTaskDB())
+            using (OrganiTaskDB context = new OrganiTaskDB())
             {
                 // Crear la entidad a partir del modelo de la vista del tablero
                 Dashboard dashboard = new Dashboard
@@ -168,7 +169,7 @@ namespace OrganiTask.Controllers
         /// <param name="updatedDashboard">Modelo de vista del tablero actualizado.</param>
         public void UpdateDashboard(DashboardViewModel updatedDashboard)
         {
-            using(OrganiTaskDB context = new OrganiTaskDB())
+            using (OrganiTaskDB context = new OrganiTaskDB())
             {
                 // Buscar el tablero por su ID
                 var dashboard = context.Dashboards.FirstOrDefault(d => d.Id == updatedDashboard.Id);
@@ -177,7 +178,7 @@ namespace OrganiTask.Controllers
                 // Actualizar los datos del tablero
                 dashboard.Name = updatedDashboard.DashboardTitle;
                 dashboard.Description = updatedDashboard.Description;
-                
+
                 // Guardar los cambios
                 context.SaveChanges();
             }
@@ -248,6 +249,33 @@ namespace OrganiTask.Controllers
                     .Select(u => u.Username)
                     .FirstOrDefault();
             }
+        }
+
+        /// <summary>
+        /// Actualiza el nombre y la descripción de un tablero existente.
+        /// </summary>
+        /// <param name="dashboardId">Identificador del tablero.</param>
+        /// <param name="newName">Nuevo nombre del tablero.</param>
+        /// <param name="newDescription">Nueva descripción del tablero.</param>
+        public void UpdateDashboard(int dashboardId, string newName, string newDescription)
+        {
+            using (OrganiTaskDB context = new OrganiTaskDB())
+            {
+                // Buscar el tablero por su ID
+                Dashboard dashboard = context.Dashboards.FirstOrDefault(d => d.Id == dashboardId);
+
+                // Si no se encuentra el tablero, mostramos un mensaje de error
+                if (dashboard == null)
+                {
+                    MessageBox.Show("Tablero no encontrado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Actualizar el nombre y la descripción del tablero
+                dashboard.Name = newName;
+                dashboard.Description = newDescription;
+                context.SaveChanges(); // Guardar los cambios en la base de datos
+            }   
         }
     }
 
