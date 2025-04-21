@@ -16,26 +16,55 @@ namespace OrganiTask.Forms
     /// <summary>
     /// Formulario para ver y modificar la información de una etiqueta.
     /// </summary>
-    public partial class TagSetting: Form
+    public partial class TagDetails: Form
     {
         private readonly TagViewModel tag;
+        private readonly bool isNew;
+
         private readonly DashboardController controller = new DashboardController();
         public event EventHandler<TagViewModel> TagSaved;
         public event EventHandler<int> TagDeleted;
 
-        public TagSetting(TagViewModel tag)
+        public TagDetails(int categoryId)
         {
             InitializeComponent();
-            this.tag = tag;
+            isNew = true;
+            tag = new TagViewModel { Id = 0, CategoryId = categoryId };
+        }
+
+        public TagDetails(TagViewModel existingTag)
+        {
+            InitializeComponent();
+            isNew = false;
+            tag = existingTag;
         }
 
         private void TagSettingsForm_Load(object sender, EventArgs e)
         {
             // Título del formulario
-            lblHeader.Text = $"Editar etiqueta: {tag.Name}";
-            // Cargar información de la etiqueta
-            txtName.Text = tag.Name;
-            pnlColorPreview.BackColor = ColorTranslator.FromHtml(tag.Color); // Convert color from hex to Color
+            lblHeader.Text = isNew
+                ? "➕ Nueva etiqueta"
+                : $"✏️ Editar etiqueta «{tag.Name}»";
+
+            if (!isNew)
+            {
+                txtName.Text = tag.Name;
+                try
+                {
+                    pnlColorPreview.BackColor = ColorTranslator.FromHtml(tag.Color);
+                }
+                catch
+                {
+                    pnlColorPreview.BackColor = Color.Gray;
+                }
+            }
+            else
+            {
+                // color por defecto
+                pnlColorPreview.BackColor = Color.Gray;
+            }
+
+            btnDelete.Visible = !isNew;
         }
 
 
@@ -52,19 +81,24 @@ namespace OrganiTask.Forms
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            // Validate
+            // Validación de nombre
             string name = txtName.Text.Trim();
             if (string.IsNullOrEmpty(name))
             {
                 MessageBox.Show("El nombre no puede estar vacío.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            // Update tag
+
+            // Actualizar el objeto del modelo
             tag.Name = name;
-            // Convert color to hex
             Color c = pnlColorPreview.BackColor;
             tag.Color = $"#{c.R:X2}{c.G:X2}{c.B:X2}";
-            controller.UpdateTag(tag);
+
+            if (isNew)
+                controller.CreateTag(tag);
+            else
+                controller.UpdateTag(tag);
+
             TagSaved?.Invoke(this, tag);
             this.DialogResult = DialogResult.OK;
             this.Close();

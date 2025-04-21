@@ -327,6 +327,27 @@ namespace OrganiTask.Controllers
         }
 
         /// <summary>
+        /// Crea una nueva etiqueta y la asocia a una categoría.
+        /// </summary>
+        /// <param name="tagVm">Modelo de vista de la etiqueta a crear.</param>
+        public void CreateTag(TagViewModel tagVm)
+        {
+            using (OrganiTaskDB context = new OrganiTaskDB())
+            {
+                // Creamos el objeto Tag y lo añadimos al contexto
+                Tag tag = new Tag
+                {
+                    Name = tagVm.Name,
+                    Color = tagVm.Color,
+                    CategoryId = tagVm.CategoryId
+                };
+                context.Tags.Add(tag);
+                context.SaveChanges(); // Guardamos los cambios en la base de datos
+                tagVm.Id = tag.Id; // Asignamos el ID generado a la vista modelo
+            }
+        }
+
+        /// <summary>
         /// Actualiza los datos de una etiqueta existente.
         /// </summary>
         /// <param name="updateTag">Modelo de vista de la etiqueta a actualizar.</param>
@@ -356,7 +377,7 @@ namespace OrganiTask.Controllers
             using (OrganiTaskDB context = new OrganiTaskDB())
             {
                 // Buscamos las relaciones entre la etiqueta y las tareas
-                OrganiList<TaskTag> links = context.TaskTags.Where(tt => tt.Id == tagId).ToOrganiList();
+                OrganiList<TaskTag> links = context.TaskTags.Where(tt => tt.TagId == tagId).ToOrganiList();
                 if (links.Any())
                     context.TaskTags.RemoveRange(links); // Eliminar los enlaces de la etiqueta a las tareas
 

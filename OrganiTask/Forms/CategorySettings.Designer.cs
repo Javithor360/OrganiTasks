@@ -38,8 +38,8 @@ namespace OrganiTask.Forms
             this.flpMain = new System.Windows.Forms.FlowLayoutPanel();
             this.lblHeader = new System.Windows.Forms.Label();
             this.flpTags = new System.Windows.Forms.FlowLayoutPanel();
-            this.btnClose = new System.Windows.Forms.Button();
             this.btnNewTag = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
             this.flpMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -79,6 +79,17 @@ namespace OrganiTask.Forms
             this.flpTags.Size = new System.Drawing.Size(760, 300);
             this.flpTags.TabIndex = 1;
             // 
+            // btnNewTag
+            // 
+            this.btnNewTag.AutoSize = true;
+            this.btnNewTag.Location = new System.Drawing.Point(20, 385);
+            this.btnNewTag.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.btnNewTag.Name = "btnNewTag";
+            this.btnNewTag.Size = new System.Drawing.Size(90, 23);
+            this.btnNewTag.TabIndex = 3;
+            this.btnNewTag.Text = "Nueva etiqueta";
+            this.btnNewTag.Click += new System.EventHandler(this.btnNewTag_Click);
+            // 
             // btnClose
             // 
             this.btnClose.AutoSize = true;
@@ -89,16 +100,6 @@ namespace OrganiTask.Forms
             this.btnClose.TabIndex = 2;
             this.btnClose.Text = "Cerrar";
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            // 
-            // btnNewTag
-            // 
-            this.btnNewTag.AutoSize = true;
-            this.btnNewTag.Location = new System.Drawing.Point(20, 385);
-            this.btnNewTag.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.btnNewTag.Name = "btnNewTag";
-            this.btnNewTag.Size = new System.Drawing.Size(90, 23);
-            this.btnNewTag.TabIndex = 3;
-            this.btnNewTag.Text = "Nueva etiqueta";
             // 
             // CategorySettings
             // 

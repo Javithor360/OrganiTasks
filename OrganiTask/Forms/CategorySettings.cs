@@ -66,7 +66,7 @@ namespace OrganiTask.Forms
                 // Añadimos un evento al panel para abrir el editor de etiquetas
                 EventHandler handler = (s, e) =>
                 {
-                    TagSetting editor = new TagSetting(tag);
+                    TagDetails editor = new TagDetails(tag);
                     editor.TagSaved += (sender, updated) => LoadCategoryDetails();
                     editor.TagDeleted += (sender, deletedId) => LoadCategoryDetails();
                     editor.ShowDialog();
@@ -95,6 +95,13 @@ namespace OrganiTask.Forms
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void btnNewTag_Click(object sender, EventArgs e)
+        {
+            TagDetails tagCreation = new TagDetails(categoryId);
+            tagCreation.TagSaved += (s, ev) => LoadCategoryDetails();
+            tagCreation.ShowDialog();
         }
     }
 }
