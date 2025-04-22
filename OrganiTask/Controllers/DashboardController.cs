@@ -282,9 +282,7 @@ namespace OrganiTask.Controllers
         /// Elimina un tablero existente y todos sus elementos relacionados.
         /// </summary>
         /// <param name="dashboardId">Identificador del tablero.</param>
-        /// <param name="newName">Nuevo nombre del tablero.</param>
-        /// <param name="newDescription">Nueva descripción del tablero.</param>
-        public void DeleteDashboard(int dashboardId, string newName, string newDescription)
+        public void DeleteDashboard(int dashboardId)
         {
             using (OrganiTaskDB context = new OrganiTaskDB())
             {

@@ -24,7 +24,7 @@ namespace OrganiTask.Forms.Test
         private const int CARD_MARGIN = 20;
         private const int CARDS_PER_ROW = 3;
 
-        //private DashboardController dashboardController = new DashboardController();
+        private DashboardController dashboardController = new DashboardController();
 
         public Main()
         {
@@ -243,7 +243,8 @@ namespace OrganiTask.Forms.Test
 
             if (confirmResult == DialogResult.Yes)
             {
-
+                dashboardController.DeleteDashboard(dashboardId);
+                LoadDashBoards(); // Recargar tableros
             }
         }
 
