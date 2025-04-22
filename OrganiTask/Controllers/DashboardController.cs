@@ -300,38 +300,70 @@ namespace OrganiTask.Controllers
 
                 // Elimina los elementos relacionados
 
+                // Eliminamos las tareas asociadas al tablero   
+                OrganiList<Task> tasksDashboard = context.Tasks
+                    .Where(t => t.DashboardId == dashboardId)
+                    .ToOrganiList();
+
+                foreach (Task task in tasksDashboard)
+                {
+                    // Eliminar relaciones TaskTag
+                    OrganiList<TaskTag> taskTags = context.TaskTags
+                        .Where(tt => tt.TaskId == task.Id)
+                        .ToOrganiList();
+
+                    context.TaskTags.RemoveRange(taskTags); // Eliminar las relaciones TaskTag
+                    context.Tasks.Remove(task); // Eliminar la tarea
+                }
+
+                // Eliminar las categorias relacionadas
+                OrganiList<Category> categories = context.Categories
+                    .Where(c => c.DashboardId == dashboardId)
+                    .ToOrganiList();
+
+                foreach (Category category in categories)
+                {
+                    // Elimina las etiquetas asociadas a la categoría
+                    OrganiList<Tag> tags = context.Tags
+                        .Where(t => t.CategoryId == category.Id)
+                        .ToOrganiList();
+
+                    foreach (Tag tag in tags)
+                    {
+                        // Eliminar relaciones TaskTag
+                        OrganiList<TaskTag> taskTags = context.TaskTags
+                            .Where(tt => tt.TagId == tag.Id)
+                            .ToOrganiList();
+                        context.TaskTags.RemoveRange(taskTags); // Eliminar las relaciones TaskTag
+
+                        context.Tags.Remove(tag); // Eliminar la etiqueta
+                    }
+
+                    // Eliminar la categoria
+                    context.Categories.Remove(category); 
+                }
+
+                // Por ultimo eliminar el tablero
+                context.Dashboards.Remove(dashboard); // Eliminar el tablero
+
+                // Guardar los cambios en la base de datos
+                context.SaveChanges();
+
+                //        // Luego, eliminamos las relaciones entre las etiquetas y las tareas
+                //        foreach (int tagId in tagIds)
+                //        {
+                //            DeleteTag(tagId); // Eliminar cada etiqueta asociada a la categoría
+                //        }
+
+                //        // Ahora eliminamos la categoría en sí
+                //        Category category = context.Categories.FirstOrDefault(c => c.Id == categoryId);
+                //        if (category != null)
+                //        {
+                //            context.Categories.Remove(category); // Eliminar la categoría
+                //            context.SaveChanges(); // Guardar los cambios
+                //        }
             }
         }
-
-        /// <summary>
-        /// Elimina una categoría y todas las etiquetas asociadas a ella.
-        /// </summary>
-        /// <param name="categoryId">Identificador de la categoría a eliminar.</param>
-        //public void DeleteCategory(int categoryId)
-        //{
-        //    using (OrganiTaskDB context = new OrganiTaskDB())
-        //    {
-        //        // Primero obtenemos todas las etiquetas asociadas a la categoría
-        //        OrganiList<int> tagIds = context.Tags
-        //            .Where(t => t.CategoryId == categoryId)
-        //            .Select(t => t.Id)
-        //            .ToOrganiList();
-
-        //        // Luego, eliminamos las relaciones entre las etiquetas y las tareas
-        //        foreach (int tagId in tagIds)
-        //        {
-        //            DeleteTag(tagId); // Eliminar cada etiqueta asociada a la categoría
-        //        }
-
-        //        // Ahora eliminamos la categoría en sí
-        //        Category category = context.Categories.FirstOrDefault(c => c.Id == categoryId);
-        //        if (category != null)
-        //        {
-        //            context.Categories.Remove(category); // Eliminar la categoría
-        //            context.SaveChanges(); // Guardar los cambios
-        //        }
-        //    }
-        //}
 
         /// <summary>
         /// Carga los datos de una categoría por medio de su ID
