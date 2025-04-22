@@ -168,24 +168,12 @@ namespace OrganiTask.Forms.Test
                 Location = new Point(10, 40)
             };
 
-            // Botón para eliminar el dashboard
-            Button btnDelete = new Button
-            {
-                Text = "Eliminar",
-                Size = new Size(70, 30),
-                Location = new Point(card.Width - 90, 90),
-                BackColor = System.Drawing.Color.FromArgb(244, 47, 47),
-                ForeColor = System.Drawing.Color.White,
-                FlatStyle = FlatStyle.Flat,
-            };
-            btnDelete.FlatAppearance.BorderSize = 0;
-
             // Botón para abrir el dashboard
             Button btnOpen = new Button
             {
                 Text = "Abrir",
                 Size = new Size(70, 30),
-                Location = new Point(card.Width - 90, 125),
+                Location = new Point(card.Width - 270, 160),
                 BackColor = System.Drawing.Color.FromArgb(0, 122, 204),
                 ForeColor = System.Drawing.Color.White,
                 FlatStyle = FlatStyle.Flat,
@@ -197,12 +185,24 @@ namespace OrganiTask.Forms.Test
             {
                 Text = "🛠️",
                 Size = new Size(70, 30),
-                Location = new Point(card.Width - 90, 160),
+                Location = new Point(card.Width - 190, 160),
                 BackColor = System.Drawing.Color.FromArgb(244, 47, 113),
                 ForeColor = System.Drawing.Color.White,
                 FlatStyle = FlatStyle.Flat,
             };
             btnEdit.FlatAppearance.BorderSize = 0;
+
+            // Botón para eliminar el dashboard
+            Button btnDelete = new Button
+            {
+                Text = "Eliminar",
+                Size = new Size(70, 30),
+                Location = new Point(card.Width - 110, 160),
+                BackColor = System.Drawing.Color.FromArgb(244, 47, 47),
+                ForeColor = System.Drawing.Color.White,
+                FlatStyle = FlatStyle.Flat,
+            };
+            btnDelete.FlatAppearance.BorderSize = 0;
 
             // Evento de click para la tarjeta completa
             card.Click += (s, e) => HandleDashboardClick(dashboard.Id);

@@ -17,7 +17,7 @@ using Task = OrganiTask.Entities.Task;
 
 namespace OrganiTask.Forms
 {
-    public partial class TaskDetails: Form
+    public partial class TaskDetails : Form
     {
         // Propiedades para almacenar el modelo de vista de la tarea y el identificador del tablero
         private TaskViewModel task; // Modelo de vista de la tarea
@@ -68,6 +68,7 @@ namespace OrganiTask.Forms
                 RenderTaskInViewMode(); // Modo vista
                 // Determinar visibilidad de botones
                 btnEdit.Visible = true;
+                btnDelete.Visible = true;
                 btnSave.Visible = false;
                 btnCancel.Visible = false;
             }
@@ -77,6 +78,7 @@ namespace OrganiTask.Forms
                 // Determinar visibilidad de botones
                 btnEdit.Visible = false;
                 btnSave.Visible = true;
+                btnDelete.Visible = false;
                 btnCancel.Visible = true;
             }
         }
@@ -160,7 +162,7 @@ namespace OrganiTask.Forms
                 foreach (TagViewModel tag in category.TagList)
                 {
                     int index = cmb.Items.Add(tag); // Agregamos la etiqueta al ComboBox y guardamos su índice
-                    
+
                     if (category.AssignedTag != null && tag.Id == category.AssignedTag.Id)
                     {
                         cmb.SelectedIndex = index; // Si la etiqueta es la actual, la seleccionamos
@@ -377,7 +379,8 @@ namespace OrganiTask.Forms
             if (task.Id != 0)
             {
                 SetEditMode(false); // Cambiar a modo vista
-            } else
+            }
+            else
             {
                 this.Close(); // Cerrar el formulario si no hay tarea
             }
@@ -392,6 +395,13 @@ namespace OrganiTask.Forms
         {
             isEditMode = editMode;
             RenderTask();
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            bool taskDeleted = taskController.DeleteTask(task.Id);
+
+            if (taskDeleted) this.Close();
         }
     }
 }
