@@ -80,7 +80,8 @@ namespace OrganiTask.Controllers
                 // etiqueta asignada en esta categoría particular
                 ColumnViewModel noTagColumn = new ColumnViewModel
                 {
-                    Tag = new Tag {
+                    Tag = new Tag
+                    {
                         Id = -1, // ID ficticio para la columna sin etiqueta
                         Name = "Sin Etiquetar", // Título de la columna
                         CategoryId = category.Id, // Asignar la categoría
@@ -136,7 +137,6 @@ namespace OrganiTask.Controllers
                 };
             }
         }
-
 
         /// <summary>
         /// Crea un nuevo tablero.
@@ -275,8 +275,63 @@ namespace OrganiTask.Controllers
                 dashboard.Name = newName;
                 dashboard.Description = newDescription;
                 context.SaveChanges(); // Guardar los cambios en la base de datos
-            }   
+            }
         }
+
+        /// <summary>
+        /// Elimina un tablero existente y todos sus elementos relacionados.
+        /// </summary>
+        /// <param name="dashboardId">Identificador del tablero.</param>
+        /// <param name="newName">Nuevo nombre del tablero.</param>
+        /// <param name="newDescription">Nueva descripción del tablero.</param>
+        public void DeleteDashboard(int dashboardId, string newName, string newDescription)
+        {
+            using (OrganiTaskDB context = new OrganiTaskDB())
+            {
+                // Buscar el tablero por su ID
+                Dashboard dashboard = context.Dashboards.FirstOrDefault(d => d.Id == dashboardId);
+
+                // Si no se encuentra el tablero, mostramos un mensaje de error
+                if (dashboard == null)
+                {
+                    MessageBox.Show("Tablero no encontrado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Elimina los elementos relacionados
+
+            }
+        }
+
+        /// <summary>
+        /// Elimina una categoría y todas las etiquetas asociadas a ella.
+        /// </summary>
+        /// <param name="categoryId">Identificador de la categoría a eliminar.</param>
+        //public void DeleteCategory(int categoryId)
+        //{
+        //    using (OrganiTaskDB context = new OrganiTaskDB())
+        //    {
+        //        // Primero obtenemos todas las etiquetas asociadas a la categoría
+        //        OrganiList<int> tagIds = context.Tags
+        //            .Where(t => t.CategoryId == categoryId)
+        //            .Select(t => t.Id)
+        //            .ToOrganiList();
+
+        //        // Luego, eliminamos las relaciones entre las etiquetas y las tareas
+        //        foreach (int tagId in tagIds)
+        //        {
+        //            DeleteTag(tagId); // Eliminar cada etiqueta asociada a la categoría
+        //        }
+
+        //        // Ahora eliminamos la categoría en sí
+        //        Category category = context.Categories.FirstOrDefault(c => c.Id == categoryId);
+        //        if (category != null)
+        //        {
+        //            context.Categories.Remove(category); // Eliminar la categoría
+        //            context.SaveChanges(); // Guardar los cambios
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// Carga los datos de una categoría por medio de su ID
@@ -383,7 +438,7 @@ namespace OrganiTask.Controllers
 
                 // Una vez eliminada las relaciones, eliminamos la etiqueta
                 Tag tag = context.Tags.FirstOrDefault(t => t.Id == tagId);
-                if (tag != null) 
+                if (tag != null)
                     context.Tags.Remove(tag); // Eliminar la etiqueta
 
                 context.SaveChanges(); // Guardar los cambios
@@ -457,4 +512,3 @@ namespace OrganiTask.Controllers
         }
     }
 }
- 

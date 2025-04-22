@@ -9,7 +9,6 @@
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.TextBox txtDashboardTitle;
         private System.Windows.Forms.Button btnSaveDashboard;
-        private System.Windows.Forms.Button btnDeleteDashboard;
         private System.Windows.Forms.Label lblCategoryTitle;
         private System.Windows.Forms.Panel panelHeader;
         /// <summary>
@@ -36,7 +35,6 @@
             this.lblCategoryTitle = new System.Windows.Forms.Label();
             this.txtDashboardTitle = new System.Windows.Forms.TextBox();
             this.btnSaveDashboard = new System.Windows.Forms.Button();
-            this.btnDeleteDashboard = new System.Windows.Forms.Button();
             this.panelHeader.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -89,26 +87,11 @@
             this.btnSaveDashboard.ForeColor = System.Drawing.Color.White;
             this.btnSaveDashboard.Location = new System.Drawing.Point(21, 157);
             this.btnSaveDashboard.Name = "btnSaveDashboard";
-            this.btnSaveDashboard.Size = new System.Drawing.Size(200, 40);
+            this.btnSaveDashboard.Size = new System.Drawing.Size(410, 40);
             this.btnSaveDashboard.TabIndex = 3;
             this.btnSaveDashboard.Text = "GUARDAR";
             this.btnSaveDashboard.UseVisualStyleBackColor = false;
             this.btnSaveDashboard.Click += new System.EventHandler(this.btnSaveDashboard_Click);
-            // 
-            // btnDeleteDashboard
-            // 
-            this.btnDeleteDashboard.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.btnDeleteDashboard.Enabled = false;
-            this.btnDeleteDashboard.FlatAppearance.BorderSize = 0;
-            this.btnDeleteDashboard.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDeleteDashboard.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnDeleteDashboard.ForeColor = System.Drawing.Color.White;
-            this.btnDeleteDashboard.Location = new System.Drawing.Point(231, 157);
-            this.btnDeleteDashboard.Name = "btnDeleteDashboard";
-            this.btnDeleteDashboard.Size = new System.Drawing.Size(200, 40);
-            this.btnDeleteDashboard.TabIndex = 4;
-            this.btnDeleteDashboard.Text = "ELIMINAR";
-            this.btnDeleteDashboard.UseVisualStyleBackColor = false;
             // 
             // DashboardsManagement
             // 
@@ -117,7 +100,6 @@
             this.Controls.Add(this.lblCategoryTitle);
             this.Controls.Add(this.txtDashboardTitle);
             this.Controls.Add(this.btnSaveDashboard);
-            this.Controls.Add(this.btnDeleteDashboard);
             this.Controls.Add(this.panelHeader);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;

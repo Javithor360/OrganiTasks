@@ -155,11 +155,11 @@
     <Compile Include="Forms\Login.Designer.cs">
       <DependentUpon>Login.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Main.cs">
+    <Compile Include="Forms\Test\Main_OLD.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Main.Designer.cs">
-      <DependentUpon>Main.cs</DependentUpon>
+    <Compile Include="Forms\Test\Main_OLD.Designer.cs">
+      <DependentUpon>Main_OLD.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\TagDetails.cs">
       <SubType>Form</SubType>
@@ -185,10 +185,10 @@
     <Compile Include="Forms\Test\CategoriesManagement.Designer.cs">
       <DependentUpon>CategoriesManagement.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Test\Main.cs">
+    <Compile Include="Forms\Main.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Test\Main.Designer.cs">
+    <Compile Include="Forms\Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
@@ -215,8 +215,8 @@
     <EmbeddedResource Include="Forms\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Main.resx">
-      <DependentUpon>Main.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Test\Main_OLD.resx">
+      <DependentUpon>Main_OLD.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TagDetails.resx">
       <DependentUpon>TagDetails.cs</DependentUpon>
@@ -230,7 +230,7 @@
     <EmbeddedResource Include="Forms\Test\CategoriesManagement.resx">
       <DependentUpon>CategoriesManagement.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Test\Main.resx">
+    <EmbeddedResource Include="Forms\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
