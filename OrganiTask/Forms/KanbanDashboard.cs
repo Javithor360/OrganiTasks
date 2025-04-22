@@ -2,6 +2,7 @@
 using OrganiTask.Entities;
 using OrganiTask.Entities.ViewModels;
 using OrganiTask.Forms.Controls;
+using OrganiTask.Util.Collections;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -15,7 +16,7 @@ namespace OrganiTask.Forms
     {
         // Propiedades para almacenar el identificador del tablero y el título de la categoría
         private int dashboardId;
-        private string categoryTitle; // default "Status"
+        private CategoryViewModel selectedCategory; // default "Status"
 
         // Propiedad para controlar la visibilidad de la columna "Sin Etiquetar"
         private bool showHiddenColumn = false;
@@ -30,29 +31,20 @@ namespace OrganiTask.Forms
 
         public int SourceTagId { get; set; } // ID de la etiqueta de origen de la tarjeta arrastrada
 
+        DashboardController controller = new DashboardController(); // Instancia del controlador de tableros
+
         // Constructor del formulario requiere identificar el tablero y la categoría con la que se ordenarán las tareas
-        public KanbanDashboard(int dashboardId, string categoryTitle)
+        public KanbanDashboard(int dashboardId)
         {
             InitializeComponent();
             this.dashboardId = dashboardId;
-            this.categoryTitle = categoryTitle;
         }
 
         // Evento de carga del formulario
         private void KanbanDashboard_Load(object sender, EventArgs e)
         {
-            DashboardController controller = new DashboardController(); // Instanciar el controlador
-            DashboardViewModel model = controller.LoadKanban(dashboardId, categoryTitle); // Cargar el tablero
-
-            if (model == null) // Mostrar error si no se encuentra el tablero
-            {
-                MessageBox.Show("No se encontró el tablero especificado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                this.Close();
-                return;
-            }
-
-            lblDashboardTitle.Text = model.DashboardTitle; // Asignar el título del tablero a la etiqueta
-            RenderDashboard(model); // Dibujar el tablero
+            selectedCategory = controller.GetDefaultCategory(dashboardId); // Obtenemos la categoría por defecto del tablero
+            RefreshDashboard(); // Cargamos el tablero al iniciar el formulario
         }
 
         // Método para dibujar el tablero
@@ -136,13 +128,39 @@ namespace OrganiTask.Forms
         }
         private void RefreshDashboard()
         {
-            DashboardController controller = new DashboardController();
-            DashboardViewModel model = controller.LoadKanban(dashboardId, categoryTitle);
-            if (model != null)
+            DashboardViewModel model = controller.LoadKanban(dashboardId, selectedCategory.Title);
+
+            if (model == null) // Mostrar error si no se encuentra el tablero
             {
-                lblDashboardTitle.Text = model.DashboardTitle;
-                RenderDashboard(model);
+                MessageBox.Show("No se encontró el tablero especificado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+                return;
             }
+
+            lblDashboardTitle.Text = model.DashboardTitle;
+            RenderDashboard(model);
+        }
+
+        private void btnSort_Click(object sender, EventArgs e)
+        {
+            btnSort.Visible = false; // Ocultamos el botón de ordenamiento  
+            cboSort.Items.Clear(); // Limpiamos los elementos del combo box 
+
+            // Obtener la lista de categorías del tablero
+            // Pero directamente ordenamos la lista de tal manera que la categoría seleccionada esté al inicio
+            OrganiList<CategoryViewModel> categories = ReorderCategories(controller.GetDashboardCategories(dashboardId), selectedCategory); // Reordenamos las categorías
+
+            // Indicamos al combobox que se usará para mostrar las categorías
+            cboSort.DisplayMember = nameof(CategoryViewModel.Title);
+            cboSort.ValueMember = nameof(CategoryViewModel.Id);
+
+            cboSort.Items.AddRange(categories.ToArray()); // Agregamos los títulos al combo box
+            if (categories.Count > 0)
+                cboSort.SelectedIndex = 0; // Seleccionamos el primer elemento por defecto  
+
+            cboSort.Visible = true; // Mostramos el combo box
+            cboSort.Focus(); // Focamos el combo box
+            cboSort.DroppedDown = true; // Abrimos el combo box 
         }
 
         // Evento para manejar el click en el botón de agregar tarea
@@ -169,6 +187,38 @@ namespace OrganiTask.Forms
             showHiddenColumn = !showHiddenColumn; // Alternar la visibilidad de la columna "Sin Etiquetar"
             btnShowHidden.Text = showHiddenColumn ? "🔎 Esconder ocultos" : "🔎 Mostrar ocultos"; // Cambiar el texto del botón
             RefreshDashboard(); // Recargar el tablero
+        }
+
+        /*
+         * EVENT LISTENERS AUXILIARES
+         */
+
+        // Evento para manejar el cambio de selección en el combo box
+        // Se usa ChangeCommited para evitar que se ejecute al abrir el combo
+        private void cboSort_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            CategoryViewModel selected = cboSort.SelectedItem as CategoryViewModel; // Obtenemos el elemento seleccionado
+
+            // Validamos que no sea nulo y que sea diferente al la categoría actual
+            if (selected != null && selected.Id != selectedCategory.Id)
+            {
+                selectedCategory = selected; // Asignamos la nueva categoría
+                RefreshDashboard(); // Recargamos el tablero
+            }
+
+            RevertSortControl(); // Revertimos el control de ordenamiento
+        }
+
+        // Evento para manejar el cierre del combo box
+        private void cboSort_DropDownClosed(object sender, EventArgs e)
+        {
+            RevertSortControl(); // Revertimos el control de ordenamiento
+        }
+
+        // Evento para manejar la pérdida de foco del combo box
+        private void cboSort_LostFocus(object sender, EventArgs e)
+        {
+            RevertSortControl(); // Revertimos el control de ordenamiento
         }
 
         /*
@@ -288,6 +338,42 @@ namespace OrganiTask.Forms
                 _dragTimer.Dispose();
                 _dragTimer = null;
             }
+        }
+
+        // Método para revertir el control de ordenamiento
+        private void RevertSortControl()
+        {
+            cboSort.Visible = false; // Ocultamos el combo box
+            btnSort.Visible = true; // Mostramos el botón de ordenamiento
+
+            cboSort.Items.Clear(); // Limpiamos los elementos del combo box
+        }
+
+        // Reordenar la lista de categorías poniendo la categoría actual al frente
+        private OrganiList<CategoryViewModel> ReorderCategories(OrganiList<CategoryViewModel> categories, CategoryViewModel selected)
+        {
+            OrganiList<CategoryViewModel> reordered = new OrganiList<CategoryViewModel>();
+
+            // Ubicamos la categoría actual al inicio
+            reordered.AddLast(selected);
+
+            // Agregamos el resto de las categorías
+            foreach (CategoryViewModel category in categories)
+            {
+                if (category.Id != selected.Id)
+                {
+                    reordered.AddLast(category);
+                }
+            }
+
+            return reordered;
+        }
+
+        private void btnSettings_Click(object sender, EventArgs e)
+        {
+            DashboardSettings settings = new DashboardSettings(dashboardId); // Mostrar configuración del tablero
+            settings.DashboardInfoChanged += EventRefreshDashboard;
+            settings.ShowDialog();
         }
     }
 }

@@ -116,6 +116,12 @@
     <Compile Include="Entities\ViewModels\TagViewModel.cs" />
     <Compile Include="Entities\ViewModels\MainViewModel.cs" />
     <Compile Include="Entities\ViewModels\TaskViewModel.cs" />
+    <Compile Include="Forms\CategorySettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CategorySettings.Designer.cs">
+      <DependentUpon>CategorySettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Controls\DragForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -124,6 +130,12 @@
     </Compile>
     <Compile Include="Forms\Controls\TaskCardPanel.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\DashboardSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DashboardSettings.Designer.cs">
+      <DependentUpon>DashboardSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Register.cs">
       <SubType>Form</SubType>
@@ -149,11 +161,23 @@
     <Compile Include="Forms\Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\TagDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TagDetails.Designer.cs">
+      <DependentUpon>TagDetails.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\TaskDetails.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\TaskDetails.Designer.cs">
       <DependentUpon>TaskDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Test\DashboardsManagement.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Test\DashboardsManagement.Designer.cs">
+      <DependentUpon>DashboardsManagement.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Test\CategoriesManagement.cs">
       <SubType>Form</SubType>
@@ -175,6 +199,13 @@
     <Compile Include="Util\SessionManager.cs" />
     <Compile Include="Util\OrganiTaskDB.cs" />
     <Compile Include="Controllers\Services\AuthService.cs" />
+    <Compile Include="Util\ColorUtil.cs" />
+    <EmbeddedResource Include="Forms\CategorySettings.resx">
+      <DependentUpon>CategorySettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DashboardSettings.resx">
+      <DependentUpon>DashboardSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Register.resx">
       <DependentUpon>Register.cs</DependentUpon>
     </EmbeddedResource>
@@ -187,8 +218,14 @@
     <EmbeddedResource Include="Forms\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TagDetails.resx">
+      <DependentUpon>TagDetails.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\TaskDetails.resx">
       <DependentUpon>TaskDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Test\DashboardsManagement.resx">
+      <DependentUpon>DashboardsManagement.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Test\CategoriesManagement.resx">
       <DependentUpon>CategoriesManagement.cs</DependentUpon>

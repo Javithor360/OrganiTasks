@@ -81,7 +81,7 @@ namespace OrganiTask.Forms
 
         private void btnMainTest_Click(object sender, EventArgs e)
         {
-            KanbanDashboard kanban = new KanbanDashboard(1, "Status");
+            KanbanDashboard kanban = new KanbanDashboard(1);
             kanban.Show();
         }
 
