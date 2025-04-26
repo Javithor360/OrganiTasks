@@ -250,7 +250,6 @@ namespace OrganiTask.Forms.Test
 
         private void HandleDashboardClick(int dashboardId)
         {
-            //KanbanDashboard kanban = new KanbanDashboard(dashboardId, "Status");
             KanbanDashboard kanban = new KanbanDashboard(dashboardId);
             kanban.Show();
         }

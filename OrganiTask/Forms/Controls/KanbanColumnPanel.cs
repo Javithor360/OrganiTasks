@@ -34,6 +34,7 @@ namespace OrganiTask.Forms.Controls
             this.Height = 1000;
             this.Margin = new Padding(10);
             this.AllowDrop = true;
+            this.BackColor = GetColorColumn(tag.Color);
 
             // Label con el nombre de la columna
             Label lblTag = new Label
@@ -47,6 +48,26 @@ namespace OrganiTask.Forms.Controls
             // Suscribir los eventos de drag y drop
             this.DragEnter += ColumnDragEnter; // Evento de drag
             this.DragDrop += ColumnDragDrop; // Evento de drop
+        }
+
+        private Color GetColorColumn(string colorString)
+        {
+            Color currentColor;
+
+            if (string.IsNullOrEmpty(colorString))
+                return Color.FromArgb(135, Color.Gray); // Default color
+
+            if(colorString.StartsWith("#"))
+            {
+                // Si es hexadecimal
+                currentColor = ColorTranslator.FromHtml(colorString);
+            }else
+            {
+                currentColor = Color.FromName(colorString);
+            }
+
+            // Aplicar opacidad 
+            return Color.FromArgb(135, currentColor);
         }
 
         // Método que se llama cuando se arrastra una tarea sobre la columna

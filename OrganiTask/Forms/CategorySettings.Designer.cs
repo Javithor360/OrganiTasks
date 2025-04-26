@@ -44,17 +44,19 @@ namespace OrganiTask.Forms
             // flpTags
             // 
             this.flpTags.AutoScroll = true;
-            this.flpTags.Location = new System.Drawing.Point(20, 174);
-            this.flpTags.Margin = new System.Windows.Forms.Padding(0, 0, 0, 10);
+            this.flpTags.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.flpTags.Location = new System.Drawing.Point(20, 236);
+            this.flpTags.Margin = new System.Windows.Forms.Padding(0, 0, 0, 20);
             this.flpTags.Name = "flpTags";
             this.flpTags.Size = new System.Drawing.Size(760, 300);
             this.flpTags.TabIndex = 1;
             // 
             // lblHeader
             // 
-            this.lblHeader.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.lblHeader.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold);
+            this.lblHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
             this.lblHeader.Location = new System.Drawing.Point(20, 20);
-            this.lblHeader.Margin = new System.Windows.Forms.Padding(0, 0, 0, 10);
+            this.lblHeader.Margin = new System.Windows.Forms.Padding(0, 0, 0, 20);
             this.lblHeader.Name = "lblHeader";
             this.lblHeader.Size = new System.Drawing.Size(760, 40);
             this.lblHeader.TabIndex = 0;
@@ -64,17 +66,24 @@ namespace OrganiTask.Forms
             // btnClose
             // 
             this.btnClose.AutoSize = true;
-            this.btnClose.Location = new System.Drawing.Point(20, 489);
-            this.btnClose.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.btnClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.btnClose.FlatAppearance.BorderSize = 0;
+            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClose.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnClose.ForeColor = System.Drawing.Color.White;
+            this.btnClose.Location = new System.Drawing.Point(20, 556);
+            this.btnClose.Margin = new System.Windows.Forms.Padding(0);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(90, 23);
+            this.btnClose.Size = new System.Drawing.Size(120, 40);
             this.btnClose.TabIndex = 2;
             this.btnClose.Text = "Cerrar";
+            this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // flpMain
             // 
             this.flpMain.AutoScroll = true;
+            this.flpMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
             this.flpMain.Controls.Add(this.lblHeader);
             this.flpMain.Controls.Add(this.txtName);
             this.flpMain.Controls.Add(this.btnEdit);
@@ -86,13 +95,15 @@ namespace OrganiTask.Forms
             this.flpMain.Location = new System.Drawing.Point(0, 0);
             this.flpMain.Name = "flpMain";
             this.flpMain.Padding = new System.Windows.Forms.Padding(20);
-            this.flpMain.Size = new System.Drawing.Size(800, 450);
+            this.flpMain.Size = new System.Drawing.Size(800, 550);
             this.flpMain.TabIndex = 0;
             this.flpMain.WrapContents = false;
             // 
             // txtName
             // 
-            this.txtName.Font = this.lblHeader.Font;
+            this.txtName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtName.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold);
+            this.txtName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
             this.txtName.Location = this.lblHeader.Location;
             this.txtName.Multiline = true;
             this.txtName.Name = "txtName";
@@ -102,29 +113,47 @@ namespace OrganiTask.Forms
             // 
             // btnEdit
             // 
-            this.btnEdit.Location = this.lblHeader.Location;
+            this.btnEdit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.btnEdit.FlatAppearance.BorderSize = 0;
+            this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEdit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnEdit.ForeColor = System.Drawing.Color.White;
+            this.btnEdit.Location = new System.Drawing.Point(20, 126);
+            this.btnEdit.Margin = new System.Windows.Forms.Padding(0, 0, 0, 15);
             this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(75, 23);
+            this.btnEdit.Size = new System.Drawing.Size(760, 40);
             this.btnEdit.TabIndex = 2;
-            this.btnEdit.Text = "✏️";
+            this.btnEdit.Text = "Editar";
+            this.btnEdit.UseVisualStyleBackColor = false;
             this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
             // 
             // btnSave
             // 
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.btnSave.FlatAppearance.BorderSize = 0;
+            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSave.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnSave.ForeColor = System.Drawing.Color.White;
             this.btnSave.Location = this.btnEdit.Location;
+            this.btnSave.Margin = new System.Windows.Forms.Padding(0, 0, 0, 15);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.Size = new System.Drawing.Size(760, 40);
             this.btnSave.TabIndex = 3;
-            this.btnSave.Text = "💾";
+            this.btnSave.Text = "Guardar";
+            this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Visible = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // CategorySettings
             // 
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(800, 550);
             this.Controls.Add(this.flpMain);
-            this.MinimumSize = new System.Drawing.Size(600, 300);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(600, 400);
             this.Name = "CategorySettings";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Configuración de Categoría";
             this.Load += new System.EventHandler(this.CategorySettings_Load);
             this.flpMain.ResumeLayout(false);

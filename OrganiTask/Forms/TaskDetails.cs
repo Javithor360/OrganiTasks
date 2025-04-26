@@ -25,6 +25,7 @@ namespace OrganiTask.Forms
         private bool isEditMode = false; // Indica si el formulario está en modo edición
 
         public event EventHandler TaskUpdated; // Evento para notificar que la tarea ha sido actualizada
+        public event EventHandler TaskDeleted; // Evento para notificar que la tarea ha sido eliminada
 
         // Campos para los controles de edición
         private TextBox txtTitle; // TextBox para el título
@@ -402,6 +403,7 @@ namespace OrganiTask.Forms
             bool taskDeleted = taskController.DeleteTask(task.Id);
 
             if (taskDeleted) this.Close();
+            TaskDeleted?.Invoke(this, EventArgs.Empty); // Notificar que la tarea ha sido eliminada
         }
     }
 }

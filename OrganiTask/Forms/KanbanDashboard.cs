@@ -2,10 +2,12 @@
 using OrganiTask.Entities;
 using OrganiTask.Entities.ViewModels;
 using OrganiTask.Forms.Controls;
+using OrganiTask.Forms.Test;
 using OrganiTask.Util.Collections;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using static System.Collections.Specialized.BitVector32;
 
 namespace OrganiTask.Forms
 {
@@ -179,6 +181,7 @@ namespace OrganiTask.Forms
             TaskDetails details = new TaskDetails(newTask, dashboardId); // Mostrar detalles de la tarea
             details.SetEditMode(true); // Habilitar modo de edición
             details.TaskUpdated += EventRefreshDashboard; // Evento para cuando se actualiza una tarea
+            details.TaskDeleted += EventRefreshDashboard; // Evento para cuando se elimina una tarea
             details.ShowDialog(); // Mostrar el formulario de detalles
         }
 
@@ -229,7 +232,9 @@ namespace OrganiTask.Forms
         private void Card_ClickEvent(TaskViewModel task)
         {
             TaskDetails details = new TaskDetails(task, dashboardId); // Mostrar detalles de la tarea
+
             details.TaskUpdated += EventRefreshDashboard; // Evento para cuando se actualiza una tarea
+            details.TaskDeleted += EventRefreshDashboard; // Evento para cuando se elimina una tarea
 
             details.ShowDialog(); // Mostramos el formulario de detalles
         }
