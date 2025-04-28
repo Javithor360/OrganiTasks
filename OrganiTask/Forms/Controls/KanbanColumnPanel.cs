@@ -41,7 +41,12 @@ namespace OrganiTask.Forms.Controls
             {
                 Text = tag.Name,
                 Font = new Font("Segoe UI", 12, FontStyle.Bold),
-                AutoSize = true,
+                AutoSize = false,
+                TextAlign = ContentAlignment.MiddleCenter, // Centrar el texto
+                Dock = DockStyle.Top, // Hacer que el ancho ocupe todo el panel
+                Height = 25,
+                Location = new Point(0, 0) 
+
             };
             this.Controls.Add(lblTag); // Agregar el label al panel
 

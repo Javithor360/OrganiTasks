@@ -87,6 +87,7 @@ namespace OrganiTask.Forms
             this.btnDashboardBack.Text = "🢀 Regresar";
             this.btnDashboardBack.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnDashboardBack.UseVisualStyleBackColor = false;
+            this.btnDashboardBack.Click += new System.EventHandler(this.btnDashboardBack_Click);
             // 
             // btnNewTask
             // 

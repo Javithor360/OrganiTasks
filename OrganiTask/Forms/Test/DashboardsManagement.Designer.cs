@@ -11,6 +11,18 @@
         private System.Windows.Forms.Button btnSaveDashboard;
         private System.Windows.Forms.Label lblCategoryTitle;
         private System.Windows.Forms.Panel panelHeader;
+        private System.Windows.Forms.TextBox txtDashboardDescription;
+        private System.Windows.Forms.Label lblDashboardDescription;
+        private System.Windows.Forms.CheckBox chkCreateDefaultCategory;
+        private System.Windows.Forms.Label lblCategoryName;
+        private System.Windows.Forms.TextBox txtCategoryName;
+        private System.Windows.Forms.Label lblTagName;
+        private System.Windows.Forms.TextBox txtTagName;
+        private System.Windows.Forms.Button btnAddTag;
+        private System.Windows.Forms.ListBox listBoxTags;
+        private System.Windows.Forms.Button btnCreateDashboard;
+        private System.Windows.Forms.Button btnCancel;
+
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
@@ -23,6 +35,7 @@
             }
             base.Dispose(disposing);
         }
+
         #region Windows Form Designer generated code
         /// <summary>
         /// Required method for Designer support - do not modify
@@ -35,6 +48,17 @@
             this.lblCategoryTitle = new System.Windows.Forms.Label();
             this.txtDashboardTitle = new System.Windows.Forms.TextBox();
             this.btnSaveDashboard = new System.Windows.Forms.Button();
+            this.txtDashboardDescription = new System.Windows.Forms.TextBox();
+            this.lblDashboardDescription = new System.Windows.Forms.Label();
+            this.chkCreateDefaultCategory = new System.Windows.Forms.CheckBox();
+            this.lblCategoryName = new System.Windows.Forms.Label();
+            this.txtCategoryName = new System.Windows.Forms.TextBox();
+            this.lblTagName = new System.Windows.Forms.Label();
+            this.txtTagName = new System.Windows.Forms.TextBox();
+            this.btnAddTag = new System.Windows.Forms.Button();
+            this.listBoxTags = new System.Windows.Forms.ListBox();
+            this.btnCreateDashboard = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.panelHeader.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,7 +69,7 @@
             this.panelHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelHeader.Location = new System.Drawing.Point(0, 0);
             this.panelHeader.Name = "panelHeader";
-            this.panelHeader.Size = new System.Drawing.Size(450, 70);
+            this.panelHeader.Size = new System.Drawing.Size(600, 70);
             this.panelHeader.TabIndex = 0;
             // 
             // lblTitle
@@ -57,7 +81,7 @@
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(221, 28);
             this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "Gestión de Dashboard";
+            this.lblTitle.Text = "CREAR NUEVO TABLERO";
             // 
             // lblCategoryTitle
             // 
@@ -66,29 +90,163 @@
             this.lblCategoryTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
             this.lblCategoryTitle.Location = new System.Drawing.Point(21, 90);
             this.lblCategoryTitle.Name = "lblCategoryTitle";
-            this.lblCategoryTitle.Size = new System.Drawing.Size(76, 19);
+            this.lblCategoryTitle.Size = new System.Drawing.Size(115, 19);
             this.lblCategoryTitle.TabIndex = 1;
-            this.lblCategoryTitle.Text = "Dashboard";
+            this.lblCategoryTitle.Text = "Título de tablero:";
             // 
             // txtDashboardTitle
             // 
             this.txtDashboardTitle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtDashboardTitle.Location = new System.Drawing.Point(21, 112);
             this.txtDashboardTitle.Name = "txtDashboardTitle";
-            this.txtDashboardTitle.Size = new System.Drawing.Size(410, 25);
+            this.txtDashboardTitle.Size = new System.Drawing.Size(558, 25);
             this.txtDashboardTitle.TabIndex = 2;
+            // 
+            // lblDashboardDescription
+            // 
+            this.lblDashboardDescription.AutoSize = true;
+            this.lblDashboardDescription.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDashboardDescription.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.lblDashboardDescription.Location = new System.Drawing.Point(21, 147);
+            this.lblDashboardDescription.Name = "lblDashboardDescription";
+            this.lblDashboardDescription.Size = new System.Drawing.Size(167, 19);
+            this.lblDashboardDescription.TabIndex = 3;
+            this.lblDashboardDescription.Text = "Descripción (opcional):";
+            // 
+            // txtDashboardDescription
+            // 
+            this.txtDashboardDescription.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtDashboardDescription.Location = new System.Drawing.Point(21, 169);
+            this.txtDashboardDescription.Multiline = true;
+            this.txtDashboardDescription.Name = "txtDashboardDescription";
+            this.txtDashboardDescription.Size = new System.Drawing.Size(558, 60);
+            this.txtDashboardDescription.TabIndex = 4;
+            // 
+            // chkCreateDefaultCategory
+            // 
+            this.chkCreateDefaultCategory.AutoSize = true;
+            this.chkCreateDefaultCategory.Checked = true;
+            this.chkCreateDefaultCategory.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkCreateDefaultCategory.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkCreateDefaultCategory.Location = new System.Drawing.Point(21, 245);
+            this.chkCreateDefaultCategory.Name = "chkCreateDefaultCategory";
+            this.chkCreateDefaultCategory.Size = new System.Drawing.Size(185, 23);
+            this.chkCreateDefaultCategory.TabIndex = 5;
+            this.chkCreateDefaultCategory.Text = "Crear categoría por defecto";
+            this.chkCreateDefaultCategory.UseVisualStyleBackColor = true;
+            this.chkCreateDefaultCategory.CheckedChanged += new System.EventHandler(this.chkCreateDefaultCategory_CheckedChanged);
+            // 
+            // lblCategoryName
+            // 
+            this.lblCategoryName.AutoSize = true;
+            this.lblCategoryName.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCategoryName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.lblCategoryName.Location = new System.Drawing.Point(21, 280);
+            this.lblCategoryName.Name = "lblCategoryName";
+            this.lblCategoryName.Size = new System.Drawing.Size(146, 19);
+            this.lblCategoryName.TabIndex = 6;
+            this.lblCategoryName.Text = "Nombre de categoría:";
+            // 
+            // txtCategoryName
+            // 
+            this.txtCategoryName.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCategoryName.Location = new System.Drawing.Point(21, 302);
+            this.txtCategoryName.Name = "txtCategoryName";
+            this.txtCategoryName.Size = new System.Drawing.Size(558, 25);
+            this.txtCategoryName.TabIndex = 7;
+            this.txtCategoryName.Text = "Status";
+            // 
+            // lblTagName
+            // 
+            this.lblTagName.AutoSize = true;
+            this.lblTagName.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTagName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.lblTagName.Location = new System.Drawing.Point(21, 337);
+            this.lblTagName.Name = "lblTagName";
+            this.lblTagName.Size = new System.Drawing.Size(138, 19);
+            this.lblTagName.TabIndex = 8;
+            this.lblTagName.Text = "Nombre de etiqueta:";
+            // 
+            // txtTagName
+            // 
+            this.txtTagName.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTagName.Location = new System.Drawing.Point(21, 359);
+            this.txtTagName.Name = "txtTagName";
+            this.txtTagName.Size = new System.Drawing.Size(450, 25);
+            this.txtTagName.TabIndex = 9;
+            // 
+            // btnAddTag
+            // 
+            this.btnAddTag.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.btnAddTag.FlatAppearance.BorderSize = 0;
+            this.btnAddTag.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddTag.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnAddTag.ForeColor = System.Drawing.Color.White;
+            this.btnAddTag.Location = new System.Drawing.Point(477, 359);
+            this.btnAddTag.Name = "btnAddTag";
+            this.btnAddTag.Size = new System.Drawing.Size(102, 25);
+            this.btnAddTag.TabIndex = 10;
+            this.btnAddTag.Text = "Agregar";
+            this.btnAddTag.UseVisualStyleBackColor = false;
+            //this.btnAddTag.Click += new System.EventHandler(this.btnAddTag_Click);
+            // 
+            // listBoxTags
+            // 
+            this.listBoxTags.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listBoxTags.FormattingEnabled = true;
+            this.listBoxTags.ItemHeight = 17;
+            this.listBoxTags.Items.AddRange(new object[] {
+            "Sin iniciar",
+            "En progreso",
+            "Finalizada"});
+            this.listBoxTags.Location = new System.Drawing.Point(21, 393);
+            this.listBoxTags.Name = "listBoxTags";
+            this.listBoxTags.Size = new System.Drawing.Size(558, 106);
+            this.listBoxTags.TabIndex = 11;
+            // 
+            // btnCreateDashboard
+            // 
+            this.btnCreateDashboard.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.btnCreateDashboard.FlatAppearance.BorderSize = 0;
+            this.btnCreateDashboard.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCreateDashboard.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnCreateDashboard.ForeColor = System.Drawing.Color.White;
+            this.btnCreateDashboard.Location = new System.Drawing.Point(346, 515);
+            this.btnCreateDashboard.Name = "btnCreateDashboard";
+            this.btnCreateDashboard.Size = new System.Drawing.Size(110, 40);
+            this.btnCreateDashboard.TabIndex = 12;
+            this.btnCreateDashboard.Text = "CREAR";
+            this.btnCreateDashboard.UseVisualStyleBackColor = false;
+            //this.btnCreateDashboard.Click += new System.EventHandler(this.btnCreateDashboard_Click);
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.btnCancel.FlatAppearance.BorderSize = 1;
+            this.btnCancel.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnCancel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.btnCancel.Location = new System.Drawing.Point(469, 515);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(110, 40);
+            this.btnCancel.TabIndex = 13;
+            this.btnCancel.Text = "CANCELAR";
+            this.btnCancel.UseVisualStyleBackColor = false;
+            //this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnSaveDashboard
             // 
+            this.btnSaveDashboard.Visible = false;
             this.btnSaveDashboard.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
             this.btnSaveDashboard.FlatAppearance.BorderSize = 0;
             this.btnSaveDashboard.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSaveDashboard.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnSaveDashboard.ForeColor = System.Drawing.Color.White;
-            this.btnSaveDashboard.Location = new System.Drawing.Point(21, 157);
+            this.btnSaveDashboard.Location = new System.Drawing.Point(21, 515);
             this.btnSaveDashboard.Name = "btnSaveDashboard";
-            this.btnSaveDashboard.Size = new System.Drawing.Size(410, 40);
-            this.btnSaveDashboard.TabIndex = 3;
+            this.btnSaveDashboard.Size = new System.Drawing.Size(110, 40);
+            this.btnSaveDashboard.TabIndex = 14;
             this.btnSaveDashboard.Text = "GUARDAR";
             this.btnSaveDashboard.UseVisualStyleBackColor = false;
             this.btnSaveDashboard.Click += new System.EventHandler(this.btnSaveDashboard_Click);
@@ -96,7 +254,18 @@
             // DashboardsManagement
             // 
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this.ClientSize = new System.Drawing.Size(450, 220);
+            this.ClientSize = new System.Drawing.Size(600, 580);
+            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnCreateDashboard);
+            this.Controls.Add(this.listBoxTags);
+            this.Controls.Add(this.btnAddTag);
+            this.Controls.Add(this.txtTagName);
+            this.Controls.Add(this.lblTagName);
+            this.Controls.Add(this.txtCategoryName);
+            this.Controls.Add(this.lblCategoryName);
+            this.Controls.Add(this.chkCreateDefaultCategory);
+            this.Controls.Add(this.txtDashboardDescription);
+            this.Controls.Add(this.lblDashboardDescription);
             this.Controls.Add(this.lblCategoryTitle);
             this.Controls.Add(this.txtDashboardTitle);
             this.Controls.Add(this.btnSaveDashboard);
@@ -105,12 +274,12 @@
             this.MaximizeBox = false;
             this.Name = "DashboardsManagement";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "OrganiTask - Gestión de Dashboard";
+            this.Text = "OrganiTask - Crear Nuevo Tablero";
+            //this.Load += new System.EventHandler(this.DashboardsManagement_Load);
             this.panelHeader.ResumeLayout(false);
             this.panelHeader.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
         #endregion
         private System.Windows.Forms.DataGridView dataGridView1;

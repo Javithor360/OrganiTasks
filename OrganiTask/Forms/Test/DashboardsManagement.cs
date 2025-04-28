@@ -64,6 +64,40 @@ namespace OrganiTask.Forms.Test
             this.Close();
         }
 
+        private void chkCreateDefaultCategory_CheckedChanged(object sender, EventArgs e)
+        {
+            SetCategoryControlsState(chkCreateDefaultCategory.Checked);
+        }
+
+        private void SetCategoryControlsState(bool enabled)
+        {
+            // Enable or disable category controls based on the checkbox state
+            lblCategoryName.Enabled = enabled;
+            txtCategoryName.Enabled = enabled;
+            lblTagName.Enabled = enabled;
+            txtTagName.Enabled = enabled;
+            btnAddTag.Enabled = enabled;
+            listBoxTags.Enabled = enabled;
+
+            // If creating default category, set default values
+            if (enabled)
+            {
+                txtCategoryName.Text = "Status";
+
+                // Clear and add default tags if the list is empty
+                if (listBoxTags.Items.Count == 0)
+                {
+                    listBoxTags.Items.Add("Sin iniciar");
+                    listBoxTags.Items.Add("En progreso");
+                    listBoxTags.Items.Add("Finalizada");
+                }
+            }
+            else
+            {
+                txtCategoryName.Text = string.Empty;
+            }
+        }
+
         private void btnUpdateDashboard_Click(object sender, EventArgs e)
         {
             //if (dgvDashboards.SelectedRows.Count == 0)

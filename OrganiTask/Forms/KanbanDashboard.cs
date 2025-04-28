@@ -111,9 +111,13 @@ namespace OrganiTask.Forms
             {
                 Text = task.Title,
                 Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                AutoSize = true,
-                Location = new Point(5, 5)
+                AutoSize = false, // Controlar el ancho
+                TextAlign = ContentAlignment.MiddleLeft,
+                Dock = DockStyle.Top, // Hacer que el ancho ocupe todo el panel
+                Height = 25, 
+                Location = new Point(0, 0) 
             };
+
             card.Controls.Add(lblTitle); // Agregamos el título a la tarjeta
 
             // Descripción de la tarea
@@ -128,7 +132,7 @@ namespace OrganiTask.Forms
 
             return card; // Retornamos la tarjeta
         }
-        private void RefreshDashboard()
+        private void RefreshDashboard()     
         {
             DashboardViewModel model = controller.LoadKanban(dashboardId, selectedCategory.Title);
 
@@ -379,6 +383,11 @@ namespace OrganiTask.Forms
             DashboardSettings settings = new DashboardSettings(dashboardId); // Mostrar configuración del tablero
             settings.DashboardInfoChanged += EventRefreshDashboard;
             settings.ShowDialog();
+        }
+
+        private void btnDashboardBack_Click(object sender, EventArgs e)
+        {
+            this.Close(); // Cerrar el formulario
         }
     }
 }
