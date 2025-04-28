@@ -114,8 +114,9 @@ namespace OrganiTask.Forms
                 AutoSize = false, // Controlar el ancho
                 TextAlign = ContentAlignment.MiddleLeft,
                 Dock = DockStyle.Top, // Hacer que el ancho ocupe todo el panel
-                Height = 25, 
-                Location = new Point(0, 0) 
+                Height = 25,
+                Location = new Point(0, 0),
+                AutoEllipsis = true
             };
 
             card.Controls.Add(lblTitle); // Agregamos el título a la tarjeta
@@ -132,7 +133,7 @@ namespace OrganiTask.Forms
 
             return card; // Retornamos la tarjeta
         }
-        private void RefreshDashboard()     
+        private void RefreshDashboard()
         {
             DashboardViewModel model = controller.LoadKanban(dashboardId, selectedCategory.Title);
 
@@ -142,6 +143,15 @@ namespace OrganiTask.Forms
                 this.Close();
                 return;
             }
+
+            // Se oculta el boton con el fin de siempre mostrar la columna "Sin Etiquetar"
+            if (model.Columns.First.Tag.Id == -1)
+            {
+                btnShowHidden.Visible = false;
+                showHiddenColumn = true;
+            }
+            else
+                btnShowHidden.Visible = true;
 
             lblDashboardTitle.Text = model.DashboardTitle;
             RenderDashboard(model);

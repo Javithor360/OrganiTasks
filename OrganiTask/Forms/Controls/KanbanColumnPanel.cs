@@ -24,7 +24,7 @@ namespace OrganiTask.Forms.Controls
         // Constructor que recibe una etiqueta y la asigna al panel para estilizarlo
         public KanbanColumnPanel(Tag tag)
         {
-            this.Column = tag; // Asignar la etiqueta al panel
+            this.Column = tag;
 
             // Configuración estándar del panel
             this.FlowDirection = FlowDirection.TopDown;
@@ -32,9 +32,18 @@ namespace OrganiTask.Forms.Controls
             this.AutoScroll = true;
             this.Width = 250;
             this.Height = 1000;
-            this.Margin = new Padding(10);
+            this.Margin = new Padding(8);
             this.AllowDrop = true;
             this.BackColor = GetColorColumn(tag.Color);
+
+            // Contenedor para el título
+            Panel headerPanel = new Panel
+            {
+                Height = 30, // Altura fija para el título
+                Width = 250,
+                Dock = DockStyle.None,
+                BackColor = Color.Transparent // Fondo transparente
+            };
 
             // Label con el nombre de la columna
             Label lblTag = new Label
@@ -42,18 +51,21 @@ namespace OrganiTask.Forms.Controls
                 Text = tag.Name,
                 Font = new Font("Segoe UI", 12, FontStyle.Bold),
                 AutoSize = false,
-                TextAlign = ContentAlignment.MiddleCenter, // Centrar el texto
-                Dock = DockStyle.Top, // Hacer que el ancho ocupe todo el panel
-                Height = 25,
-                Location = new Point(0, 0) 
-
+                TextAlign = ContentAlignment.MiddleCenter,
+                Dock = DockStyle.Fill,
+                AutoEllipsis = true
             };
-            this.Controls.Add(lblTag); // Agregar el label al panel
+
+            headerPanel.Controls.Add(lblTag); // Agregar el label al contenedor
+            this.Controls.Add(headerPanel); // Agregar el contenedor al panel principal
+
+            headerPanel.BringToFront();
 
             // Suscribir los eventos de drag y drop
-            this.DragEnter += ColumnDragEnter; // Evento de drag
-            this.DragDrop += ColumnDragDrop; // Evento de drop
+            this.DragEnter += ColumnDragEnter;
+            this.DragDrop += ColumnDragDrop;
         }
+
 
         private Color GetColorColumn(string colorString)
         {

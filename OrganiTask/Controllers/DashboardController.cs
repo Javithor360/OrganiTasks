@@ -42,8 +42,19 @@ namespace OrganiTask.Controllers
                     .Include("Tag") // Cargar las etiquetas de la categoría
                     .FirstOrDefault(c => c.Title == categoryTitle && c.DashboardId == dashboardId);
 
+                // Si no se encuentra la categoría, se retorna el modelo de vista con la "Columna Etiquetar"
                 if (category == null)
-                    return viewModel; // Si no se encuentra la categoría, se retorna el modelo de vista sin columnas
+                {
+                    // Obtener todas las tareas del dashboard
+                    OrganiList<Task> allTasks = context.Tasks
+                        .Where(t => t.DashboardId == dashboardId)
+                        .ToOrganiList();
+
+                    // Crear una columna "Sin Etiquetar" aunque no haya categoría
+                    viewModel.Columns.AddLast(createNoTagColum(allTasks)); // Agregar la columna sin etiquetas
+
+                    return viewModel;
+                }
 
                 // Para cada etiqueta en la categoría se crea una columna
                 foreach (Tag tag in category.Tag)
@@ -76,42 +87,47 @@ namespace OrganiTask.Controllers
                     viewModel.Columns.AddLast(column); // Agregar la columna al modelo de vista
                 }
 
-                // Ahora, creamos una columna adicional para aquellas tareas que no tienen
-                // etiqueta asignada en esta categoría particular
-                ColumnViewModel noTagColumn = new ColumnViewModel
-                {
-                    Tag = new Tag
-                    {
-                        Id = -1, // ID ficticio para la columna sin etiqueta
-                        Name = "Sin Etiquetar", // Título de la columna
-                        CategoryId = category.Id, // Asignar la categoría
-                    },
-                    Tasks = new OrganiList<TaskViewModel>() // Inicializar la lista de tareas
-                };
-
                 // Realizamos la consulta para obtener dichas tareas que NO poseen ningún
                 // TaskTag asociado a la categoría actual
                 OrganiList<Task> taskWithoutTag = context.Tasks
                     .Where(t => t.DashboardId == dashboardId && !t.TaskTag.Any(tt => tt.Tag.CategoryId == category.Id))
                     .ToOrganiList();
 
-                // Iteramos cada task a el modelo de vista de task
-                foreach (Task task in taskWithoutTag)
-                {
-                    noTagColumn.Tasks.AddLast(new TaskViewModel
-                    {
-                        Id = task.Id,
-                        Title = task.Title,
-                        Description = task.Description,
-                        StartDate = (DateTime)task.StartDate,
-                        EndDate = (DateTime)task.EndDate
-                    });
-                }
-
-                viewModel.Columns.AddLast(noTagColumn); // Agregar la columna de tareas sin etiqueta al modelo de vista
+                // Ahora, creamos una columna adicional para aquellas tareas que no tienen
+                // etiqueta asignada en esta categoría particular
+                viewModel.Columns.AddLast(createNoTagColum(taskWithoutTag, category.Id)); // Agregar la columna de tareas sin etiqueta al modelo de vista
             }
 
             return viewModel;
+        }
+
+        private ColumnViewModel createNoTagColum(OrganiList<Task> tasks, int categoryId = -1)
+        {
+               ColumnViewModel noTagColumn = new ColumnViewModel
+                {
+                    Tag = new Tag
+                    {
+                        Id = -1, // ID ficticio para la columna sin etiqueta
+                        Name = "Sin Etiquetar", // Título de la columna
+                        CategoryId = categoryId, // Asignar la categoría
+                    },
+                    Tasks = new OrganiList<TaskViewModel>() // Inicializar la lista de tareas
+                };
+
+            // Iteramos cada task a el modelo de vista de task
+            foreach (Task task in tasks)
+            {
+                noTagColumn.Tasks.AddLast(new TaskViewModel
+                {
+                    Id = task.Id,
+                    Title = task.Title,
+                    Description = task.Description,
+                    StartDate = (DateTime)task.StartDate,
+                    EndDate = (DateTime)task.EndDate
+                });
+            }
+
+            return noTagColumn;
         }
 
         /// <summary>

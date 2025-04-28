@@ -154,8 +154,10 @@ namespace OrganiTask.Forms.Test
             {
                 Text = dashboard.DashboardTitle,
                 Font = new Font("Segoe UI", 14, FontStyle.Bold),
-                AutoSize = true,
-                Location = new Point(10, 10)
+                AutoSize = false,
+                Location = new Point(10, 10),
+                Width = card.Width - 30,
+                AutoEllipsis = true
             };
 
             // Etiqueta con la descripción
@@ -164,8 +166,9 @@ namespace OrganiTask.Forms.Test
                 Text = dashboard.Description,
                 Font = new Font("Segoe UI", 10),
                 AutoSize = true,
-                MaximumSize = new Size(card.Width - 100, 50),
-                Location = new Point(10, 40)
+                MaximumSize = new Size(card.Width - 10, 150),
+                Location = new Point(10, 45),
+                AutoEllipsis = true
             };
 
             // Botón para abrir el dashboard
@@ -251,7 +254,7 @@ namespace OrganiTask.Forms.Test
         private void HandleDashboardClick(int dashboardId)
         {
             KanbanDashboard kanban = new KanbanDashboard(dashboardId);
-            kanban.Show();
+            kanban.ShowDialog();
         }
 
 
