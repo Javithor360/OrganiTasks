@@ -88,7 +88,6 @@ namespace OrganiTask.Forms.Test
 
         private void SetCategoryControlsState(bool enabled)
         {
-            // Enable or disable category controls based on the checkbox state
             lblCategoryName.Enabled = enabled;
             txtCategoryName.Enabled = enabled;
             lblTagName.Enabled = enabled;
@@ -96,12 +95,10 @@ namespace OrganiTask.Forms.Test
             btnAddTag.Enabled = enabled;
             listBoxTags.Enabled = enabled;
 
-            // If creating default category, set default values
             if (enabled)
             {
                 txtCategoryName.Text = "Status";
 
-                // Clear and add default tags if the list is empty
                 if (listBoxTags.Items.Count == 0)
                 {
                     listBoxTags.Items.Add("Sin iniciar");

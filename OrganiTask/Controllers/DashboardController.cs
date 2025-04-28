@@ -15,12 +15,11 @@ namespace OrganiTask.Controllers
     {
         /// <summary>
         /// Carga un tablero Kanban para un tablero y una categoría específica.
-        /// Por defecto carga la categoría "Status".
         /// </summary>
         /// <param name="dashboardId">Identificador del tablero.</param>
         /// <param name="categoryTitle">Título de la categoría.</param>
         /// <returns>Modelo de vista del tablero Kanban.</returns>
-        public DashboardViewModel LoadKanban(int dashboardId, string categoryTitle = "Status")
+        public DashboardViewModel LoadKanban(int dashboardId, string categoryTitle)
         {
             // Instanciamos el modelo de vista
             DashboardViewModel viewModel = new DashboardViewModel();
@@ -42,7 +41,7 @@ namespace OrganiTask.Controllers
                     .Include("Tag") // Cargar las etiquetas de la categoría
                     .FirstOrDefault(c => c.Title == categoryTitle && c.DashboardId == dashboardId);
 
-                // Si no se encuentra la categoría, se retorna el modelo de vista con la "Columna Etiquetar"
+                // Si no se encuentra la categoría, se retorna el modelo de vista con la "Columna Sin Etiquetar"
                 if (category == null)
                 {
                     // Obtener todas las tareas del dashboard
@@ -204,11 +203,10 @@ namespace OrganiTask.Controllers
         }
 
         /// <summary>
-        /// Devuelve el título de la primera categoría de un tablero,
-        /// o "Status" si no hay ninguna.
+        /// Devuelve el título de la primera categoría de un tablero
         /// </summary>
         /// <param name="dashboardId">Identificador del tablero.</param>
-        /// <returns>Título de la primera categoría o "Status".</returns>   
+        /// <returns>Título de la primera categoría</returns>   
         public CategoryViewModel GetDefaultCategory(int dashboardId)
         {
             using (OrganiTaskDB context = new OrganiTaskDB())
@@ -227,7 +225,7 @@ namespace OrganiTask.Controllers
                 return firstCategory ?? new CategoryViewModel
                 {
                     Id = -1, // ID ficticio para la categoría por defecto
-                    Title = "Status" // Título por defecto
+                    Title = "" // Título por defecto
                 };
             }
         }
