@@ -142,7 +142,8 @@ namespace OrganiTask.Controllers
         /// Crea un nuevo tablero.
         /// </summary>
         /// <param name="newDashboard">Modelo de vista del nuevo tablero.</param>
-        public void CreateDashboard(DashboardViewModel newDashboard)
+        /// <returns>Modelo de vista del tablero Kanban.</returns>
+        public DashboardViewModel CreateDashboard(DashboardViewModel newDashboard)
         {
             // Bloque using para liberación de contexto al finalizar bloque de codigo
             using (OrganiTaskDB context = new OrganiTaskDB())
@@ -159,6 +160,8 @@ namespace OrganiTask.Controllers
                 context.SaveChanges(); // Guardar los cambios
 
                 newDashboard.Id = dashboard.Id; // Asignar el ID generado al modelo de la vista
+
+                return newDashboard;
             }
         }
 

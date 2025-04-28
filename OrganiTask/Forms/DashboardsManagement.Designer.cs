@@ -20,7 +20,6 @@
         private System.Windows.Forms.TextBox txtTagName;
         private System.Windows.Forms.Button btnAddTag;
         private System.Windows.Forms.ListBox listBoxTags;
-        private System.Windows.Forms.Button btnCreateDashboard;
         private System.Windows.Forms.Button btnCancel;
 
         /// <summary>
@@ -57,7 +56,6 @@
             this.txtTagName = new System.Windows.Forms.TextBox();
             this.btnAddTag = new System.Windows.Forms.Button();
             this.listBoxTags = new System.Windows.Forms.ListBox();
-            this.btnCreateDashboard = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.panelHeader.SuspendLayout();
             this.SuspendLayout();
@@ -79,7 +77,7 @@
             this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
             this.lblTitle.Location = new System.Drawing.Point(20, 20);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(221, 28);
+            this.lblTitle.Size = new System.Drawing.Size(243, 28);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "CREAR NUEVO TABLERO";
             // 
@@ -90,7 +88,7 @@
             this.lblCategoryTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
             this.lblCategoryTitle.Location = new System.Drawing.Point(21, 90);
             this.lblCategoryTitle.Name = "lblCategoryTitle";
-            this.lblCategoryTitle.Size = new System.Drawing.Size(115, 19);
+            this.lblCategoryTitle.Size = new System.Drawing.Size(112, 19);
             this.lblCategoryTitle.TabIndex = 1;
             this.lblCategoryTitle.Text = "Título de tablero:";
             // 
@@ -102,16 +100,21 @@
             this.txtDashboardTitle.Size = new System.Drawing.Size(558, 25);
             this.txtDashboardTitle.TabIndex = 2;
             // 
-            // lblDashboardDescription
+            // btnSaveDashboard
             // 
-            this.lblDashboardDescription.AutoSize = true;
-            this.lblDashboardDescription.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDashboardDescription.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.lblDashboardDescription.Location = new System.Drawing.Point(21, 147);
-            this.lblDashboardDescription.Name = "lblDashboardDescription";
-            this.lblDashboardDescription.Size = new System.Drawing.Size(167, 19);
-            this.lblDashboardDescription.TabIndex = 3;
-            this.lblDashboardDescription.Text = "Descripción (opcional):";
+            this.btnSaveDashboard.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.btnSaveDashboard.FlatAppearance.BorderSize = 0;
+            this.btnSaveDashboard.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSaveDashboard.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnSaveDashboard.ForeColor = System.Drawing.Color.White;
+            this.btnSaveDashboard.Location = new System.Drawing.Point(353, 523);
+            this.btnSaveDashboard.Name = "btnSaveDashboard";
+            this.btnSaveDashboard.Size = new System.Drawing.Size(110, 40);
+            this.btnSaveDashboard.TabIndex = 14;
+            this.btnSaveDashboard.Text = "CREAR";
+            this.btnSaveDashboard.UseVisualStyleBackColor = false;
+            this.btnSaveDashboard.Visible = true;
+            this.btnSaveDashboard.Click += new System.EventHandler(this.btnSaveDashboard_Click);
             // 
             // txtDashboardDescription
             // 
@@ -122,6 +125,17 @@
             this.txtDashboardDescription.Size = new System.Drawing.Size(558, 60);
             this.txtDashboardDescription.TabIndex = 4;
             // 
+            // lblDashboardDescription
+            // 
+            this.lblDashboardDescription.AutoSize = true;
+            this.lblDashboardDescription.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDashboardDescription.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.lblDashboardDescription.Location = new System.Drawing.Point(21, 147);
+            this.lblDashboardDescription.Name = "lblDashboardDescription";
+            this.lblDashboardDescription.Size = new System.Drawing.Size(145, 19);
+            this.lblDashboardDescription.TabIndex = 3;
+            this.lblDashboardDescription.Text = "Descripción (opcional):";
+            // 
             // chkCreateDefaultCategory
             // 
             this.chkCreateDefaultCategory.AutoSize = true;
@@ -130,7 +144,7 @@
             this.chkCreateDefaultCategory.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkCreateDefaultCategory.Location = new System.Drawing.Point(21, 245);
             this.chkCreateDefaultCategory.Name = "chkCreateDefaultCategory";
-            this.chkCreateDefaultCategory.Size = new System.Drawing.Size(185, 23);
+            this.chkCreateDefaultCategory.Size = new System.Drawing.Size(195, 23);
             this.chkCreateDefaultCategory.TabIndex = 5;
             this.chkCreateDefaultCategory.Text = "Crear categoría por defecto";
             this.chkCreateDefaultCategory.UseVisualStyleBackColor = true;
@@ -143,7 +157,7 @@
             this.lblCategoryName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
             this.lblCategoryName.Location = new System.Drawing.Point(21, 280);
             this.lblCategoryName.Name = "lblCategoryName";
-            this.lblCategoryName.Size = new System.Drawing.Size(146, 19);
+            this.lblCategoryName.Size = new System.Drawing.Size(141, 19);
             this.lblCategoryName.TabIndex = 6;
             this.lblCategoryName.Text = "Nombre de categoría:";
             // 
@@ -163,7 +177,7 @@
             this.lblTagName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
             this.lblTagName.Location = new System.Drawing.Point(21, 337);
             this.lblTagName.Name = "lblTagName";
-            this.lblTagName.Size = new System.Drawing.Size(138, 19);
+            this.lblTagName.Size = new System.Drawing.Size(135, 19);
             this.lblTagName.TabIndex = 8;
             this.lblTagName.Text = "Nombre de etiqueta:";
             // 
@@ -184,11 +198,10 @@
             this.btnAddTag.ForeColor = System.Drawing.Color.White;
             this.btnAddTag.Location = new System.Drawing.Point(477, 359);
             this.btnAddTag.Name = "btnAddTag";
-            this.btnAddTag.Size = new System.Drawing.Size(102, 25);
+            this.btnAddTag.Size = new System.Drawing.Size(102, 28);
             this.btnAddTag.TabIndex = 10;
             this.btnAddTag.Text = "Agregar";
             this.btnAddTag.UseVisualStyleBackColor = false;
-            //this.btnAddTag.Click += new System.EventHandler(this.btnAddTag_Click);
             // 
             // listBoxTags
             // 
@@ -199,64 +212,30 @@
             "Sin iniciar",
             "En progreso",
             "Finalizada"});
-            this.listBoxTags.Location = new System.Drawing.Point(21, 393);
+            this.listBoxTags.Location = new System.Drawing.Point(21, 401);
             this.listBoxTags.Name = "listBoxTags";
             this.listBoxTags.Size = new System.Drawing.Size(558, 106);
             this.listBoxTags.TabIndex = 11;
             // 
-            // btnCreateDashboard
-            // 
-            this.btnCreateDashboard.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.btnCreateDashboard.FlatAppearance.BorderSize = 0;
-            this.btnCreateDashboard.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCreateDashboard.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnCreateDashboard.ForeColor = System.Drawing.Color.White;
-            this.btnCreateDashboard.Location = new System.Drawing.Point(346, 515);
-            this.btnCreateDashboard.Name = "btnCreateDashboard";
-            this.btnCreateDashboard.Size = new System.Drawing.Size(110, 40);
-            this.btnCreateDashboard.TabIndex = 12;
-            this.btnCreateDashboard.Text = "CREAR";
-            this.btnCreateDashboard.UseVisualStyleBackColor = false;
-            //this.btnCreateDashboard.Click += new System.EventHandler(this.btnCreateDashboard_Click);
-            // 
             // btnCancel
             // 
             this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this.btnCancel.FlatAppearance.BorderSize = 1;
             this.btnCancel.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnCancel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.btnCancel.Location = new System.Drawing.Point(469, 515);
+            this.btnCancel.Location = new System.Drawing.Point(469, 523);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(110, 40);
             this.btnCancel.TabIndex = 13;
             this.btnCancel.Text = "CANCELAR";
             this.btnCancel.UseVisualStyleBackColor = false;
-            //this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
-            // btnSaveDashboard
-            // 
-            this.btnSaveDashboard.Visible = false;
-            this.btnSaveDashboard.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.btnSaveDashboard.FlatAppearance.BorderSize = 0;
-            this.btnSaveDashboard.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSaveDashboard.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnSaveDashboard.ForeColor = System.Drawing.Color.White;
-            this.btnSaveDashboard.Location = new System.Drawing.Point(21, 515);
-            this.btnSaveDashboard.Name = "btnSaveDashboard";
-            this.btnSaveDashboard.Size = new System.Drawing.Size(110, 40);
-            this.btnSaveDashboard.TabIndex = 14;
-            this.btnSaveDashboard.Text = "GUARDAR";
-            this.btnSaveDashboard.UseVisualStyleBackColor = false;
-            this.btnSaveDashboard.Click += new System.EventHandler(this.btnSaveDashboard_Click);
             // 
             // DashboardsManagement
             // 
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
             this.ClientSize = new System.Drawing.Size(600, 580);
             this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnCreateDashboard);
             this.Controls.Add(this.listBoxTags);
             this.Controls.Add(this.btnAddTag);
             this.Controls.Add(this.txtTagName);
@@ -275,11 +254,11 @@
             this.Name = "DashboardsManagement";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "OrganiTask - Crear Nuevo Tablero";
-            //this.Load += new System.EventHandler(this.DashboardsManagement_Load);
             this.panelHeader.ResumeLayout(false);
             this.panelHeader.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
         #endregion
         private System.Windows.Forms.DataGridView dataGridView1;

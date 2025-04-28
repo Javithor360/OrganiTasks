@@ -57,8 +57,8 @@ namespace OrganiTask.Forms
             // 
             this.flpMain.AutoScroll = true;
             this.flpMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this.flpMain.Controls.Add(this.txtHeader);
             this.flpMain.Controls.Add(this.pnlCreator);
+            this.flpMain.Controls.Add(this.txtHeader);
             this.flpMain.Controls.Add(this.lblDescKey);
             this.flpMain.Controls.Add(this.lblDescText);
             this.flpMain.Controls.Add(this.txtDescription);
@@ -79,7 +79,7 @@ namespace OrganiTask.Forms
             // txtHeader
             // 
             this.txtHeader.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtHeader.Location = new System.Drawing.Point(23, 20);
+            this.txtHeader.Location = new System.Drawing.Point(23, 54);
             this.txtHeader.Margin = new System.Windows.Forms.Padding(3, 0, 3, 15);
             this.txtHeader.Name = "txtHeader";
             this.txtHeader.Size = new System.Drawing.Size(440, 25);
@@ -92,7 +92,7 @@ namespace OrganiTask.Forms
             this.pnlCreator.BackColor = System.Drawing.Color.Transparent;
             this.pnlCreator.Controls.Add(this.lblCreatorKey);
             this.pnlCreator.Controls.Add(this.lblCreatorValue);
-            this.pnlCreator.Location = new System.Drawing.Point(20, 60);
+            this.pnlCreator.Location = new System.Drawing.Point(20, 20);
             this.pnlCreator.Margin = new System.Windows.Forms.Padding(0, 0, 0, 15);
             this.pnlCreator.Name = "pnlCreator";
             this.pnlCreator.Size = new System.Drawing.Size(80, 19);

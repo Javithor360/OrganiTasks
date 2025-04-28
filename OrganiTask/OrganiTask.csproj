@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\TaskController.cs" />
@@ -173,10 +174,10 @@
     <Compile Include="Forms\TaskDetails.Designer.cs">
       <DependentUpon>TaskDetails.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Test\DashboardsManagement.cs">
+    <Compile Include="Forms\DashboardsManagement.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Test\DashboardsManagement.Designer.cs">
+    <Compile Include="Forms\DashboardsManagement.Designer.cs">
       <DependentUpon>DashboardsManagement.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Test\CategoriesManagement.cs">
@@ -224,7 +225,7 @@
     <EmbeddedResource Include="Forms\TaskDetails.resx">
       <DependentUpon>TaskDetails.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Test\DashboardsManagement.resx">
+    <EmbeddedResource Include="Forms\DashboardsManagement.resx">
       <DependentUpon>DashboardsManagement.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Test\CategoriesManagement.resx">
