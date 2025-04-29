@@ -22,6 +22,7 @@ namespace OrganiTask.Forms
         private Button btnEdit;
         private Button btnSave;
         private Button btnCancel;
+        private Panel pnlHeader;
 
         protected override void Dispose(bool disposing)
         {
@@ -33,7 +34,6 @@ namespace OrganiTask.Forms
         private void InitializeComponent()
         {
             this.flpMain = new System.Windows.Forms.FlowLayoutPanel();
-            this.lblHeader = new System.Windows.Forms.Label();
             this.txtHeader = new System.Windows.Forms.TextBox();
             this.pnlCreator = new System.Windows.Forms.FlowLayoutPanel();
             this.lblCreatorKey = new System.Windows.Forms.Label();
@@ -46,16 +46,19 @@ namespace OrganiTask.Forms
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.pnlHeader = new System.Windows.Forms.Panel();
+            this.lblHeader = new System.Windows.Forms.Label();
             this.flpMain.SuspendLayout();
             this.pnlCreator.SuspendLayout();
+            this.pnlHeader.SuspendLayout();
             this.SuspendLayout();
             // 
             // flpMain
             // 
             this.flpMain.AutoScroll = true;
-            this.flpMain.Controls.Add(this.lblHeader);
-            this.flpMain.Controls.Add(this.txtHeader);
+            this.flpMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
             this.flpMain.Controls.Add(this.pnlCreator);
+            this.flpMain.Controls.Add(this.txtHeader);
             this.flpMain.Controls.Add(this.lblDescKey);
             this.flpMain.Controls.Add(this.lblDescText);
             this.flpMain.Controls.Add(this.txtDescription);
@@ -66,39 +69,31 @@ namespace OrganiTask.Forms
             this.flpMain.Controls.Add(this.btnCancel);
             this.flpMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flpMain.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flpMain.Location = new System.Drawing.Point(0, 0);
+            this.flpMain.Location = new System.Drawing.Point(0, 70);
             this.flpMain.Name = "flpMain";
             this.flpMain.Padding = new System.Windows.Forms.Padding(20);
-            this.flpMain.Size = new System.Drawing.Size(500, 600);
+            this.flpMain.Size = new System.Drawing.Size(484, 530);
             this.flpMain.TabIndex = 0;
             this.flpMain.WrapContents = false;
             // 
-            // lblHeader
-            // 
-            this.lblHeader.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.lblHeader.Location = new System.Drawing.Point(23, 20);
-            this.lblHeader.Name = "lblHeader";
-            this.lblHeader.Size = new System.Drawing.Size(440, 30);
-            this.lblHeader.TabIndex = 0;
-            this.lblHeader.Text = "Configuración del Tablero";
-            this.lblHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // txtHeader
             // 
-            this.txtHeader.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.txtHeader.Location = new System.Drawing.Point(23, 53);
+            this.txtHeader.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtHeader.Location = new System.Drawing.Point(23, 54);
+            this.txtHeader.Margin = new System.Windows.Forms.Padding(3, 0, 3, 15);
             this.txtHeader.Name = "txtHeader";
-            this.txtHeader.Size = new System.Drawing.Size(440, 29);
+            this.txtHeader.Size = new System.Drawing.Size(440, 25);
             this.txtHeader.TabIndex = 1;
             this.txtHeader.Visible = false;
             // 
             // pnlCreator
             // 
             this.pnlCreator.AutoSize = true;
+            this.pnlCreator.BackColor = System.Drawing.Color.Transparent;
             this.pnlCreator.Controls.Add(this.lblCreatorKey);
             this.pnlCreator.Controls.Add(this.lblCreatorValue);
-            this.pnlCreator.Location = new System.Drawing.Point(20, 95);
-            this.pnlCreator.Margin = new System.Windows.Forms.Padding(0, 10, 0, 0);
+            this.pnlCreator.Location = new System.Drawing.Point(20, 20);
+            this.pnlCreator.Margin = new System.Windows.Forms.Padding(0, 0, 0, 15);
             this.pnlCreator.Name = "pnlCreator";
             this.pnlCreator.Size = new System.Drawing.Size(80, 19);
             this.pnlCreator.TabIndex = 2;
@@ -108,6 +103,7 @@ namespace OrganiTask.Forms
             // 
             this.lblCreatorKey.AutoSize = true;
             this.lblCreatorKey.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblCreatorKey.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
             this.lblCreatorKey.Location = new System.Drawing.Point(3, 0);
             this.lblCreatorKey.Name = "lblCreatorKey";
             this.lblCreatorKey.Size = new System.Drawing.Size(69, 19);
@@ -118,6 +114,7 @@ namespace OrganiTask.Forms
             // 
             this.lblCreatorValue.AutoSize = true;
             this.lblCreatorValue.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblCreatorValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.lblCreatorValue.Location = new System.Drawing.Point(80, 0);
             this.lblCreatorValue.Margin = new System.Windows.Forms.Padding(5, 0, 0, 0);
             this.lblCreatorValue.Name = "lblCreatorValue";
@@ -128,8 +125,9 @@ namespace OrganiTask.Forms
             // 
             this.lblDescKey.AutoSize = true;
             this.lblDescKey.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblDescKey.Location = new System.Drawing.Point(20, 124);
-            this.lblDescKey.Margin = new System.Windows.Forms.Padding(0, 10, 0, 0);
+            this.lblDescKey.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.lblDescKey.Location = new System.Drawing.Point(20, 94);
+            this.lblDescKey.Margin = new System.Windows.Forms.Padding(0, 0, 0, 5);
             this.lblDescKey.Name = "lblDescKey";
             this.lblDescKey.Size = new System.Drawing.Size(91, 19);
             this.lblDescKey.TabIndex = 3;
@@ -139,8 +137,9 @@ namespace OrganiTask.Forms
             // 
             this.lblDescText.AutoSize = true;
             this.lblDescText.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblDescText.Location = new System.Drawing.Point(20, 145);
-            this.lblDescText.Margin = new System.Windows.Forms.Padding(0, 2, 0, 10);
+            this.lblDescText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lblDescText.Location = new System.Drawing.Point(20, 118);
+            this.lblDescText.Margin = new System.Windows.Forms.Padding(0, 0, 0, 15);
             this.lblDescText.MaximumSize = new System.Drawing.Size(440, 0);
             this.lblDescText.Name = "lblDescText";
             this.lblDescText.Size = new System.Drawing.Size(0, 19);
@@ -148,8 +147,9 @@ namespace OrganiTask.Forms
             // 
             // txtDescription
             // 
-            this.txtDescription.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.txtDescription.Location = new System.Drawing.Point(23, 177);
+            this.txtDescription.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtDescription.Location = new System.Drawing.Point(23, 152);
+            this.txtDescription.Margin = new System.Windows.Forms.Padding(3, 0, 3, 15);
             this.txtDescription.Multiline = true;
             this.txtDescription.Name = "txtDescription";
             this.txtDescription.Size = new System.Drawing.Size(440, 100);
@@ -159,11 +159,12 @@ namespace OrganiTask.Forms
             // lblCategoriesHeader
             // 
             this.lblCategoriesHeader.AutoSize = true;
-            this.lblCategoriesHeader.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblCategoriesHeader.Location = new System.Drawing.Point(20, 290);
-            this.lblCategoriesHeader.Margin = new System.Windows.Forms.Padding(0, 10, 0, 5);
+            this.lblCategoriesHeader.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold);
+            this.lblCategoriesHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.lblCategoriesHeader.Location = new System.Drawing.Point(20, 267);
+            this.lblCategoriesHeader.Margin = new System.Windows.Forms.Padding(0, 0, 0, 10);
             this.lblCategoriesHeader.Name = "lblCategoriesHeader";
-            this.lblCategoriesHeader.Size = new System.Drawing.Size(91, 21);
+            this.lblCategoriesHeader.Size = new System.Drawing.Size(112, 28);
             this.lblCategoriesHeader.TabIndex = 6;
             this.lblCategoriesHeader.Text = "Categorías";
             // 
@@ -172,61 +173,105 @@ namespace OrganiTask.Forms
             this.tblCategories.AutoSize = true;
             this.tblCategories.ColumnCount = 3;
             this.tblCategories.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tblCategories.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(SizeType.AutoSize));
-            this.tblCategories.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(SizeType.AutoSize));
-            this.tblCategories.Location = new System.Drawing.Point(20, 321);
-            this.tblCategories.Margin = new System.Windows.Forms.Padding(0, 5, 0, 10);
+            this.tblCategories.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tblCategories.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tblCategories.Location = new System.Drawing.Point(20, 305);
+            this.tblCategories.Margin = new System.Windows.Forms.Padding(0, 0, 0, 20);
             this.tblCategories.Name = "tblCategories";
             this.tblCategories.Size = new System.Drawing.Size(0, 0);
             this.tblCategories.TabIndex = 7;
             // 
             // btnEdit
             // 
-            this.btnEdit.AutoSize = true;
-            this.btnEdit.Location = new System.Drawing.Point(20, 336);
-            this.btnEdit.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.btnEdit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.btnEdit.FlatAppearance.BorderSize = 0;
+            this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEdit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnEdit.ForeColor = System.Drawing.Color.White;
+            this.btnEdit.Location = new System.Drawing.Point(20, 325);
+            this.btnEdit.Margin = new System.Windows.Forms.Padding(0, 0, 0, 10);
             this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(75, 23);
+            this.btnEdit.Size = new System.Drawing.Size(443, 40);
             this.btnEdit.TabIndex = 8;
             this.btnEdit.Text = "Editar";
+            this.btnEdit.UseVisualStyleBackColor = false;
             this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
             // 
             // btnSave
             // 
-            this.btnSave.AutoSize = true;
-            this.btnSave.Location = new System.Drawing.Point(20, 364);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.btnSave.FlatAppearance.BorderSize = 0;
+            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSave.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnSave.ForeColor = System.Drawing.Color.White;
+            this.btnSave.Location = new System.Drawing.Point(20, 375);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(0, 0, 0, 10);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.Size = new System.Drawing.Size(443, 40);
             this.btnSave.TabIndex = 9;
             this.btnSave.Text = "Guardar";
+            this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Visible = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnCancel
             // 
-            this.btnCancel.AutoSize = true;
-            this.btnCancel.Location = new System.Drawing.Point(20, 392);
-            this.btnCancel.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.btnCancel.BackColor = System.Drawing.Color.White;
+            this.btnCancel.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnCancel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.btnCancel.Location = new System.Drawing.Point(20, 425);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(0);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.Size = new System.Drawing.Size(443, 40);
             this.btnCancel.TabIndex = 10;
             this.btnCancel.Text = "Cancelar";
+            this.btnCancel.UseVisualStyleBackColor = false;
             this.btnCancel.Visible = false;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // pnlHeader
+            // 
+            this.pnlHeader.BackColor = System.Drawing.Color.White;
+            this.pnlHeader.Controls.Add(this.lblHeader);
+            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
+            this.pnlHeader.Name = "pnlHeader";
+            this.pnlHeader.Size = new System.Drawing.Size(484, 70);
+            this.pnlHeader.TabIndex = 11;
+            // 
+            // lblHeader
+            // 
+            this.lblHeader.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblHeader.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
+            this.lblHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.lblHeader.Location = new System.Drawing.Point(0, 0);
+            this.lblHeader.Name = "lblHeader";
+            this.lblHeader.Size = new System.Drawing.Size(484, 70);
+            this.lblHeader.TabIndex = 0;
+            this.lblHeader.Text = "Configuración del Tablero";
+            this.lblHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // DashboardSettings
             // 
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(500, 600);
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(484, 600);
             this.Controls.Add(this.flpMain);
+            this.Controls.Add(this.pnlHeader);
+            this.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "DashboardSettings";
-            this.Text = "Configuración del Tablero";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "OrganiTask - Configuración del Tablero";
             this.Load += new System.EventHandler(this.DashboardSettings_Load);
             this.flpMain.ResumeLayout(false);
             this.flpMain.PerformLayout();
             this.pnlCreator.ResumeLayout(false);
             this.pnlCreator.PerformLayout();
+            this.pnlHeader.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

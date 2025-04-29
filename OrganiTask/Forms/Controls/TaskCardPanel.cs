@@ -15,7 +15,7 @@ namespace OrganiTask.Forms.Controls
         // Constructor que aplica el estilo estándar a la tarjeta
         public TaskCardPanel()
         {
-            this.Width = 200;
+            this.Width = 240;
             this.Height = 80;
             this.Cursor = Cursors.Hand;
             this.BorderStyle = BorderStyle.FixedSingle;

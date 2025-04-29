@@ -125,39 +125,39 @@ namespace OrganiTask.Controllers
                     // Solo creamos al CategoryViewModel si la tarea tiene una etiqueta asignada
                     //if (tag != null && !string.IsNullOrEmpty(tag.Name))
                     //{
-                        // Crear el modelo de vista de la categoría
-                        CategoryViewModel categoryViewModel = new CategoryViewModel
+                    // Crear el modelo de vista de la categoría
+                    CategoryViewModel categoryViewModel = new CategoryViewModel
+                    {
+                        Id = category.Id,
+                        Title = category.Title,
+                        AssignedTag = tag != null ?
+                        new TagViewModel
                         {
-                            Id = category.Id,
-                            Title = category.Title,
-                            AssignedTag = tag != null ?
-                            new TagViewModel
-                            {
-                                Id = tag.Id,
-                                Name = tag.Name,
-                                Color = tag.Color,
-                                CategoryId = category.Id,
-                            } : new TagViewModel(),
-                        };
+                            Id = tag.Id,
+                            Name = tag.Name,
+                            Color = tag.Color,
+                            CategoryId = category.Id,
+                        } : new TagViewModel(),
+                    };
 
-                        // Obtener las etiquetas disponibles para la categoría
-                        OrganiList<Tag> availableTags = context.Tags
-                            .Where(t => t.CategoryId == category.Id)
-                            .OrderBy(t => t.Name)
-                            .ToOrganiList();
+                    // Obtener las etiquetas disponibles para la categoría
+                    OrganiList<Tag> availableTags = context.Tags
+                        .Where(t => t.CategoryId == category.Id)
+                        .OrderBy(t => t.Name)
+                        .ToOrganiList();
 
-                        // Para cada etiqueta disponible, crear un TagViewModel y agregarlo a la lista de etiquetas
-                        foreach (Tag t in availableTags)
+                    // Para cada etiqueta disponible, crear un TagViewModel y agregarlo a la lista de etiquetas
+                    foreach (Tag t in availableTags)
+                    {
+                        categoryViewModel.TagList.AddLast(new TagViewModel
                         {
-                            categoryViewModel.TagList.AddLast(new TagViewModel
-                            {
-                                Id = t.Id,
-                                Name = t.Name,
-                                Color = t.Color,
-                                CategoryId = t.CategoryId
-                            });
-                        }
-                        categoryVM.Add(categoryViewModel);    
+                            Id = t.Id,
+                            Name = t.Name,
+                            Color = t.Color,
+                            CategoryId = t.CategoryId
+                        });
+                    }
+                    categoryVM.Add(categoryViewModel);
                     //}
                 }
             }
@@ -253,6 +253,26 @@ namespace OrganiTask.Controllers
                 }
                 context.SaveChanges(); // Guardar los cambios
             }
+        }
+
+        /// <summary>
+        /// Elimina la tarea.
+        /// </summary>
+        /// <param name="taskId">Id de la tarea a eliminar</param>
+        public bool DeleteTask(int taskId)
+        {
+            using (OrganiTaskDB context = new OrganiTaskDB())
+            {
+                Task task = context.Tasks.FirstOrDefault(t => t.Id == taskId);
+
+                // Si la tarea no existe
+                if (task == null) return false;
+
+                context.Tasks.Remove(task);
+                context.SaveChanges(); // Guardar los cambios en la base de datos
+            }
+
+            return true;
         }
 
         /// <summary>

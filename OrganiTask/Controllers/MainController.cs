@@ -46,6 +46,7 @@ namespace OrganiTask.Controllers
                     viewModel.DashboardPreviews.AddLast(new DashboardViewModel
                     {
                         Id = dashboard.Id,
+                        Description = dashboard.Description,
                         DashboardTitle = dashboard.Name
                     });
                 }

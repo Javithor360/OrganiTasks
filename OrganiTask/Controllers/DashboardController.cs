@@ -15,12 +15,11 @@ namespace OrganiTask.Controllers
     {
         /// <summary>
         /// Carga un tablero Kanban para un tablero y una categoría específica.
-        /// Por defecto carga la categoría "Status".
         /// </summary>
         /// <param name="dashboardId">Identificador del tablero.</param>
         /// <param name="categoryTitle">Título de la categoría.</param>
         /// <returns>Modelo de vista del tablero Kanban.</returns>
-        public DashboardViewModel LoadKanban(int dashboardId, string categoryTitle = "Status")
+        public DashboardViewModel LoadKanban(int dashboardId, string categoryTitle)
         {
             // Instanciamos el modelo de vista
             DashboardViewModel viewModel = new DashboardViewModel();
@@ -42,8 +41,19 @@ namespace OrganiTask.Controllers
                     .Include("Tag") // Cargar las etiquetas de la categoría
                     .FirstOrDefault(c => c.Title == categoryTitle && c.DashboardId == dashboardId);
 
+                // Si no se encuentra la categoría, se retorna el modelo de vista con la "Columna Sin Etiquetar"
                 if (category == null)
-                    return viewModel; // Si no se encuentra la categoría, se retorna el modelo de vista sin columnas
+                {
+                    // Obtener todas las tareas del dashboard
+                    OrganiList<Task> allTasks = context.Tasks
+                        .Where(t => t.DashboardId == dashboardId)
+                        .ToOrganiList();
+
+                    // Crear una columna "Sin Etiquetar" aunque no haya categoría
+                    viewModel.Columns.AddLast(createNoTagColum(allTasks)); // Agregar la columna sin etiquetas
+
+                    return viewModel;
+                }
 
                 // Para cada etiqueta en la categoría se crea una columna
                 foreach (Tag tag in category.Tag)
@@ -76,41 +86,47 @@ namespace OrganiTask.Controllers
                     viewModel.Columns.AddLast(column); // Agregar la columna al modelo de vista
                 }
 
-                // Ahora, creamos una columna adicional para aquellas tareas que no tienen
-                // etiqueta asignada en esta categoría particular
-                ColumnViewModel noTagColumn = new ColumnViewModel
-                {
-                    Tag = new Tag {
-                        Id = -1, // ID ficticio para la columna sin etiqueta
-                        Name = "Sin Etiquetar", // Título de la columna
-                        CategoryId = category.Id, // Asignar la categoría
-                    },
-                    Tasks = new OrganiList<TaskViewModel>() // Inicializar la lista de tareas
-                };
-
                 // Realizamos la consulta para obtener dichas tareas que NO poseen ningún
                 // TaskTag asociado a la categoría actual
                 OrganiList<Task> taskWithoutTag = context.Tasks
                     .Where(t => t.DashboardId == dashboardId && !t.TaskTag.Any(tt => tt.Tag.CategoryId == category.Id))
                     .ToOrganiList();
 
-                // Iteramos cada task a el modelo de vista de task
-                foreach (Task task in taskWithoutTag)
-                {
-                    noTagColumn.Tasks.AddLast(new TaskViewModel
-                    {
-                        Id = task.Id,
-                        Title = task.Title,
-                        Description = task.Description,
-                        StartDate = (DateTime)task.StartDate,
-                        EndDate = (DateTime)task.EndDate
-                    });
-                }
-
-                viewModel.Columns.AddLast(noTagColumn); // Agregar la columna de tareas sin etiqueta al modelo de vista
+                // Ahora, creamos una columna adicional para aquellas tareas que no tienen
+                // etiqueta asignada en esta categoría particular
+                viewModel.Columns.AddLast(createNoTagColum(taskWithoutTag, category.Id)); // Agregar la columna de tareas sin etiqueta al modelo de vista
             }
 
             return viewModel;
+        }
+
+        private ColumnViewModel createNoTagColum(OrganiList<Task> tasks, int categoryId = -1)
+        {
+               ColumnViewModel noTagColumn = new ColumnViewModel
+                {
+                    Tag = new Tag
+                    {
+                        Id = -1, // ID ficticio para la columna sin etiqueta
+                        Name = "Sin Etiquetar", // Título de la columna
+                        CategoryId = categoryId, // Asignar la categoría
+                    },
+                    Tasks = new OrganiList<TaskViewModel>() // Inicializar la lista de tareas
+                };
+
+            // Iteramos cada task a el modelo de vista de task
+            foreach (Task task in tasks)
+            {
+                noTagColumn.Tasks.AddLast(new TaskViewModel
+                {
+                    Id = task.Id,
+                    Title = task.Title,
+                    Description = task.Description,
+                    StartDate = (DateTime)task.StartDate,
+                    EndDate = (DateTime)task.EndDate
+                });
+            }
+
+            return noTagColumn;
         }
 
         /// <summary>
@@ -137,12 +153,12 @@ namespace OrganiTask.Controllers
             }
         }
 
-
         /// <summary>
         /// Crea un nuevo tablero.
         /// </summary>
         /// <param name="newDashboard">Modelo de vista del nuevo tablero.</param>
-        public void CreateDashboard(DashboardViewModel newDashboard)
+        /// <returns>Modelo de vista del tablero Kanban.</returns>
+        public DashboardViewModel CreateDashboard(DashboardViewModel newDashboard)
         {
             // Bloque using para liberación de contexto al finalizar bloque de codigo
             using (OrganiTaskDB context = new OrganiTaskDB())
@@ -159,6 +175,8 @@ namespace OrganiTask.Controllers
                 context.SaveChanges(); // Guardar los cambios
 
                 newDashboard.Id = dashboard.Id; // Asignar el ID generado al modelo de la vista
+
+                return newDashboard;
             }
         }
 
@@ -185,11 +203,10 @@ namespace OrganiTask.Controllers
         }
 
         /// <summary>
-        /// Devuelve el título de la primera categoría de un tablero,
-        /// o "Status" si no hay ninguna.
+        /// Devuelve el título de la primera categoría de un tablero
         /// </summary>
         /// <param name="dashboardId">Identificador del tablero.</param>
-        /// <returns>Título de la primera categoría o "Status".</returns>   
+        /// <returns>Título de la primera categoría</returns>   
         public CategoryViewModel GetDefaultCategory(int dashboardId)
         {
             using (OrganiTaskDB context = new OrganiTaskDB())
@@ -208,7 +225,7 @@ namespace OrganiTask.Controllers
                 return firstCategory ?? new CategoryViewModel
                 {
                     Id = -1, // ID ficticio para la categoría por defecto
-                    Title = "Status" // Título por defecto
+                    Title = "" // Título por defecto
                 };
             }
         }
@@ -275,7 +292,92 @@ namespace OrganiTask.Controllers
                 dashboard.Name = newName;
                 dashboard.Description = newDescription;
                 context.SaveChanges(); // Guardar los cambios en la base de datos
-            }   
+            }
+        }
+
+        /// <summary>
+        /// Elimina un tablero existente y todos sus elementos relacionados.
+        /// </summary>
+        /// <param name="dashboardId">Identificador del tablero.</param>
+        public void DeleteDashboard(int dashboardId)
+        {
+            using (OrganiTaskDB context = new OrganiTaskDB())
+            {
+                // Buscar el tablero por su ID
+                Dashboard dashboard = context.Dashboards.FirstOrDefault(d => d.Id == dashboardId);
+
+                // Si no se encuentra el tablero, mostramos un mensaje de error
+                if (dashboard == null)
+                {
+                    MessageBox.Show("Tablero no encontrado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Elimina los elementos relacionados
+
+                // Eliminamos las tareas asociadas al tablero   
+                OrganiList<Task> tasksDashboard = context.Tasks
+                    .Where(t => t.DashboardId == dashboardId)
+                    .ToOrganiList();
+
+                foreach (Task task in tasksDashboard)
+                {
+                    // Eliminar relaciones TaskTag
+                    OrganiList<TaskTag> taskTags = context.TaskTags
+                        .Where(tt => tt.TaskId == task.Id)
+                        .ToOrganiList();
+
+                    context.TaskTags.RemoveRange(taskTags); // Eliminar las relaciones TaskTag
+                    context.Tasks.Remove(task); // Eliminar la tarea
+                }
+
+                // Eliminar las categorias relacionadas
+                OrganiList<Category> categories = context.Categories
+                    .Where(c => c.DashboardId == dashboardId)
+                    .ToOrganiList();
+
+                foreach (Category category in categories)
+                {
+                    // Elimina las etiquetas asociadas a la categoría
+                    OrganiList<Tag> tags = context.Tags
+                        .Where(t => t.CategoryId == category.Id)
+                        .ToOrganiList();
+
+                    foreach (Tag tag in tags)
+                    {
+                        // Eliminar relaciones TaskTag
+                        OrganiList<TaskTag> taskTags = context.TaskTags
+                            .Where(tt => tt.TagId == tag.Id)
+                            .ToOrganiList();
+                        context.TaskTags.RemoveRange(taskTags); // Eliminar las relaciones TaskTag
+
+                        context.Tags.Remove(tag); // Eliminar la etiqueta
+                    }
+
+                    // Eliminar la categoria
+                    context.Categories.Remove(category); 
+                }
+
+                // Por ultimo eliminar el tablero
+                context.Dashboards.Remove(dashboard); // Eliminar el tablero
+
+                // Guardar los cambios en la base de datos
+                context.SaveChanges();
+
+                //        // Luego, eliminamos las relaciones entre las etiquetas y las tareas
+                //        foreach (int tagId in tagIds)
+                //        {
+                //            DeleteTag(tagId); // Eliminar cada etiqueta asociada a la categoría
+                //        }
+
+                //        // Ahora eliminamos la categoría en sí
+                //        Category category = context.Categories.FirstOrDefault(c => c.Id == categoryId);
+                //        if (category != null)
+                //        {
+                //            context.Categories.Remove(category); // Eliminar la categoría
+                //            context.SaveChanges(); // Guardar los cambios
+                //        }
+            }
         }
 
         /// <summary>
@@ -383,7 +485,7 @@ namespace OrganiTask.Controllers
 
                 // Una vez eliminada las relaciones, eliminamos la etiqueta
                 Tag tag = context.Tags.FirstOrDefault(t => t.Id == tagId);
-                if (tag != null) 
+                if (tag != null)
                     context.Tags.Remove(tag); // Eliminar la etiqueta
 
                 context.SaveChanges(); // Guardar los cambios
@@ -457,4 +559,3 @@ namespace OrganiTask.Controllers
         }
     }
 }
- 

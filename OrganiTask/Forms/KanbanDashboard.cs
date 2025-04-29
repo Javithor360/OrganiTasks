@@ -2,10 +2,12 @@
 using OrganiTask.Entities;
 using OrganiTask.Entities.ViewModels;
 using OrganiTask.Forms.Controls;
+using OrganiTask.Forms.Test;
 using OrganiTask.Util.Collections;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using static System.Collections.Specialized.BitVector32;
 
 namespace OrganiTask.Forms
 {
@@ -109,9 +111,14 @@ namespace OrganiTask.Forms
             {
                 Text = task.Title,
                 Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                AutoSize = true,
-                Location = new Point(5, 5)
+                AutoSize = false, // Controlar el ancho
+                TextAlign = ContentAlignment.MiddleLeft,
+                Dock = DockStyle.Top, // Hacer que el ancho ocupe todo el panel
+                Height = 25,
+                Location = new Point(0, 0),
+                AutoEllipsis = true
             };
+
             card.Controls.Add(lblTitle); // Agregamos el título a la tarjeta
 
             // Descripción de la tarea
@@ -136,6 +143,15 @@ namespace OrganiTask.Forms
                 this.Close();
                 return;
             }
+
+            // Se oculta el boton con el fin de siempre mostrar la columna "Sin Etiquetar"
+            if (model.Columns.First.Tag.Id == -1)
+            {
+                btnShowHidden.Visible = false;
+                showHiddenColumn = true;
+            }
+            else
+                btnShowHidden.Visible = true;
 
             lblDashboardTitle.Text = model.DashboardTitle;
             RenderDashboard(model);
@@ -179,6 +195,7 @@ namespace OrganiTask.Forms
             TaskDetails details = new TaskDetails(newTask, dashboardId); // Mostrar detalles de la tarea
             details.SetEditMode(true); // Habilitar modo de edición
             details.TaskUpdated += EventRefreshDashboard; // Evento para cuando se actualiza una tarea
+            details.TaskDeleted += EventRefreshDashboard; // Evento para cuando se elimina una tarea
             details.ShowDialog(); // Mostrar el formulario de detalles
         }
 
@@ -229,7 +246,9 @@ namespace OrganiTask.Forms
         private void Card_ClickEvent(TaskViewModel task)
         {
             TaskDetails details = new TaskDetails(task, dashboardId); // Mostrar detalles de la tarea
+
             details.TaskUpdated += EventRefreshDashboard; // Evento para cuando se actualiza una tarea
+            details.TaskDeleted += EventRefreshDashboard; // Evento para cuando se elimina una tarea
 
             details.ShowDialog(); // Mostramos el formulario de detalles
         }
@@ -374,6 +393,11 @@ namespace OrganiTask.Forms
             DashboardSettings settings = new DashboardSettings(dashboardId); // Mostrar configuración del tablero
             settings.DashboardInfoChanged += EventRefreshDashboard;
             settings.ShowDialog();
+        }
+
+        private void btnDashboardBack_Click(object sender, EventArgs e)
+        {
+            this.Close(); // Cerrar el formulario
         }
     }
 }
