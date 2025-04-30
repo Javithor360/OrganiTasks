@@ -47,6 +47,10 @@ namespace OrganiTask.Forms
         {
             selectedCategory = controller.GetDefaultCategory(dashboardId); // Obtenemos la categoría por defecto del tablero
             RefreshDashboard(); // Cargamos el tablero al iniciar el formulario
+
+            this.WindowState = FormWindowState.Maximized; // maximiza la ventana.
+            //this.FormBorderStyle = FormBorderStyle.None; // elimina la barra de título y los bordes.
+            this.Bounds = Screen.PrimaryScreen.Bounds; // asegura que ocupe toda la pantalla
         }
 
         // Método para dibujar el tablero

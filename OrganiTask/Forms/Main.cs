@@ -75,7 +75,6 @@ namespace OrganiTask.Forms.Test
             }
 
         }
-
         private Panel CreateNewDashboardCard()
         {
             Panel card = new Panel
@@ -254,7 +253,7 @@ namespace OrganiTask.Forms.Test
         private void HandleDashboardClick(int dashboardId)
         {
             KanbanDashboard kanban = new KanbanDashboard(dashboardId);
-            kanban.ShowDialog();
+            kanban.Show();
         }
 
 
