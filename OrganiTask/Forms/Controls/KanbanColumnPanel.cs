@@ -29,12 +29,23 @@ namespace OrganiTask.Forms.Controls
             // Configuración estándar del panel
             this.FlowDirection = FlowDirection.TopDown;
             this.WrapContents = false;
-            this.AutoScroll = true;
             this.Width = 250;
-            this.Height = 1000;
+            this.Height = 800;
             this.Margin = new Padding(8);
             this.AllowDrop = true;
             this.BackColor = GetColorColumn(tag.Color);
+
+            // Deshabilitar scroll horizontal
+            this.AutoScroll = false;
+            this.HorizontalScroll.Enabled = false;
+            this.HorizontalScroll.Visible = false;
+            this.HorizontalScroll.Maximum = 0;
+            this.AutoScroll = true;
+
+            // Agregar validación para que el scroll vertical funcione correctamente
+            this.AutoScrollMinSize = new Size(0, 0);
+
+            this.Dock = DockStyle.None;
 
             // Contenedor para el título
             Panel headerPanel = new Panel
@@ -65,7 +76,6 @@ namespace OrganiTask.Forms.Controls
             this.DragEnter += ColumnDragEnter;
             this.DragDrop += ColumnDragDrop;
         }
-
 
         private Color GetColorColumn(string colorString)
         {
