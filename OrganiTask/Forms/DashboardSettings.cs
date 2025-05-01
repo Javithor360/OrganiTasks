@@ -54,6 +54,10 @@ namespace OrganiTask.Forms
             string username = controller.GetUsernameFromDashboardOwnerId(dvm.UserId);
 
             // Cargamos la información del tablero en los controles
+            lblHeader.MaximumSize = new Size(495, 0);
+            lblHeader.AutoSize = false;
+            lblHeader.AutoEllipsis = true;
+
             lblHeader.Text = $"Información de {dvm.DashboardTitle}"; // Concatenamos el título del tablero al texto del label
             lblCreatorValue.Text = username ?? "(desconocido)"; // Por cualquier error con el propietario, ponemos "(desconocido)"
             lblDescText.Text = dvm.Description ?? "(sin descripción)"; // Si no hay descripción, ponemos "(sin descripción)"
