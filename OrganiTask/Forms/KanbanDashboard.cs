@@ -5,7 +5,9 @@ using OrganiTask.Forms.Controls;
 using OrganiTask.Forms.Test;
 using OrganiTask.Util.Collections;
 using System;
+using System.ComponentModel;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using static System.Collections.Specialized.BitVector32;
 
@@ -163,24 +165,39 @@ namespace OrganiTask.Forms
 
         private void btnSort_Click(object sender, EventArgs e)
         {
-            btnSort.Visible = false; // Ocultamos el botón de ordenamiento  
-            cboSort.Items.Clear(); // Limpiamos los elementos del combo box 
-
             // Obtener la lista de categorías del tablero
             // Pero directamente ordenamos la lista de tal manera que la categoría seleccionada esté al inicio
             OrganiList<CategoryViewModel> categories = ReorderCategories(controller.GetDashboardCategories(dashboardId), selectedCategory); // Reordenamos las categorías
 
+            // Verificar si hay categorías reales (excluyendo la de Id -1)
+            bool hasRealCategories = categories.Count > 0 && categories.Any(c => c.Id != -1);
+
+            if (!hasRealCategories)
+            {
+                MessageBox.Show("¡Agrega una categoría y sus etiquetas para comenzar a filtrar!", "Alerta", MessageBoxButtons.OK);
+                return; // Salimos de la función sin mostrar el combo box
+            }
+
+            btnSort.Visible = false; // Ocultamos el botón de ordenamiento  
+
+            // Si hay categorías reales, continuamos con la configuración del combo box
+            btnSort.Visible = false;
+            cboSort.Items.Clear(); // Limpiamos los elementos del combo box 
+
             // Indicamos al combobox que se usará para mostrar las categorías
             cboSort.DisplayMember = nameof(CategoryViewModel.Title);
             cboSort.ValueMember = nameof(CategoryViewModel.Id);
+            cboSort.Visible = true;
 
-            cboSort.Items.AddRange(categories.ToArray()); // Agregamos los títulos al combo box
-            if (categories.Count > 0)
-                cboSort.SelectedIndex = 0; // Seleccionamos el primer elemento por defecto  
-
-            cboSort.Visible = true; // Mostramos el combo box
-            cboSort.Focus(); // Focamos el combo box
-            cboSort.DroppedDown = true; // Abrimos el combo box 
+            // Añadimos solo categorías válidas
+            var validCategories = categories.Where(c => c.Id != -1).ToArray();
+            if (validCategories.Length > 0)
+            {
+                cboSort.Items.AddRange(validCategories);
+                cboSort.SelectedIndex = 0;
+                cboSort.Focus();
+                cboSort.DroppedDown = true;
+            }
         }
 
         // Evento para manejar el click en el botón de agregar tarea

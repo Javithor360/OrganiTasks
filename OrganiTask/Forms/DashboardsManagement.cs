@@ -22,6 +22,7 @@ namespace OrganiTask.Forms.Test
         public DashboardsManagement(int IdUser)
         {
             InitializeComponent();
+            SetCategoryControlsState(false);
             userId = IdUser;
         }
 
@@ -108,7 +109,7 @@ namespace OrganiTask.Forms.Test
             }
             else
             {
-                txtCategoryName.Text = string.Empty;
+                txtCategoryName.Text = "Status";
             }
         }
 

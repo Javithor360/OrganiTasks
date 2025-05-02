@@ -113,7 +113,6 @@
             this.btnSaveDashboard.TabIndex = 14;
             this.btnSaveDashboard.Text = "CREAR";
             this.btnSaveDashboard.UseVisualStyleBackColor = false;
-            this.btnSaveDashboard.Visible = true;
             this.btnSaveDashboard.Click += new System.EventHandler(this.btnSaveDashboard_Click);
             // 
             // txtDashboardDescription
@@ -139,14 +138,12 @@
             // chkCreateDefaultCategory
             // 
             this.chkCreateDefaultCategory.AutoSize = true;
-            this.chkCreateDefaultCategory.Checked = true;
-            this.chkCreateDefaultCategory.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkCreateDefaultCategory.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkCreateDefaultCategory.Location = new System.Drawing.Point(21, 245);
             this.chkCreateDefaultCategory.Name = "chkCreateDefaultCategory";
-            this.chkCreateDefaultCategory.Size = new System.Drawing.Size(195, 23);
+            this.chkCreateDefaultCategory.Size = new System.Drawing.Size(219, 23);
             this.chkCreateDefaultCategory.TabIndex = 5;
-            this.chkCreateDefaultCategory.Text = "Crear categoría por defecto";
+            this.chkCreateDefaultCategory.Text = "Modificar categoría por defecto";
             this.chkCreateDefaultCategory.UseVisualStyleBackColor = true;
             this.chkCreateDefaultCategory.CheckedChanged += new System.EventHandler(this.chkCreateDefaultCategory_CheckedChanged);
             // 

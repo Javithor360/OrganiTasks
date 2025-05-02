@@ -132,6 +132,7 @@ namespace OrganiTask.Forms
                     ForeColor = Color.White,
                     BackColor = Color.FromArgb(200, 80, 80)
                 };
+
                 // Asignamos el evento Click al botón
                 btnDelete.Click += (s, e) =>
                 {
