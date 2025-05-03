@@ -4,6 +4,7 @@ using OrganiTask.Entities.ViewModels;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using OrganiTask.Util; 
 
 namespace OrganiTask.Forms.Controls
 {
@@ -26,6 +27,9 @@ namespace OrganiTask.Forms.Controls
         {
             this.Column = tag;
 
+            Color baseColor = ColorUtil.ParseColor(tag.Color);
+            Color backgroundColor = Color.FromArgb(135, baseColor);
+
             // Configuración estándar del panel
             this.FlowDirection = FlowDirection.TopDown;
             this.WrapContents = false;
@@ -33,7 +37,7 @@ namespace OrganiTask.Forms.Controls
             this.Height = 800;
             this.Margin = new Padding(8);
             this.AllowDrop = true;
-            this.BackColor = GetColorColumn(tag.Color);
+            this.BackColor = backgroundColor;
 
             // Deshabilitar scroll horizontal
             this.AutoScroll = false;
@@ -64,7 +68,8 @@ namespace OrganiTask.Forms.Controls
                 AutoSize = false,
                 TextAlign = ContentAlignment.MiddleCenter,
                 Dock = DockStyle.Fill,
-                AutoEllipsis = true
+                AutoEllipsis = true,
+                ForeColor = ColorHelper.IsDarkColor(baseColor) ? Color.White : Color.Black
             };
 
             headerPanel.Controls.Add(lblTag); // Agregar el label al contenedor
@@ -75,26 +80,6 @@ namespace OrganiTask.Forms.Controls
             // Suscribir los eventos de drag y drop
             this.DragEnter += ColumnDragEnter;
             this.DragDrop += ColumnDragDrop;
-        }
-
-        private Color GetColorColumn(string colorString)
-        {
-            Color currentColor;
-
-            if (string.IsNullOrEmpty(colorString))
-                return Color.FromArgb(135, Color.Gray); // Default color
-
-            if(colorString.StartsWith("#"))
-            {
-                // Si es hexadecimal
-                currentColor = ColorTranslator.FromHtml(colorString);
-            }else
-            {
-                currentColor = Color.FromName(colorString);
-            }
-
-            // Aplicar opacidad 
-            return Color.FromArgb(135, currentColor);
         }
 
         // Método que se llama cuando se arrastra una tarea sobre la columna

@@ -100,6 +100,7 @@ namespace OrganiTask.Forms
                     Tag = column.Id,
                     Margin = new Padding(3)
                 };
+
                 // Asignamos el evento Click al botón
                 btnView.Click += (s, e) =>
                 {
@@ -145,6 +146,7 @@ namespace OrganiTask.Forms
                         DashboardInfoChanged?.Invoke(this, EventArgs.Empty); // Disparamos el evento de guardado
                     }
                 };
+
                 tblCategories.Controls.Add(btnDelete, 2, row);
 
                 row++;

@@ -8,6 +8,7 @@ namespace OrganiTask.Entities.ViewModels
     public class ColumnViewModel
     {
         public Tag Tag { get; set; } // Identificador de la etiqueta
+        public string ColorColumn { get; set; } // Color de la Columna
         public OrganiList<TaskViewModel> Tasks { get; set; } = new OrganiList<TaskViewModel>(); // Lista de tareas de la columna
     }
 }
