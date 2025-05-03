@@ -59,7 +59,7 @@ namespace OrganiTask.Forms.Test
             // Mensajes de exito o error.
             MessageBox.Show("Tablero creado correctamente.");
 
-            if (defaultCategories && validDefaultValues())
+            if (validDefaultValues())
                 createDefaultValues(currentDashboard.Id);
 
             // Trigger de evento que notifica sobre la creación del tablero
