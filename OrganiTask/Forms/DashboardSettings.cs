@@ -1,16 +1,8 @@
 ﻿using OrganiTask.Controllers;
-using OrganiTask.Entities;
 using OrganiTask.Entities.ViewModels;
-using OrganiTask.Util;
 using OrganiTask.Util.Collections;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace OrganiTask.Forms
@@ -82,6 +74,7 @@ namespace OrganiTask.Forms
             OrganiList<CategoryViewModel> columnTitles = controller.GetDashboardCategories(dashboardId);
 
             int row = 0;
+
             foreach (var column in columnTitles)
             {
                 // Construimos un Label con el nombre de la categoría
@@ -137,7 +130,14 @@ namespace OrganiTask.Forms
                 btnDelete.Click += (s, e) =>
                 {
                     int catId = (int)((Button)s).Tag;
-                    DialogResult result = MessageBox.Show("¿Estás seguro de que deseas eliminar esta categoría?", "Eliminar categoría", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    bool isLastCategory = columnTitles.Count == 1;
+
+                    string messageDelete = isLastCategory
+                        ? "Esta es la última categoría. \n¿Estás seguro de que deseas eliminarla?"
+                        : "¿Estás seguro de que deseas eliminar esta categoría?";
+
+                    DialogResult result = MessageBox.Show(messageDelete, "Eliminar categoría", MessageBoxButtons.YesNo, isLastCategory ? MessageBoxIcon.Warning :  MessageBoxIcon.Question);
+
                     if (result == DialogResult.Yes)
                     {
                         controller.DeleteCategory(catId); // Llamamos al controlador para eliminar la categoría
