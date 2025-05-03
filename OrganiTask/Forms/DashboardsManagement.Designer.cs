@@ -57,6 +57,7 @@
             this.btnAddTag = new System.Windows.Forms.Button();
             this.listBoxTags = new System.Windows.Forms.ListBox();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.panelHeader.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -165,7 +166,7 @@
             this.txtCategoryName.Name = "txtCategoryName";
             this.txtCategoryName.Size = new System.Drawing.Size(558, 25);
             this.txtCategoryName.TabIndex = 7;
-            this.txtCategoryName.Text = "Status";
+            this.txtCategoryName.Text = "Estado";
             // 
             // lblTagName
             // 
@@ -199,6 +200,7 @@
             this.btnAddTag.TabIndex = 10;
             this.btnAddTag.Text = "Agregar";
             this.btnAddTag.UseVisualStyleBackColor = false;
+            this.btnAddTag.Click += new System.EventHandler(this.btnAddTag_Click);
             // 
             // listBoxTags
             // 
@@ -209,10 +211,11 @@
             "Sin iniciar",
             "En progreso",
             "Finalizada"});
-            this.listBoxTags.Location = new System.Drawing.Point(21, 401);
+            this.listBoxTags.Location = new System.Drawing.Point(21, 408);
             this.listBoxTags.Name = "listBoxTags";
-            this.listBoxTags.Size = new System.Drawing.Size(558, 106);
+            this.listBoxTags.Size = new System.Drawing.Size(558, 89);
             this.listBoxTags.TabIndex = 11;
+            this.listBoxTags.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxTags_MouseDoubleClick);
             // 
             // btnCancel
             // 
@@ -228,10 +231,21 @@
             this.btnCancel.Text = "CANCELAR";
             this.btnCancel.UseVisualStyleBackColor = false;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label1.Location = new System.Drawing.Point(22, 392);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(167, 13);
+            this.label1.TabIndex = 15;
+            this.label1.Text = "Doble click para eliminar etiqueta*";
+            // 
             // DashboardsManagement
             // 
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
             this.ClientSize = new System.Drawing.Size(600, 580);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.listBoxTags);
             this.Controls.Add(this.btnAddTag);
@@ -259,5 +273,6 @@
         }
         #endregion
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Label label1;
     }
 }
