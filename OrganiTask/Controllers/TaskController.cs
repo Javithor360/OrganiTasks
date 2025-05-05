@@ -37,7 +37,9 @@ namespace OrganiTask.Controllers
                     {
                         Id = task.Id,
                         Title = task.Title,
-                        Description = task.Description,
+                        Description = string.IsNullOrEmpty(task.Description)
+                        ? "Sin descripción... Agrega una para más detalles"
+                        : task.Description,
                         StartDate = (DateTime)task.StartDate,
                         EndDate = (DateTime)task.EndDate
                     };

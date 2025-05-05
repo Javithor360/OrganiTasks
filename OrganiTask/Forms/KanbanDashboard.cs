@@ -121,7 +121,7 @@ namespace OrganiTask.Forms
             {
                 Text = task.Title,
                 Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                ForeColor = ColorHelper.IsDarkColor(baseColor) ? Color.White : Color.Black,
+                ForeColor = ColorUtil.IsDarkColor(baseColor) ? Color.White : Color.Black,
                 AutoSize = false, // Controlar el ancho
                 TextAlign = ContentAlignment.MiddleLeft,
                 Dock = DockStyle.Top, // Hacer que el ancho ocupe todo el panel
@@ -142,7 +142,7 @@ namespace OrganiTask.Forms
                 Width = 235,
                 Location = new Point(5, 30),
                 AutoEllipsis = true,
-                ForeColor = ColorHelper.IsDarkColor(baseColor) ? Color.White : Color.Black,
+                ForeColor = ColorUtil.IsDarkColor(baseColor) ? Color.White : Color.Black,
                 BackColor = Color.Transparent,
             };
 
@@ -153,7 +153,7 @@ namespace OrganiTask.Forms
                 {
                     Height = 1,
                     Location = new Point(15, 100),
-                    BackColor = ColorHelper.IsDarkColor(baseColor) ? Color.White : Color.Black,
+                    BackColor = ColorUtil.IsDarkColor(baseColor) ? Color.White : Color.Black,
                 };
 
                 card.Controls.Add(separator);
@@ -402,8 +402,6 @@ namespace OrganiTask.Forms
 
         private void EventRefreshDashboard(object sender, EventArgs e)
         {
-            Console.WriteLine("La información cambio");
-
             // Recargamos el tablero cuando se actualiza una columna
             RefreshDashboard();
         }

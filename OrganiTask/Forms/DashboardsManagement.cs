@@ -141,6 +141,7 @@ namespace OrganiTask.Forms.Test
             }
         }
 
+        // Método para validar el nombre de la etiqueta y agregarla
         private void btnAddTag_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtTagName.Text))
@@ -154,6 +155,7 @@ namespace OrganiTask.Forms.Test
             txtTagName.Clear();
         }
 
+        // Método para eliminar una etiqueta al hacer doble clic en ella
         private void listBoxTags_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (listBoxTags.SelectedItem != null)
@@ -166,6 +168,11 @@ namespace OrganiTask.Forms.Test
                     listBoxTags.Items.Remove(listBoxTags.SelectedItem);
                 }
             }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

@@ -560,8 +560,6 @@ namespace OrganiTask.Controllers
             }
         }
 
-        // Añade este método a tu clase DashboardController
-
         /// <summary>
         /// Verifica si una categoría específica existe en el tablero
         /// </summary>
@@ -580,7 +578,8 @@ namespace OrganiTask.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al verificar si existe la categoría: {ex.Message}");
+               MessageBox.Show($"Error al verificar si existe la categoría: {ex.Message}",
+                   "Hubo un error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
         }

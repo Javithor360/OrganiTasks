@@ -69,7 +69,7 @@ namespace OrganiTask.Forms.Controls
                 TextAlign = ContentAlignment.MiddleCenter,
                 Dock = DockStyle.Fill,
                 AutoEllipsis = true,
-                ForeColor = ColorHelper.IsDarkColor(baseColor) ? Color.White : Color.Black
+                ForeColor = ColorUtil.IsDarkColor(baseColor) ? Color.White : Color.Black
             };
 
             headerPanel.Controls.Add(lblTag); // Agregar el label al contenedor
