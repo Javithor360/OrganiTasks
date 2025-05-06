@@ -198,6 +198,7 @@
     <Compile Include="Util\Collections\Node.cs" />
     <Compile Include="Util\Collections\OrganiList.cs" />
     <Compile Include="Util\DashboardManager.cs" />
+    <Compile Include="Util\DisplayElements.cs" />
     <Compile Include="Util\SessionManager.cs" />
     <Compile Include="Util\OrganiTaskDB.cs" />
     <Compile Include="Controllers\Services\AuthService.cs" />

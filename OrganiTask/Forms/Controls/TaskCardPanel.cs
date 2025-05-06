@@ -16,12 +16,6 @@ namespace OrganiTask.Forms.Controls
         // Constructor que aplica el estilo estándar a la tarjeta
         public TaskCardPanel()
         {
-            this.Width = 240;
-
-            // TODO
-            // Adapt the card height dinamically depending on the size of the given description
-            this.Height = 140;
-
             this.Cursor = Cursors.Hand;
             this.BorderStyle = BorderStyle.FixedSingle;
             this.Margin = new Padding(5);
