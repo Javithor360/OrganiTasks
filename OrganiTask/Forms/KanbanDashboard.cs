@@ -167,7 +167,7 @@ namespace OrganiTask.Forms
         private void RefreshDashboard()
         {
             // Cargar el modelo del tablero
-            DashboardViewModel model = controller.LoadKanban(dashboardId, selectedCategory.Title);
+            DashboardViewModel model = controller.LoadKanban(dashboardId, selectedCategory.Id);
 
             // Verificar si la categoría seleccionada sigue existiendo
             bool categoryExists = controller.CategoryExists(dashboardId, selectedCategory.Id);
@@ -290,11 +290,19 @@ namespace OrganiTask.Forms
         {
             CategoryViewModel selected = cboSort.SelectedItem as CategoryViewModel; // Obtenemos el elemento seleccionado
 
-            // Validamos que no sea nulo y que sea diferente al la categoría actual
-            if (selected != null && selected.Id != selectedCategory.Id)
+            // Validamos que no sea nulo
+            if (selected != null)
             {
+                bool changed = selected.Id != selectedCategory.Id;
+
                 selectedCategory = selected; // Asignamos la nueva categoría
-                RefreshDashboard(); // Recargamos el tablero
+                RefreshDashboard(); // Recargamos el tablero SIEMPRE, incluso si es la misma categoría
+            }
+            else
+            {
+                // En caso de selección nula, intentamos obtener la categoría por defecto
+                selectedCategory = controller.GetDefaultCategory(dashboardId);
+                RefreshDashboard();
             }
 
             RevertSortControl(); // Revertimos el control de ordenamiento
