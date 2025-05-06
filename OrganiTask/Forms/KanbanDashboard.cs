@@ -183,11 +183,10 @@ namespace OrganiTask.Forms
                 {
                     btnShowHidden.Visible = false;
                     showHiddenColumn = true;
-
-                    // Renderizar el tablero
+                } else
+                {
+                    model = controller.LoadKanban(dashboardId, selectedCategory.Id);
                     RenderDashboard(model);
-
-                    return;
                 }
             }
 
