@@ -3,11 +3,15 @@ using OrganiTask.Entities;
 using OrganiTask.Entities.ViewModels;
 using OrganiTask.Forms.Controls;
 using OrganiTask.Forms.Test;
+using OrganiTask.Util;
 using OrganiTask.Util.Collections;
 using System;
+using System.ComponentModel;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using static System.Collections.Specialized.BitVector32;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace OrganiTask.Forms
 {
@@ -47,6 +51,10 @@ namespace OrganiTask.Forms
         {
             selectedCategory = controller.GetDefaultCategory(dashboardId); // Obtenemos la categoría por defecto del tablero
             RefreshDashboard(); // Cargamos el tablero al iniciar el formulario
+
+            this.WindowState = FormWindowState.Maximized; // maximiza la ventana.
+            //this.FormBorderStyle = FormBorderStyle.None; // elimina la barra de título y los bordes.
+            this.Bounds = Screen.PrimaryScreen.Bounds; // asegura que ocupe toda la pantalla
         }
 
         // Método para dibujar el tablero
@@ -72,7 +80,7 @@ namespace OrganiTask.Forms
                 // Dibujamos dinámicamente una tarjeta por cada tarea en la lista de tareas
                 foreach (TaskViewModel task in column.Tasks)
                 {
-                    Panel taskCard = CreateTaskCard(task, column.Tag.Id); // Creamos la tarjeta
+                    Panel taskCard = CreateTaskCard(task, column.Tag.Id, column.ColorColumn); // Creamos la tarjeta
                     columnPanel.Controls.Add(taskCard); // Agregamos la tarjeta a la columna
                 }
 
@@ -92,7 +100,7 @@ namespace OrganiTask.Forms
         }
 
         // Método para crear una tarjeta por cada tarea en la columna
-        private TaskCardPanel CreateTaskCard(TaskViewModel task, int tagId)
+        private TaskCardPanel CreateTaskCard(TaskViewModel task, int tagId, string ColorColumn)
         {
             // Instanciamos un panel de tarjeta para la tarea
             TaskCardPanel card = new TaskCardPanel
@@ -106,11 +114,14 @@ namespace OrganiTask.Forms
             card.MouseMove += Card_MouseMove;
             card.MouseUp += Card_MouseUp;
 
+            Color baseColor = ColorUtil.ParseColor(ColorColumn);
+
             // Título de la tarea
             Label lblTitle = new Label
             {
                 Text = task.Title,
                 Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                ForeColor = ColorUtil.IsDarkColor(baseColor) ? Color.White : Color.Black,
                 AutoSize = false, // Controlar el ancho
                 TextAlign = ContentAlignment.MiddleLeft,
                 Dock = DockStyle.Top, // Hacer que el ancho ocupe todo el panel
@@ -126,16 +137,59 @@ namespace OrganiTask.Forms
             {
                 Text = task.Description,
                 Font = new Font("Segoe UI", 9, FontStyle.Regular),
-                AutoSize = true,
-                Location = new Point(5, 25)
+                AutoSize = false,
+                Height = 60,
+                Width = 235,
+                Location = new Point(5, 30),
+                AutoEllipsis = true,
+                ForeColor = ColorUtil.IsDarkColor(baseColor) ? Color.White : Color.Black,
+                BackColor = Color.Transparent,
             };
+
+            if(task.Description.Length > 0)
+            {
+                // Línea divisora
+                Panel separator = new Panel
+                {
+                    Height = 1,
+                    Location = new Point(15, 100),
+                    BackColor = ColorUtil.IsDarkColor(baseColor) ? Color.White : Color.Black,
+                };
+
+                card.Controls.Add(separator);
+            }
+
             card.Controls.Add(lblDesc); // Agregamos la descripción a la tarjeta
 
             return card; // Retornamos la tarjeta
         }
+
         private void RefreshDashboard()
         {
+            // Cargar el modelo del tablero
             DashboardViewModel model = controller.LoadKanban(dashboardId, selectedCategory.Title);
+
+            // Verificar si la categoría seleccionada sigue existiendo
+            bool categoryExists = controller.CategoryExists(dashboardId, selectedCategory.Id);
+
+            // Si la categoría ya no existe, obtener la categoría por defecto
+            if (!categoryExists)
+            {
+                // Obtenemos la categoría por defecto o la primera disponible
+                selectedCategory = controller.GetDefaultCategory(dashboardId);
+
+                // Si no hay ninguna categoría disponible, mostrar mensaje
+                if (selectedCategory == null || selectedCategory.Id == -1)
+                {
+                    btnShowHidden.Visible = false;
+                    showHiddenColumn = true;
+
+                    // Renderizar el tablero
+                    RenderDashboard(model);
+
+                    return;
+                }
+            }
 
             if (model == null) // Mostrar error si no se encuentra el tablero
             {
@@ -144,8 +198,8 @@ namespace OrganiTask.Forms
                 return;
             }
 
-            // Se oculta el boton con el fin de siempre mostrar la columna "Sin Etiquetar"
-            if (model.Columns.First.Tag.Id == -1)
+            // Configurar la visibilidad del botón "Sin Etiquetar"
+            if (model.Columns != null && model.Columns.Any() && model.Columns.First != null && model.Columns.First.Tag != null && model.Columns.First.Tag.Id == -1)
             {
                 btnShowHidden.Visible = false;
                 showHiddenColumn = true;
@@ -153,30 +207,50 @@ namespace OrganiTask.Forms
             else
                 btnShowHidden.Visible = true;
 
+            // Actualizar el título del tablero
             lblDashboardTitle.Text = model.DashboardTitle;
+
+            // Renderizar el tablero
             RenderDashboard(model);
+
+            // Asegurarnos de que el combo de ordenamiento está oculto cuando refrescamos
+            RevertSortControl();
         }
 
         private void btnSort_Click(object sender, EventArgs e)
         {
+            // Obtener la lista de categorías del tablero
+            OrganiList<CategoryViewModel> categories = controller.GetDashboardCategories(dashboardId);
+
+            // Verificar si hay categorías reales (excluyendo la de Id -1)
+            bool hasRealCategories = categories.Count > 0 && categories.Any(c => c.Id != -1);
+
+            if (!hasRealCategories)
+            {
+                MessageBox.Show("¡Agrega una categoría y sus etiquetas para comenzar a filtrar!", "Alerta", MessageBoxButtons.OK);
+                return; // Salimos de la función sin mostrar el combo box
+            }
+
+            // Ahora reordenamos las categorías colocando la seleccionada al inicio
+            categories = ReorderCategories(categories, selectedCategory);
+
             btnSort.Visible = false; // Ocultamos el botón de ordenamiento  
             cboSort.Items.Clear(); // Limpiamos los elementos del combo box 
-
-            // Obtener la lista de categorías del tablero
-            // Pero directamente ordenamos la lista de tal manera que la categoría seleccionada esté al inicio
-            OrganiList<CategoryViewModel> categories = ReorderCategories(controller.GetDashboardCategories(dashboardId), selectedCategory); // Reordenamos las categorías
 
             // Indicamos al combobox que se usará para mostrar las categorías
             cboSort.DisplayMember = nameof(CategoryViewModel.Title);
             cboSort.ValueMember = nameof(CategoryViewModel.Id);
+            cboSort.Visible = true;
 
-            cboSort.Items.AddRange(categories.ToArray()); // Agregamos los títulos al combo box
-            if (categories.Count > 0)
-                cboSort.SelectedIndex = 0; // Seleccionamos el primer elemento por defecto  
-
-            cboSort.Visible = true; // Mostramos el combo box
-            cboSort.Focus(); // Focamos el combo box
-            cboSort.DroppedDown = true; // Abrimos el combo box 
+            // Añadimos solo categorías válidas
+            var validCategories = categories.Where(c => c.Id != -1).ToArray();
+            if (validCategories.Length > 0)
+            {
+                cboSort.Items.AddRange(validCategories);
+                cboSort.SelectedIndex = 0;
+                cboSort.Focus();
+                cboSort.DroppedDown = true;
+            }
         }
 
         // Evento para manejar el click en el botón de agregar tarea

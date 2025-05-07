@@ -1,16 +1,8 @@
 ﻿using OrganiTask.Controllers;
-using OrganiTask.Entities;
 using OrganiTask.Entities.ViewModels;
-using OrganiTask.Util;
 using OrganiTask.Util.Collections;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace OrganiTask.Forms
@@ -54,6 +46,10 @@ namespace OrganiTask.Forms
             string username = controller.GetUsernameFromDashboardOwnerId(dvm.UserId);
 
             // Cargamos la información del tablero en los controles
+            lblHeader.MaximumSize = new Size(495, 0);
+            lblHeader.AutoSize = false;
+            lblHeader.AutoEllipsis = true;
+
             lblHeader.Text = $"Información de {dvm.DashboardTitle}"; // Concatenamos el título del tablero al texto del label
             lblCreatorValue.Text = username ?? "(desconocido)"; // Por cualquier error con el propietario, ponemos "(desconocido)"
             lblDescText.Text = dvm.Description ?? "(sin descripción)"; // Si no hay descripción, ponemos "(sin descripción)"
@@ -78,6 +74,7 @@ namespace OrganiTask.Forms
             OrganiList<CategoryViewModel> columnTitles = controller.GetDashboardCategories(dashboardId);
 
             int row = 0;
+
             foreach (var column in columnTitles)
             {
                 // Construimos un Label con el nombre de la categoría
@@ -103,6 +100,7 @@ namespace OrganiTask.Forms
                     Tag = column.Id,
                     Margin = new Padding(3)
                 };
+
                 // Asignamos el evento Click al botón
                 btnView.Click += (s, e) =>
                 {
@@ -128,11 +126,19 @@ namespace OrganiTask.Forms
                     ForeColor = Color.White,
                     BackColor = Color.FromArgb(200, 80, 80)
                 };
+
                 // Asignamos el evento Click al botón
                 btnDelete.Click += (s, e) =>
                 {
                     int catId = (int)((Button)s).Tag;
-                    DialogResult result = MessageBox.Show("¿Estás seguro de que deseas eliminar esta categoría?", "Eliminar categoría", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    bool isLastCategory = columnTitles.Count == 1;
+
+                    string messageDelete = isLastCategory
+                        ? "Esta es la última categoría. \n¿Estás seguro de que deseas eliminarla?"
+                        : "¿Estás seguro de que deseas eliminar esta categoría?";
+
+                    DialogResult result = MessageBox.Show(messageDelete, "Eliminar categoría", MessageBoxButtons.YesNo, isLastCategory ? MessageBoxIcon.Warning :  MessageBoxIcon.Question);
+
                     if (result == DialogResult.Yes)
                     {
                         controller.DeleteCategory(catId); // Llamamos al controlador para eliminar la categoría
@@ -140,6 +146,7 @@ namespace OrganiTask.Forms
                         DashboardInfoChanged?.Invoke(this, EventArgs.Empty); // Disparamos el evento de guardado
                     }
                 };
+
                 tblCategories.Controls.Add(btnDelete, 2, row);
 
                 row++;

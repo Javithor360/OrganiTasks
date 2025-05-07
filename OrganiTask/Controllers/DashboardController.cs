@@ -61,7 +61,8 @@ namespace OrganiTask.Controllers
                     ColumnViewModel column = new ColumnViewModel
                     {
                         Tag = tag,
-                        Tasks = new OrganiList<TaskViewModel>() // Inicializar la lista de tareas
+                        Tasks = new OrganiList<TaskViewModel>(), // Inicializar la lista de tareas
+                        ColorColumn = tag.Color
                     };
 
                     // Obtenemos las tareas que pertenecen al dashboard
@@ -102,16 +103,17 @@ namespace OrganiTask.Controllers
 
         private ColumnViewModel createNoTagColum(OrganiList<Task> tasks, int categoryId = -1)
         {
-               ColumnViewModel noTagColumn = new ColumnViewModel
+            ColumnViewModel noTagColumn = new ColumnViewModel
+            {
+                Tag = new Tag
                 {
-                    Tag = new Tag
-                    {
-                        Id = -1, // ID ficticio para la columna sin etiqueta
-                        Name = "Sin Etiquetar", // Título de la columna
-                        CategoryId = categoryId, // Asignar la categoría
-                    },
-                    Tasks = new OrganiList<TaskViewModel>() // Inicializar la lista de tareas
-                };
+                    Id = -1, // ID ficticio para la columna sin etiqueta
+                    Name = "Sin Etiquetar", // Título de la columna
+                    CategoryId = categoryId, // Asignar la categoría,
+                },
+                Tasks = new OrganiList<TaskViewModel>(), // Inicializar la lista de tareas
+                ColorColumn = "Gray"
+            };
 
             // Iteramos cada task a el modelo de vista de task
             foreach (Task task in tasks)
@@ -355,7 +357,7 @@ namespace OrganiTask.Controllers
                     }
 
                     // Eliminar la categoria
-                    context.Categories.Remove(category); 
+                    context.Categories.Remove(category);
                 }
 
                 // Por ultimo eliminar el tablero
@@ -555,6 +557,30 @@ namespace OrganiTask.Controllers
                     context.Categories.Remove(category); // Eliminar la categoría
                     context.SaveChanges(); // Guardar los cambios
                 }
+            }
+        }
+
+        /// <summary>
+        /// Verifica si una categoría específica existe en el tablero
+        /// </summary>
+        /// <param name="dashboardId">ID del tablero</param>
+        /// <param name="categoryId">ID de la categoría a verificar</param>
+        /// <returns>True si la categoría existe, False en caso contrario</returns>
+        public bool CategoryExists(int dashboardId, int categoryId)
+        {
+            try
+            {
+                // Obtener todas las categorías del tablero
+                OrganiList<CategoryViewModel> categories = GetDashboardCategories(dashboardId);
+
+                // Verificar si la categoría con el ID específico existe
+                return categories != null && categories.Any(c => c.Id == categoryId);
+            }
+            catch (Exception ex)
+            {
+               MessageBox.Show($"Error al verificar si existe la categoría: {ex.Message}",
+                   "Hubo un error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
         }
     }

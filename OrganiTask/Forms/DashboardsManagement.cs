@@ -22,20 +22,8 @@ namespace OrganiTask.Forms.Test
         public DashboardsManagement(int IdUser)
         {
             InitializeComponent();
+            SetCategoryControlsState(false);
             userId = IdUser;
-        }
-
-        private void LoadCategories()
-        {
-            using (var context = new OrganiTaskDB())
-            {
-                var categories = context.Categories
-                    .Where(c => c.Dashboard.Id == 2)
-                    .Select(c => new { c.Id, c.Title })
-                    .ToList();
-
-                //dgvCategories.DataSource = categories;
-            }
         }
 
         private void btnSaveDashboard_Click(object sender, EventArgs e)
@@ -71,8 +59,8 @@ namespace OrganiTask.Forms.Test
             // Mensajes de exito o error.
             MessageBox.Show("Tablero creado correctamente.");
 
-            if (defaultCategories && validDefaultValues()) 
-               createDefaultValues(currentDashboard.Id);
+            if (validDefaultValues())
+                createDefaultValues(currentDashboard.Id);
 
             // Trigger de evento que notifica sobre la creación del tablero
             DashboardStored?.Invoke(this, EventArgs.Empty);
@@ -95,21 +83,13 @@ namespace OrganiTask.Forms.Test
             btnAddTag.Enabled = enabled;
             listBoxTags.Enabled = enabled;
 
-            if (enabled)
-            {
-                txtCategoryName.Text = "Status";
+            listBoxTags.Items.Clear();
 
-                if (listBoxTags.Items.Count == 0)
-                {
-                    listBoxTags.Items.Add("Sin iniciar");
-                    listBoxTags.Items.Add("En progreso");
-                    listBoxTags.Items.Add("Finalizada");
-                }
-            }
-            else
-            {
-                txtCategoryName.Text = string.Empty;
-            }
+            txtCategoryName.Text = "Estado";
+
+            listBoxTags.Items.Add("Sin iniciar");
+            listBoxTags.Items.Add("En progreso");
+            listBoxTags.Items.Add("Finalizada");
         }
 
         private bool validDefaultValues()
@@ -152,13 +132,47 @@ namespace OrganiTask.Forms.Test
                         Name = item.ToString(),
                         CategoryId = currentCategory.Id
                     };
-                    
+
                     categoryController.AddTagToCategory(currentCategory.Id, tag);
                 }
 
                 MessageBox.Show("Se ha creado su categoría y etiquetas correspondientes.",
                     "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        // Método para validar el nombre de la etiqueta y agregarla
+        private void btnAddTag_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtTagName.Text))
+            {
+                MessageBox.Show("El nombre de la etiqueta es obligatorio",
+                   "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            listBoxTags.Items.Add(txtTagName.Text);
+            txtTagName.Clear();
+        }
+
+        // Método para eliminar una etiqueta al hacer doble clic en ella
+        private void listBoxTags_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (listBoxTags.SelectedItem != null)
+            {
+                var result = MessageBox.Show($"¿Desea eliminar la etiqueta '{listBoxTags.SelectedItem}'?",
+                "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    listBoxTags.Items.Remove(listBoxTags.SelectedItem);
+                }
+            }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

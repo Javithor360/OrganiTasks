@@ -4,6 +4,7 @@ using OrganiTask.Entities.ViewModels;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using OrganiTask.Util; 
 
 namespace OrganiTask.Forms.Controls
 {
@@ -26,15 +27,29 @@ namespace OrganiTask.Forms.Controls
         {
             this.Column = tag;
 
+            Color baseColor = ColorUtil.ParseColor(tag.Color);
+            Color backgroundColor = Color.FromArgb(135, baseColor);
+
             // Configuración estándar del panel
             this.FlowDirection = FlowDirection.TopDown;
             this.WrapContents = false;
-            this.AutoScroll = true;
             this.Width = 250;
-            this.Height = 1000;
+            this.Height = 800;
             this.Margin = new Padding(8);
             this.AllowDrop = true;
-            this.BackColor = GetColorColumn(tag.Color);
+            this.BackColor = backgroundColor;
+
+            // Deshabilitar scroll horizontal
+            this.AutoScroll = false;
+            this.HorizontalScroll.Enabled = false;
+            this.HorizontalScroll.Visible = false;
+            this.HorizontalScroll.Maximum = 0;
+            this.AutoScroll = true;
+
+            // Agregar validación para que el scroll vertical funcione correctamente
+            this.AutoScrollMinSize = new Size(0, 0);
+
+            this.Dock = DockStyle.None;
 
             // Contenedor para el título
             Panel headerPanel = new Panel
@@ -53,7 +68,8 @@ namespace OrganiTask.Forms.Controls
                 AutoSize = false,
                 TextAlign = ContentAlignment.MiddleCenter,
                 Dock = DockStyle.Fill,
-                AutoEllipsis = true
+                AutoEllipsis = true,
+                ForeColor = ColorUtil.IsDarkColor(baseColor) ? Color.White : Color.Black
             };
 
             headerPanel.Controls.Add(lblTag); // Agregar el label al contenedor
@@ -64,27 +80,6 @@ namespace OrganiTask.Forms.Controls
             // Suscribir los eventos de drag y drop
             this.DragEnter += ColumnDragEnter;
             this.DragDrop += ColumnDragDrop;
-        }
-
-
-        private Color GetColorColumn(string colorString)
-        {
-            Color currentColor;
-
-            if (string.IsNullOrEmpty(colorString))
-                return Color.FromArgb(135, Color.Gray); // Default color
-
-            if(colorString.StartsWith("#"))
-            {
-                // Si es hexadecimal
-                currentColor = ColorTranslator.FromHtml(colorString);
-            }else
-            {
-                currentColor = Color.FromName(colorString);
-            }
-
-            // Aplicar opacidad 
-            return Color.FromArgb(135, currentColor);
         }
 
         // Método que se llama cuando se arrastra una tarea sobre la columna

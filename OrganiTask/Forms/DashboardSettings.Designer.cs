@@ -12,7 +12,6 @@ namespace OrganiTask.Forms
         private FlowLayoutPanel pnlCreator;
         private TextBox txtHeader;
         private TextBox txtDescription;
-        private Label lblHeader;
         private Label lblCreatorKey;
         private Label lblCreatorValue;
         private Label lblDescKey;
@@ -34,10 +33,10 @@ namespace OrganiTask.Forms
         private void InitializeComponent()
         {
             this.flpMain = new System.Windows.Forms.FlowLayoutPanel();
-            this.txtHeader = new System.Windows.Forms.TextBox();
             this.pnlCreator = new System.Windows.Forms.FlowLayoutPanel();
             this.lblCreatorKey = new System.Windows.Forms.Label();
             this.lblCreatorValue = new System.Windows.Forms.Label();
+            this.txtHeader = new System.Windows.Forms.TextBox();
             this.lblDescKey = new System.Windows.Forms.Label();
             this.lblDescText = new System.Windows.Forms.Label();
             this.txtDescription = new System.Windows.Forms.TextBox();
@@ -76,16 +75,6 @@ namespace OrganiTask.Forms
             this.flpMain.TabIndex = 0;
             this.flpMain.WrapContents = false;
             // 
-            // txtHeader
-            // 
-            this.txtHeader.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtHeader.Location = new System.Drawing.Point(23, 54);
-            this.txtHeader.Margin = new System.Windows.Forms.Padding(3, 0, 3, 15);
-            this.txtHeader.Name = "txtHeader";
-            this.txtHeader.Size = new System.Drawing.Size(440, 25);
-            this.txtHeader.TabIndex = 1;
-            this.txtHeader.Visible = false;
-            // 
             // pnlCreator
             // 
             this.pnlCreator.AutoSize = true;
@@ -120,6 +109,16 @@ namespace OrganiTask.Forms
             this.lblCreatorValue.Name = "lblCreatorValue";
             this.lblCreatorValue.Size = new System.Drawing.Size(0, 19);
             this.lblCreatorValue.TabIndex = 1;
+            // 
+            // txtHeader
+            // 
+            this.txtHeader.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtHeader.Location = new System.Drawing.Point(23, 54);
+            this.txtHeader.Margin = new System.Windows.Forms.Padding(3, 0, 3, 15);
+            this.txtHeader.Name = "txtHeader";
+            this.txtHeader.Size = new System.Drawing.Size(440, 25);
+            this.txtHeader.TabIndex = 1;
+            this.txtHeader.Visible = false;
             // 
             // lblDescKey
             // 
@@ -244,7 +243,7 @@ namespace OrganiTask.Forms
             // lblHeader
             // 
             this.lblHeader.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblHeader.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
+            this.lblHeader.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
             this.lblHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
             this.lblHeader.Location = new System.Drawing.Point(0, 0);
             this.lblHeader.Name = "lblHeader";
@@ -275,5 +274,7 @@ namespace OrganiTask.Forms
             this.ResumeLayout(false);
 
         }
+
+        private Label lblHeader;
     }
 }

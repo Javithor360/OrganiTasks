@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Drawing;
+using System.Windows.Forms;
 using OrganiTask.Entities.ViewModels;
 
 namespace OrganiTask.Forms.Controls
@@ -16,7 +17,11 @@ namespace OrganiTask.Forms.Controls
         public TaskCardPanel()
         {
             this.Width = 240;
-            this.Height = 80;
+
+            // TODO
+            // Adapt the card height dinamically depending on the size of the given description
+            this.Height = 140;
+
             this.Cursor = Cursors.Hand;
             this.BorderStyle = BorderStyle.FixedSingle;
             this.Margin = new Padding(5);

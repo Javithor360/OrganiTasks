@@ -75,7 +75,6 @@ namespace OrganiTask.Forms.Test
             }
 
         }
-
         private Panel CreateNewDashboardCard()
         {
             Panel card = new Panel
@@ -166,7 +165,7 @@ namespace OrganiTask.Forms.Test
                 Text = dashboard.Description,
                 Font = new Font("Segoe UI", 10),
                 AutoSize = true,
-                MaximumSize = new Size(card.Width - 10, 150),
+                MaximumSize = new Size(card.Width - 10, CARD_HEIGHT - 100),
                 Location = new Point(10, 45),
                 AutoEllipsis = true
             };
@@ -253,8 +252,7 @@ namespace OrganiTask.Forms.Test
 
         private void HandleDashboardClick(int dashboardId)
         {
-            KanbanDashboard kanban = new KanbanDashboard(dashboardId);
-            kanban.ShowDialog();
+            DashboardManager.Instance.OpenDashboard(dashboardId);
         }
 
 

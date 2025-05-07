@@ -198,14 +198,16 @@ namespace OrganiTask.Forms
                 tagDetails.ShowDialog();
             };
 
+            var baseColor = ColorUtil.ParseColor(tag.Color);
+
             // Definimos un label que contendrá el nombre de la etiqueta
             Label lbl = new Label
             {
                 Text = tag.Name,
                 Dock = DockStyle.Fill,
                 TextAlign = ContentAlignment.MiddleCenter,
-                ForeColor = Color.White,
-                BackColor = ColorUtil.ParseColor(tag.Color),
+                ForeColor = ColorUtil.IsDarkColor(baseColor) ? Color.White : Color.Black,
+                BackColor = baseColor,
                 AutoSize = false
             };
 

@@ -10,6 +10,17 @@ namespace OrganiTask.Util
     public static class ColorUtil
     {
         /// <summary>
+        /// Dicta si un color es oscuro.
+        /// <paramref name="color"/> es el color a evaluar.</param>
+        /// <returns>Retorna true si el color es oscuro.</returns>
+        /// </summary>
+        public static bool IsDarkColor(Color color)
+        {
+            double luminance = (0.299 * color.R + 0.587 * color.G + 0.114 * color.B) / 255;
+            return luminance < 0.5;
+        }
+
+        /// <summary>
         /// Traduce un color en formato string a un objeto Color.
         /// </summary>
         /// <param name="colorString">El color en formato string.</param>

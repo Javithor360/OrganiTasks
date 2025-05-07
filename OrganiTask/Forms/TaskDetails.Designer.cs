@@ -11,7 +11,6 @@ namespace OrganiTask.Forms
         private System.ComponentModel.IContainer components = null;
         private FlowLayoutPanel flpMain;
         private Label lblTitle;
-        private Label lblDesc;
         private TableLayoutPanel tblDetails;
         private Button btnEdit;
         private Button btnSave;
@@ -40,11 +39,11 @@ namespace OrganiTask.Forms
         {
             this.flpMain = new System.Windows.Forms.FlowLayoutPanel();
             this.lblTitle = new System.Windows.Forms.Label();
-            this.lblDesc = new System.Windows.Forms.Label();
+            this.txtBoxDesc = new System.Windows.Forms.TextBox();
             this.tblDetails = new System.Windows.Forms.TableLayoutPanel();
-            this.btnSave = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.flpMain.SuspendLayout();
             this.SuspendLayout();
@@ -54,7 +53,7 @@ namespace OrganiTask.Forms
             this.flpMain.AutoScroll = true;
             this.flpMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
             this.flpMain.Controls.Add(this.lblTitle);
-            this.flpMain.Controls.Add(this.lblDesc);
+            this.flpMain.Controls.Add(this.txtBoxDesc);
             this.flpMain.Controls.Add(this.tblDetails);
             this.flpMain.Controls.Add(this.btnEdit);
             this.flpMain.Controls.Add(this.btnDelete);
@@ -65,8 +64,9 @@ namespace OrganiTask.Forms
             this.flpMain.Location = new System.Drawing.Point(0, 0);
             this.flpMain.Name = "flpMain";
             this.flpMain.Padding = new System.Windows.Forms.Padding(20);
-            this.flpMain.Size = new System.Drawing.Size(484, 401);
+            this.flpMain.Size = new System.Drawing.Size(507, 419);
             this.flpMain.TabIndex = 0;
+            this.flpMain.WrapContents = false;
             // 
             // lblTitle
             // 
@@ -74,20 +74,23 @@ namespace OrganiTask.Forms
             this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
             this.lblTitle.Location = new System.Drawing.Point(23, 20);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(449, 30);
+            this.lblTitle.Size = new System.Drawing.Size(461, 30);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "lblTitle";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lblDesc
+            // txtBoxDesc
             // 
-            this.lblDesc.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblDesc.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblDesc.Location = new System.Drawing.Point(23, 50);
-            this.lblDesc.Name = "lblDesc";
-            this.lblDesc.Size = new System.Drawing.Size(449, 60);
-            this.lblDesc.TabIndex = 0;
-            this.lblDesc.Text = "lblDesc";
+            this.txtBoxDesc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.txtBoxDesc.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtBoxDesc.Location = new System.Drawing.Point(23, 53);
+            this.txtBoxDesc.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
+            this.txtBoxDesc.Multiline = true;
+            this.txtBoxDesc.Name = "txtBoxDesc";
+            this.txtBoxDesc.ReadOnly = true;
+            this.txtBoxDesc.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtBoxDesc.Size = new System.Drawing.Size(461, 94);
+            this.txtBoxDesc.TabIndex = 7;
             // 
             // tblDetails
             // 
@@ -96,30 +99,12 @@ namespace OrganiTask.Forms
             this.tblDetails.ColumnCount = 2;
             this.tblDetails.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tblDetails.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tblDetails.Location = new System.Drawing.Point(20, 120);
+            this.tblDetails.Location = new System.Drawing.Point(20, 167);
             this.tblDetails.Margin = new System.Windows.Forms.Padding(0, 10, 0, 20);
             this.tblDetails.Name = "tblDetails";
             this.tblDetails.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tblDetails.Size = new System.Drawing.Size(0, 0);
             this.tblDetails.TabIndex = 1;
-            // 
-            // btnSave
-            // 
-            this.btnSave.AutoSize = true;
-            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.btnSave.FlatAppearance.BorderSize = 0;
-            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSave.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(23, 250);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(3, 0, 3, 15);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(445, 40);
-            this.btnSave.TabIndex = 3;
-            this.btnSave.Text = "Guardar";
-            this.btnSave.UseVisualStyleBackColor = false;
-            this.btnSave.Visible = false;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnEdit
             // 
@@ -129,10 +114,10 @@ namespace OrganiTask.Forms
             this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEdit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnEdit.ForeColor = System.Drawing.Color.White;
-            this.btnEdit.Location = new System.Drawing.Point(23, 140);
+            this.btnEdit.Location = new System.Drawing.Point(23, 187);
             this.btnEdit.Margin = new System.Windows.Forms.Padding(3, 0, 3, 15);
             this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(445, 40);
+            this.btnEdit.Size = new System.Drawing.Size(461, 40);
             this.btnEdit.TabIndex = 2;
             this.btnEdit.Text = "Editar";
             this.btnEdit.UseVisualStyleBackColor = false;
@@ -146,14 +131,32 @@ namespace OrganiTask.Forms
             this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDelete.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnDelete.ForeColor = System.Drawing.Color.White;
-            this.btnDelete.Location = new System.Drawing.Point(23, 195);
+            this.btnDelete.Location = new System.Drawing.Point(23, 242);
             this.btnDelete.Margin = new System.Windows.Forms.Padding(3, 0, 3, 15);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(445, 40);
+            this.btnDelete.Size = new System.Drawing.Size(461, 40);
             this.btnDelete.TabIndex = 5;
             this.btnDelete.Text = "Eliminar";
             this.btnDelete.UseVisualStyleBackColor = false;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
+            // btnSave
+            // 
+            this.btnSave.AutoSize = true;
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.btnSave.FlatAppearance.BorderSize = 0;
+            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSave.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnSave.ForeColor = System.Drawing.Color.White;
+            this.btnSave.Location = new System.Drawing.Point(23, 297);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(3, 0, 3, 15);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(461, 40);
+            this.btnSave.TabIndex = 3;
+            this.btnSave.Text = "Guardar";
+            this.btnSave.UseVisualStyleBackColor = false;
+            this.btnSave.Visible = false;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnCancel
             // 
@@ -163,9 +166,9 @@ namespace OrganiTask.Forms
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.btnCancel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.btnCancel.Location = new System.Drawing.Point(23, 308);
+            this.btnCancel.Location = new System.Drawing.Point(23, 355);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(445, 40);
+            this.btnCancel.Size = new System.Drawing.Size(461, 40);
             this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "Cancelar";
             this.btnCancel.UseVisualStyleBackColor = false;
@@ -176,7 +179,7 @@ namespace OrganiTask.Forms
             // 
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(484, 401);
+            this.ClientSize = new System.Drawing.Size(507, 419);
             this.Controls.Add(this.flpMain);
             this.MinimumSize = new System.Drawing.Size(500, 400);
             this.Name = "TaskDetails";
@@ -192,5 +195,6 @@ namespace OrganiTask.Forms
         #endregion
 
         private Button btnDelete;
+        private TextBox txtBoxDesc;
     }
 }

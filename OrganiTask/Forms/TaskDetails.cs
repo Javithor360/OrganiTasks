@@ -72,11 +72,13 @@ namespace OrganiTask.Forms
                 btnDelete.Visible = true;
                 btnSave.Visible = false;
                 btnCancel.Visible = false;
+                txtBoxDesc.ReadOnly = true;
             }
             else
             {
                 RenderTaskInEditMode(); // Modo edición
                 // Determinar visibilidad de botones
+                txtBoxDesc.ReadOnly = false;
                 btnEdit.Visible = false;
                 btnSave.Visible = true;
                 btnDelete.Visible = false;
@@ -90,8 +92,8 @@ namespace OrganiTask.Forms
             // Definir el título y descripción de la tarea y mostrarlos
             lblTitle.Text = task.Title;
             lblTitle.Visible = true;
-            lblDesc.Text = task.Description;
-            lblDesc.Visible = true;
+            txtBoxDesc.Text = task.Description;
+            txtBoxDesc.Visible = true;
 
             LoadCategoriesViewMode(); // Cargamos las categorías de la tarea en modo vista
 
@@ -110,7 +112,7 @@ namespace OrganiTask.Forms
 
             // Ocultamos los labels de título y descripción
             lblTitle.Visible = false;
-            lblDesc.Visible = false;
+            txtBoxDesc.Visible = false;
 
             // Agregamos filas a la tabla con TextBoxes para editar el título y descripción
             AddRowWithTextBox("Título:", task.Title, out txtTitle);
@@ -196,11 +198,13 @@ namespace OrganiTask.Forms
             Label lblKey = new Label
             {
                 AutoSize = false,
+                Size = new Size(190, 25),
                 Dock = DockStyle.Fill,
                 Font = new Font("Segoe UI", 10, FontStyle.Bold),
                 TextAlign = ContentAlignment.MiddleLeft,
                 Padding = new Padding(0, 2, 5, 2),
-                Text = labelText
+                Text = labelText,
+                AutoEllipsis = true
             };
 
             // Creamos el label para la etiqueta
@@ -217,7 +221,7 @@ namespace OrganiTask.Forms
             // Si hay un color, lo aplicamos al label de la etiqueta
             if (!string.IsNullOrEmpty(valueText) && !string.IsNullOrWhiteSpace(color))
             {
-                lblValue.ForeColor = System.Drawing.Color.White;
+                lblValue.ForeColor = ColorUtil.IsDarkColor(ColorUtil.ParseColor(color)) ? Color.White : Color.Black;
                 lblValue.BackColor = ColorUtil.ParseColor(color);
                 lblValue.Padding = new Padding(2, 1, 2, 1);
             }
