@@ -1,59 +1,56 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using OrganiTask.Entities; 
+using OrganiTask.Entities;
 using System.Drawing.Drawing2D;
 
 namespace OrganiTask.Util
 {
     public static class DisplayElements
     {
+        /// <summary>
+        /// Crea un panel de etiqueta estilo "chip" con el color y nombre de la etiqueta.
+        /// </summary>
+        /// <param name="tag">Etiqueta a mostrar</param>
+        /// <returns>Panel con la etiqueta formateada</returns>
         public static Panel CreateTagChip(Tag tag)
         {
-            Console.Write(tag.Name);
-            
+            // Validar que la etiqueta no sea nula
+            if (tag == null || string.IsNullOrEmpty(tag.Name))
+                return null;
+
+            // Parsear el color de la etiqueta
             Color tagColor = ColorUtil.ParseColor(tag.Color);
-            Color textColor = ColorUtil.IsDarkColor(tagColor) ? Color.White : Color.Black;
+            bool isDarkColor = ColorUtil.IsDarkColor(tagColor);
 
-            Panel tagChip = new Panel
+            // Panel principal del chip con bordes redondeados
+            Panel chipPanel = new Panel
             {
-                AutoSize = false,
-                Size = new Size(80, 22),
-                Margin = new Padding(0, 0, 5, 5),
+                AutoSize = true,
                 BackColor = tagColor,
-                BorderStyle = BorderStyle.None
+                Margin = new Padding(2),
+                Padding = new Padding(5, 2, 5, 2),
+                BorderStyle = BorderStyle.None,
+                MaximumSize = new Size(100, 24),
+                MinimumSize = new Size(20, 20)
             };
 
-            tagChip.Paint += (sender, e) =>
-            {
-                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                using (var path = new GraphicsPath())
-                {
-                    int radius = 10;
-                    path.AddArc(0, 0, radius, radius, 180, 90);
-                    path.AddArc(tagChip.Width - radius, 0, radius, radius, 270, 90);
-                    path.AddArc(tagChip.Width - radius, tagChip.Height - radius, radius, radius, 0, 90);
-                    path.AddArc(0, tagChip.Height - radius, radius, radius, 90, 90);
-                    path.CloseAllFigures();
-
-                    e.Graphics.FillPath(new SolidBrush(tagColor), path);
-                }
-            };
-
+            // Etiqueta con el texto
             Label lblTagName = new Label
             {
                 Text = tag.Name,
-                AutoSize = false,
-                Size = new Size(80, 22),
+                Font = new Font("Segoe UI", 8),
+                ForeColor = isDarkColor ? Color.White : Color.Black,
+                AutoSize = true,
+                MaximumSize = new Size(90, 20),
+                AutoEllipsis = true,
                 TextAlign = ContentAlignment.MiddleCenter,
-                Font = new Font("Segoe UI", 8, FontStyle.Regular),
-                ForeColor = textColor,
                 BackColor = Color.Transparent,
-                AutoEllipsis = true
+                Dock = DockStyle.Fill
             };
 
-            tagChip.Controls.Add(lblTagName);
-            return tagChip;
+            chipPanel.Controls.Add(lblTagName);
+            return chipPanel;
         }
     }
 }

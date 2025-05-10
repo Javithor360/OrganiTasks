@@ -78,6 +78,7 @@ namespace OrganiTask.Controllers
                         {
                             Id = task.Id,
                             Title = task.Title,
+                            DashboardId = dashboard.Id,
                             Description = task.Description,
                             StartDate = (DateTime)task.StartDate,
                             EndDate = (DateTime)task.EndDate

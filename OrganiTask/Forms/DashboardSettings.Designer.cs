@@ -71,7 +71,7 @@ namespace OrganiTask.Forms
             this.flpMain.Location = new System.Drawing.Point(0, 70);
             this.flpMain.Name = "flpMain";
             this.flpMain.Padding = new System.Windows.Forms.Padding(20);
-            this.flpMain.Size = new System.Drawing.Size(484, 530);
+            this.flpMain.Size = new System.Drawing.Size(484, 583);
             this.flpMain.TabIndex = 0;
             this.flpMain.WrapContents = false;
             // 
@@ -256,7 +256,7 @@ namespace OrganiTask.Forms
             // 
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(484, 600);
+            this.ClientSize = new System.Drawing.Size(484, 653);
             this.Controls.Add(this.flpMain);
             this.Controls.Add(this.pnlHeader);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F);
