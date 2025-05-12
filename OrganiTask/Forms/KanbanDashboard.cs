@@ -108,7 +108,7 @@ namespace OrganiTask.Forms
                 TaskData = task,
                 CurrentTagId = tagId,
                 AutoSize = true, // Ajustar automáticamente el tamaño
-                MinimumSize = new Size(240, 80), // Tamaño mínimo
+                MinimumSize = new Size(240, 60), // Tamaño mínimo
                 MaximumSize = new Size(240, 600), // Tamaño máximo
             };
 
@@ -151,7 +151,7 @@ namespace OrganiTask.Forms
                 Panel separatorDesc = new Panel
                 {
                     Height = 1,
-                    Width = 210,
+                    Width = 200,
                     BackColor = ColorUtil.IsDarkColor(baseColor) ? Color.FromArgb(230, 230, 230) : Color.FromArgb(100, 100, 100),
                 };
 
@@ -182,16 +182,6 @@ namespace OrganiTask.Forms
                 descriptionContainer.Controls.Add(lblDesc);
                 contentPanel.Controls.Add(descriptionContainer);
             }
-
-            // Línea divisora antes de las etiquetas
-            Panel separator = new Panel
-            {
-                Height = 1,
-                Width = 210,
-                BackColor = ColorUtil.IsDarkColor(baseColor) ? Color.FromArgb(230, 230, 230) : Color.FromArgb(100, 100, 100),
-            };
-
-            contentPanel.Controls.Add(separator);
 
             // Contenedor para las etiquetas con capacidad de desplazamiento
             FlowLayoutPanel tagsPanel = CreateTagsPanel(task, tagId, dashboardId, baseColor);
@@ -236,6 +226,8 @@ namespace OrganiTask.Forms
         // Crear el contenedor de etiquetas (tagsPanel) y llenarlo
         private FlowLayoutPanel CreateTagsPanel(TaskViewModel task, int tagId, int dashboardId, Color baseColor)
         {
+            bool hasTag = false;
+
             FlowLayoutPanel tagsPanel = new FlowLayoutPanel
             {
                 AutoScroll = true,
@@ -248,6 +240,14 @@ namespace OrganiTask.Forms
                 BackColor = Color.Transparent
             };
 
+            // Línea divisora antes de las etiquetas
+            Panel separator = new Panel
+            {
+                Height = 1,
+                Width = 200,
+                BackColor = ColorUtil.IsDarkColor(baseColor) ? Color.FromArgb(230, 230, 230) : Color.FromArgb(100, 100, 100),
+            };
+
             OrganiList<CategoryViewModel> categories = LoadTaskCategories(task.Id, dashboardId);
 
             // Iterar por cada categoría y agregar su etiqueta asignada (si existe)
@@ -258,11 +258,15 @@ namespace OrganiTask.Forms
                     TagChipControl tagChip = CreateTagChip(category.AssignedTag, tagId);
                     if (tagChip != null)
                     {
+                        if (!hasTag) tagsPanel.Controls.Add(separator);
+
                         tagsPanel.Controls.Add(tagChip);
+
+                        hasTag = true;
                     }
                 }
             }
-
+            
             return tagsPanel;
         }
 

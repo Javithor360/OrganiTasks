@@ -45,9 +45,9 @@ namespace OrganiTask.Forms.Controls
             // Configuración estándar del panel
             this.FlowDirection = FlowDirection.TopDown;
             this.WrapContents = false;
-            this.AutoSize = true;
-            this.MinimumSize = new Size(268, 270);
-            this.MaximumSize= new Size(268, 800);
+            this.AutoSize = false;
+            this.Height = 900;
+            this.Width = 268;
             this.Margin = new Padding(8);
             this.AllowDrop = true;
             this.BackColor = backgroundColor;
