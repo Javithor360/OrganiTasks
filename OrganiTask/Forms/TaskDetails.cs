@@ -258,7 +258,7 @@ namespace OrganiTask.Forms
                 Multiline = multiline,
                 Dock = DockStyle.Fill,
                 Margin = new Padding(0, 4, 0, 4),
-                Height = multiline ? 60 : 20
+                Height = multiline ? 100 : 20
             };
 
             // Agregamos los controles a la tabla

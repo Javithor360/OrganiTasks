@@ -161,8 +161,9 @@ namespace OrganiTask.Forms
                 Panel descriptionContainer = new Panel
                 {
                     AutoScroll = true,
-                    Width = 230,
-                    Height = 100,
+                    AutoSize = true, // Ajustar automáticamente el tamaño
+                    MinimumSize = new Size(230, 20), // Tamaño mínimo
+                    MaximumSize = new Size(230, 100), // Tamaño máximo
                     BackColor = Color.Transparent,
                     Margin = new Padding(0, 0, 0, 5),
                 };
@@ -240,7 +241,7 @@ namespace OrganiTask.Forms
                 AutoScroll = true,
                 FlowDirection = FlowDirection.LeftToRight,
                 AutoSize = true,
-                MinimumSize = new Size(210, 30),
+                MinimumSize = new Size(210, 0),
                 MaximumSize = new Size(210, 95),
                 Margin = new Padding(0, 5, 0, 5),
                 WrapContents = true,
