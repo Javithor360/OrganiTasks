@@ -80,8 +80,8 @@ namespace OrganiTask.Forms
                 // Dibujamos dinámicamente una tarjeta por cada tarea en la lista de tareas
                 foreach (TaskViewModel task in column.Tasks)
                 {
-                    Panel taskCard = CreateTaskCard(task, column.Tag.Id, column.ColorColumn); // Creamos la tarjeta
-                    columnPanel.Controls.Add(taskCard); // Agregamos la tarjeta a la columna
+                   Panel taskCard = CreateTaskCard(task, column.Tag.Id, column.ColorColumn); // Creamos la tarjeta
+                   columnPanel.Controls.Add(taskCard); // Agregamos la tarjeta a la columna
                 }
 
                 // Agregamos la columna al panel principal
@@ -107,14 +107,25 @@ namespace OrganiTask.Forms
             {
                 TaskData = task,
                 CurrentTagId = tagId,
+                AutoSize = true, // Ajustar automáticamente el tamaño
+                MinimumSize = new Size(240, 60), // Tamaño mínimo
+                MaximumSize = new Size(240, 600), // Tamaño máximo
             };
 
-            // Adherimos los eventos de click, arrastre y soltar del mouse
-            card.MouseDown += Card_MouseDown;
-            card.MouseMove += Card_MouseMove;
-            card.MouseUp += Card_MouseUp;
-
             Color baseColor = ColorUtil.ParseColor(ColorColumn);
+
+            // Panel principal para organizar el contenido
+            FlowLayoutPanel contentPanel = new FlowLayoutPanel
+            {
+                FlowDirection = FlowDirection.TopDown,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                Width = 240,
+                WrapContents = false,
+                Dock = DockStyle.Top,
+                Padding = new Padding(5),
+                BackColor = Color.Transparent
+            };
 
             // Título de la tarea
             Label lblTitle = new Label
@@ -127,47 +138,142 @@ namespace OrganiTask.Forms
                 Dock = DockStyle.Top, // Hacer que el ancho ocupe todo el panel
                 Height = 25,
                 Location = new Point(0, 0),
-                AutoEllipsis = true
+                AutoEllipsis = true,
+                BackColor = Color.Transparent
             };
 
-            card.Controls.Add(lblTitle); // Agregamos el título a la tarjeta
+            contentPanel.Controls.Add(lblTitle); // Agregamos el título a la tarjeta
 
             // Descripción de la tarea
-            Label lblDesc = new Label
-            {
-                Text = task.Description,
-                Font = new Font("Segoe UI", 9, FontStyle.Regular),
-                AutoSize = false,
-                Height = 60,
-                Width = 235,
-                Location = new Point(5, 30),
-                AutoEllipsis = true,
-                ForeColor = ColorUtil.IsDarkColor(baseColor) ? Color.White : Color.Black,
-                BackColor = Color.Transparent,
-            };
-
-            if(task.Description.Length > 0)
+            if (!string.IsNullOrWhiteSpace(task.Description))
             {
                 // Línea divisora
-                Panel separator = new Panel
+                Panel separatorDesc = new Panel
                 {
                     Height = 1,
-                    Location = new Point(15, 100),
-                    BackColor = ColorUtil.IsDarkColor(baseColor) ? Color.White : Color.Black,
+                    Width = 200,
+                    BackColor = ColorUtil.IsDarkColor(baseColor) ? Color.FromArgb(230, 230, 230) : Color.FromArgb(100, 100, 100),
                 };
 
-                card.Controls.Add(separator);
+                contentPanel.Controls.Add(separatorDesc);
+
+                // Contenedor scrollable para la descripción
+                Panel descriptionContainer = new Panel
+                {
+                    AutoScroll = true,
+                    AutoSize = true, // Ajustar automáticamente el tamaño
+                    MinimumSize = new Size(230, 20), // Tamaño mínimo
+                    MaximumSize = new Size(230, 100), // Tamaño máximo
+                    BackColor = Color.Transparent,
+                    Margin = new Padding(0, 0, 0, 5),
+                };
+
+                // Texto de la descripción (dentro del panel)
+                Label lblDesc = new Label
+                {
+                    Text = task.Description,
+                    AutoSize = true,
+                    MaximumSize = new Size(210, 0),
+                    Font = new Font("Segoe UI", 9, FontStyle.Regular),
+                    ForeColor = ColorUtil.IsDarkColor(baseColor) ? Color.White : Color.Black,
+                    BackColor = Color.Transparent,
+                };
+
+                descriptionContainer.Controls.Add(lblDesc);
+                contentPanel.Controls.Add(descriptionContainer);
             }
 
-            card.Controls.Add(lblDesc); // Agregamos la descripción a la tarjeta
+            // Contenedor para las etiquetas con capacidad de desplazamiento
+            FlowLayoutPanel tagsPanel = CreateTagsPanel(task, tagId, dashboardId, baseColor);
+
+            // Agregar los componentes en el orden correcto
+            contentPanel.Controls.Add(tagsPanel);
+            card.Controls.Add(contentPanel);
+
+            // Adherimos los eventos de click, arrastre y soltar del mouse
+            card.MouseDown += Card_MouseDown;
+            card.MouseMove += Card_MouseMove;
+            card.MouseUp += Card_MouseUp;
 
             return card; // Retornamos la tarjeta
+        }
+
+        // Cargar categorías de la tarea desde el controlador
+        private OrganiList<CategoryViewModel> LoadTaskCategories(int taskId, int dashboardId)
+        {
+            TaskController taskController = new TaskController();
+            return taskController.LoadTaskCategories(taskId, dashboardId);
+        }
+
+        // Crear un chip (panel) para una etiqueta específica, si aplica
+        private TagChipControl CreateTagChip(TagViewModel tagViewModel, int columnTagId)
+        {
+            if (tagViewModel == null || tagViewModel.Id <= 0 || tagViewModel.Id == columnTagId)
+                return null;
+
+            Tag tag = new Tag
+            {
+                Id = tagViewModel.Id,
+                Name = tagViewModel.Name,
+                Color = tagViewModel.Color,
+                CategoryId = tagViewModel.CategoryId
+            };
+
+            // Crear un "chip" para la etiqueta
+            return new TagChipControl(tag);
+        }
+
+        // Crear el contenedor de etiquetas (tagsPanel) y llenarlo
+        private FlowLayoutPanel CreateTagsPanel(TaskViewModel task, int tagId, int dashboardId, Color baseColor)
+        {
+            bool hasTag = false;
+
+            FlowLayoutPanel tagsPanel = new FlowLayoutPanel
+            {
+                AutoScroll = true,
+                FlowDirection = FlowDirection.LeftToRight,
+                AutoSize = true,
+                MinimumSize = new Size(210, 0),
+                MaximumSize = new Size(210, 95),
+                Margin = new Padding(0, 5, 0, 5),
+                WrapContents = true,
+                BackColor = Color.Transparent
+            };
+
+            // Línea divisora antes de las etiquetas
+            Panel separator = new Panel
+            {
+                Height = 1,
+                Width = 200,
+                BackColor = ColorUtil.IsDarkColor(baseColor) ? Color.FromArgb(230, 230, 230) : Color.FromArgb(100, 100, 100),
+            };
+
+            OrganiList<CategoryViewModel> categories = LoadTaskCategories(task.Id, dashboardId);
+
+            // Iterar por cada categoría y agregar su etiqueta asignada (si existe)
+            foreach (CategoryViewModel category in categories)
+            {
+                if (category.AssignedTag != null)
+                {
+                    TagChipControl tagChip = CreateTagChip(category.AssignedTag, tagId);
+                    if (tagChip != null)
+                    {
+                        if (!hasTag) tagsPanel.Controls.Add(separator);
+
+                        tagsPanel.Controls.Add(tagChip);
+
+                        hasTag = true;
+                    }
+                }
+            }
+            
+            return tagsPanel;
         }
 
         private void RefreshDashboard()
         {
             // Cargar el modelo del tablero
-            DashboardViewModel model = controller.LoadKanban(dashboardId, selectedCategory.Title);
+            DashboardViewModel model = controller.LoadKanban(dashboardId, selectedCategory.Id);
 
             // Verificar si la categoría seleccionada sigue existiendo
             bool categoryExists = controller.CategoryExists(dashboardId, selectedCategory.Id);
@@ -183,11 +289,10 @@ namespace OrganiTask.Forms
                 {
                     btnShowHidden.Visible = false;
                     showHiddenColumn = true;
-
-                    // Renderizar el tablero
+                } else
+                {
+                    model = controller.LoadKanban(dashboardId, selectedCategory.Id);
                     RenderDashboard(model);
-
-                    return;
                 }
             }
 
@@ -290,11 +395,19 @@ namespace OrganiTask.Forms
         {
             CategoryViewModel selected = cboSort.SelectedItem as CategoryViewModel; // Obtenemos el elemento seleccionado
 
-            // Validamos que no sea nulo y que sea diferente al la categoría actual
-            if (selected != null && selected.Id != selectedCategory.Id)
+            // Validamos que no sea nulo
+            if (selected != null)
             {
+                bool changed = selected.Id != selectedCategory.Id;
+
                 selectedCategory = selected; // Asignamos la nueva categoría
-                RefreshDashboard(); // Recargamos el tablero
+                RefreshDashboard(); // Recargamos el tablero SIEMPRE, incluso si es la misma categoría
+            }
+            else
+            {
+                // En caso de selección nula, intentamos obtener la categoría por defecto
+                selectedCategory = controller.GetDefaultCategory(dashboardId);
+                RefreshDashboard();
             }
 
             RevertSortControl(); // Revertimos el control de ordenamiento

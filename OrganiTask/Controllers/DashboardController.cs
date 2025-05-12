@@ -17,9 +17,9 @@ namespace OrganiTask.Controllers
         /// Carga un tablero Kanban para un tablero y una categoría específica.
         /// </summary>
         /// <param name="dashboardId">Identificador del tablero.</param>
-        /// <param name="categoryTitle">Título de la categoría.</param>
+        /// <param name="categoryId">Identificador de la categoría.</param>
         /// <returns>Modelo de vista del tablero Kanban.</returns>
-        public DashboardViewModel LoadKanban(int dashboardId, string categoryTitle)
+        public DashboardViewModel LoadKanban(int dashboardId, int categoryId)
         {
             // Instanciamos el modelo de vista
             DashboardViewModel viewModel = new DashboardViewModel();
@@ -39,7 +39,7 @@ namespace OrganiTask.Controllers
                 // Las entidades generadas tienen propiedades de navegación que permiten acceder a las entidades relacionadas
                 Category category = context.Categories
                     .Include("Tag") // Cargar las etiquetas de la categoría
-                    .FirstOrDefault(c => c.Title == categoryTitle && c.DashboardId == dashboardId);
+                    .FirstOrDefault(c => c.Id == categoryId && c.DashboardId == dashboardId);
 
                 // Si no se encuentra la categoría, se retorna el modelo de vista con la "Columna Sin Etiquetar"
                 if (category == null)
@@ -78,6 +78,7 @@ namespace OrganiTask.Controllers
                         {
                             Id = task.Id,
                             Title = task.Title,
+                            DashboardId = dashboard.Id,
                             Description = task.Description,
                             StartDate = (DateTime)task.StartDate,
                             EndDate = (DateTime)task.EndDate

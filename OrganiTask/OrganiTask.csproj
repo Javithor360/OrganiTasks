@@ -129,6 +129,9 @@
     <Compile Include="Forms\Controls\KanbanColumnPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Forms\Controls\TagChipControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Forms\Controls\TaskCardPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -156,12 +159,6 @@
     <Compile Include="Forms\Login.Designer.cs">
       <DependentUpon>Login.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Test\Main_OLD.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Test\Main_OLD.Designer.cs">
-      <DependentUpon>Main_OLD.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\TagDetails.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -179,12 +176,6 @@
     </Compile>
     <Compile Include="Forms\DashboardsManagement.Designer.cs">
       <DependentUpon>DashboardsManagement.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Test\CategoriesManagement.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Test\CategoriesManagement.Designer.cs">
-      <DependentUpon>CategoriesManagement.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Main.cs">
       <SubType>Form</SubType>
@@ -217,9 +208,6 @@
     <EmbeddedResource Include="Forms\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Test\Main_OLD.resx">
-      <DependentUpon>Main_OLD.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\TagDetails.resx">
       <DependentUpon>TagDetails.cs</DependentUpon>
     </EmbeddedResource>
@@ -228,9 +216,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DashboardsManagement.resx">
       <DependentUpon>DashboardsManagement.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Test\CategoriesManagement.resx">
-      <DependentUpon>CategoriesManagement.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>

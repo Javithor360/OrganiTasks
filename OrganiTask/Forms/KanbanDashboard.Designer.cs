@@ -56,6 +56,7 @@ namespace OrganiTask.Forms
             this.flpBoard.Padding = new System.Windows.Forms.Padding(20);
             this.flpBoard.Size = new System.Drawing.Size(750, 530);
             this.flpBoard.TabIndex = 0;
+            this.flpBoard.HorizontalScroll.Enabled = false;
             this.flpBoard.WrapContents = false;
             // 
             // lblDashboardTitle

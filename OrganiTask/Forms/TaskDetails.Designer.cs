@@ -64,7 +64,7 @@ namespace OrganiTask.Forms
             this.flpMain.Location = new System.Drawing.Point(0, 0);
             this.flpMain.Name = "flpMain";
             this.flpMain.Padding = new System.Windows.Forms.Padding(20);
-            this.flpMain.Size = new System.Drawing.Size(507, 419);
+            this.flpMain.Size = new System.Drawing.Size(507, 458);
             this.flpMain.TabIndex = 0;
             this.flpMain.WrapContents = false;
             // 
@@ -179,7 +179,7 @@ namespace OrganiTask.Forms
             // 
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(507, 419);
+            this.ClientSize = new System.Drawing.Size(507, 458);
             this.Controls.Add(this.flpMain);
             this.MinimumSize = new System.Drawing.Size(500, 400);
             this.Name = "TaskDetails";

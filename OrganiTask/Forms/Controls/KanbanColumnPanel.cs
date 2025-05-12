@@ -22,6 +22,18 @@ namespace OrganiTask.Forms.Controls
         // Evento para indicar al formulario que se actualice tras un drop
         public event EventHandler ColumnUpdated;
 
+        // Sobre escritura del comportamiento de renderizado que habilita el "doble buffering" para 
+        // minimizar el "flickering" al momento de redibujar los elementos
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;  // WS_EX_COMPOSITED
+                return cp;
+            }
+        }
+
         // Constructor que recibe una etiqueta y la asigna al panel para estilizarlo
         public KanbanColumnPanel(Tag tag)
         {
@@ -33,8 +45,9 @@ namespace OrganiTask.Forms.Controls
             // Configuración estándar del panel
             this.FlowDirection = FlowDirection.TopDown;
             this.WrapContents = false;
-            this.Width = 250;
-            this.Height = 800;
+            this.AutoSize = false;
+            this.Height = 900;
+            this.Width = 268;
             this.Margin = new Padding(8);
             this.AllowDrop = true;
             this.BackColor = backgroundColor;
