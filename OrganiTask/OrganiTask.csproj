@@ -129,6 +129,9 @@
     <Compile Include="Forms\Controls\KanbanColumnPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Forms\Controls\TagChipControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Forms\Controls\TaskCardPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -198,7 +201,6 @@
     <Compile Include="Util\Collections\Node.cs" />
     <Compile Include="Util\Collections\OrganiList.cs" />
     <Compile Include="Util\DashboardManager.cs" />
-    <Compile Include="Util\DisplayElements.cs" />
     <Compile Include="Util\SessionManager.cs" />
     <Compile Include="Util\OrganiTaskDB.cs" />
     <Compile Include="Controllers\Services\AuthService.cs" />

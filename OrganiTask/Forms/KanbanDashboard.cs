@@ -216,7 +216,7 @@ namespace OrganiTask.Forms
         }
 
         // Crear un chip (panel) para una etiqueta específica, si aplica
-        private Panel CreateTagChip(TagViewModel tagViewModel, int columnTagId)
+        private TagChipControl CreateTagChip(TagViewModel tagViewModel, int columnTagId)
         {
             if (tagViewModel == null || tagViewModel.Id <= 0 || tagViewModel.Id == columnTagId)
                 return null;
@@ -230,7 +230,7 @@ namespace OrganiTask.Forms
             };
 
             // Crear un "chip" para la etiqueta
-            return DisplayElements.CreateTagChip(tag);
+            return new TagChipControl(tag);
         }
 
         // Crear el contenedor de etiquetas (tagsPanel) y llenarlo
@@ -255,7 +255,7 @@ namespace OrganiTask.Forms
             {
                 if (category.AssignedTag != null)
                 {
-                    Panel tagChip = CreateTagChip(category.AssignedTag, tagId);
+                    TagChipControl tagChip = CreateTagChip(category.AssignedTag, tagId);
                     if (tagChip != null)
                     {
                         tagsPanel.Controls.Add(tagChip);

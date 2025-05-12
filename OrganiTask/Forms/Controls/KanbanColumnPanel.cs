@@ -23,7 +23,7 @@ namespace OrganiTask.Forms.Controls
         public event EventHandler ColumnUpdated;
 
         // Sobre escritura del comportamiento de renderizado que habilita el "doble buffering" para 
-        // Minizar el "flickering" al momento de redibujar los elementos
+        // minimizar el "flickering" al momento de redibujar los elementos
         protected override CreateParams CreateParams
         {
             get
