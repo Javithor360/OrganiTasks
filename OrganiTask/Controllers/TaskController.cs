@@ -48,50 +48,6 @@ namespace OrganiTask.Controllers
         }
 
         /// <summary>
-        /// Carga las relaciones de etiquetas para la tarea: para cada categoría del tablero,
-        /// obtiene la etiqueta asignada (si existe) y las devuelve como una lista de objetos TagViewModel.
-        /// Este método no retorna los nombres de las categorías.
-        /// </summary>
-        /// <param name="taskId">Identificador de la tarea.</param>
-        /// <param name="dashboardId">Identificador del tablero al que pertenece la tarea.</param>
-        /// <returns>Lista de modelos de vista de etiquetas.</returns>
-        public OrganiList<TagViewModel> LoadTaskTags(int taskId, int dashboardId)
-        {
-            OrganiList<TagViewModel> tagsVM = new OrganiList<TagViewModel>(); // Inicializar la lista de modelos de vista de etiquetas
-
-            using (OrganiTaskDB context = new OrganiTaskDB())
-            {
-                // Obtenenemos todas las categorías que pertenecen al tablero
-                OrganiList<Category> categories = context.Categories
-                    .Where(c => c.DashboardId == dashboardId)
-                    .OrderBy(c => c.Title)
-                    .ToOrganiList();
-
-                foreach (Category category in categories)
-                {
-                    Tag tag = (
-                     from ttag in context.TaskTags
-                     join tg in context.Tags on ttag.TagId equals tg.Id
-                     where ttag.TaskId == taskId && tg.CategoryId == category.Id
-                     select tg
-                    ).FirstOrDefault();
-
-                    TagViewModel tagVM = new TagViewModel
-                    {
-                        Id = tag?.Id ?? 0,
-                        Name = tag?.Name ?? "",
-                        Color = tag?.Color ?? "",
-                        CategoryId = category.Id
-                    };
-
-                    tagsVM.Add(tagVM); // Agregar el modelo de vista de la etiqueta a la lista
-                }
-            }
-
-            return tagsVM; // Retornar la lista de modelos de vista de etiquetas
-        }
-
-        /// <summary>
         /// Carga las categorías de la tarea como CategoryViewModel.
         /// Cada CategoryViewModel incluye el título de la categoría, la etiqueta asignada (si existe)
         /// y las etiquetas disponibles para esa categoría.
@@ -274,25 +230,6 @@ namespace OrganiTask.Controllers
             }
 
             return true;
-        }
-
-        /// <summary>
-        /// Obtiene el ID de la categoría asociada a una etiqueta por medio del ID de la etiqueta.
-        /// </summary>
-        /// <param name="tagId">ID de la etiqueta.</param>
-        /// <returns>ID de la categoría asociada a la etiqueta.</returns>
-        public int GetCategoryIdFromTagId(int tagId)
-        {
-            using (OrganiTaskDB context = new OrganiTaskDB())
-            {
-                // Obtener la categoría asociada a la etiqueta
-                Tag tag = context.Tags.FirstOrDefault(t => t.Id == tagId);
-                if (tag != null)
-                {
-                    return tag.CategoryId; // Retornar el identificador de la categoría
-                }
-                return 0; // Retornar cero si no se encuentra la etiqueta
-            }
         }
 
         /// <summary>

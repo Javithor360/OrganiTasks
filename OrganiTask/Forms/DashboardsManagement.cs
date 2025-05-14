@@ -119,18 +119,18 @@ namespace OrganiTask.Forms.Test
                     DashboardId = dashboardId
                 };
 
-                CategoryViewModel currentCategory = categoryController.InsertCategory(category);
+                CategoryViewModel currentCategory = new CategoryController().CreateCategory(category);
 
                 // Crear las etiquetas
-                foreach (TagViewModel item in listBoxTags.Items)
+                foreach (string item in listBoxTags.Items)
                 {
                     TagViewModel tag = new TagViewModel
                     {
-                        Name = item.ToString(),
+                        Name = item,
                         CategoryId = currentCategory.Id
                     };
 
-                    categoryController.AddTagToCategory(currentCategory.Id, tag);
+                    new TagController().AddTagToCategory(currentCategory.Id, tag);
                 }
 
                 MessageBox.Show("Se ha creado su categoría y etiquetas correspondientes.",

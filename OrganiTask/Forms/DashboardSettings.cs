@@ -141,7 +141,7 @@ namespace OrganiTask.Forms
 
                     if (result == DialogResult.Yes)
                     {
-                        controller.DeleteCategory(catId); // Llamamos al controlador para eliminar la categoría
+                        new CategoryController().DeleteCategory(catId); // Llamamos al controlador para eliminar la categoría
                         LoadCategoriesTable(); // Recargamos la tabla de categorías
                         DashboardInfoChanged?.Invoke(this, EventArgs.Empty); // Disparamos el evento de guardado
                     }

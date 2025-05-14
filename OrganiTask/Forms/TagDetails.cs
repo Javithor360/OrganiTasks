@@ -74,6 +74,8 @@ namespace OrganiTask.Forms
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            TagController tagController = new TagController();
+
             // Validación de nombre
             string name = txtName.Text.Trim();
             if (string.IsNullOrEmpty(name))
@@ -88,9 +90,9 @@ namespace OrganiTask.Forms
             tag.Color = $"#{c.R:X2}{c.G:X2}{c.B:X2}";
 
             if (isNew)
-                controller.CreateTag(tag);
+                tagController.CreateTag(tag);
             else
-                controller.UpdateTag(tag);
+                tagController.UpdateTag(tag);
 
             TagSaved?.Invoke(this, tag);
             this.DialogResult = DialogResult.OK;
@@ -108,7 +110,7 @@ namespace OrganiTask.Forms
             DialogResult confirm = MessageBox.Show("¿Seguro que deseas eliminar esta etiqueta?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (confirm == DialogResult.Yes)
             {
-                controller.DeleteTag(tag.Id);
+                new TagController().DeleteTag(tag.Id);
                 TagDeleted?.Invoke(this, tag.Id);
                 this.DialogResult = DialogResult.OK;
                 this.Close();

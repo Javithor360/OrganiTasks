@@ -272,7 +272,7 @@ namespace OrganiTask.Forms
             DashboardViewModel model = controller.LoadKanban(dashboardId, selectedCategory.Id);
 
             // Verificar si la categoría seleccionada sigue existiendo
-            bool categoryExists = controller.CategoryExists(dashboardId, selectedCategory.Id);
+            bool categoryExists = new CategoryController().CategoryExists(dashboardId, selectedCategory.Id);
 
             // Si la categoría ya no existe, obtener la categoría por defecto
             if (!categoryExists)

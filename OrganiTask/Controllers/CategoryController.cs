@@ -1,7 +1,10 @@
 ﻿using OrganiTask.Entities;
 using OrganiTask.Entities.ViewModels;
 using OrganiTask.Util;
+using OrganiTask.Util.Collections;
+using System;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace OrganiTask.Controllers
 {
@@ -15,7 +18,7 @@ namespace OrganiTask.Controllers
         /// Inserta una nueva categoría.
         /// </summary>
         /// <param name="newCategory">Modelo de vista de la nueva categoría.</param>
-        public CategoryViewModel InsertCategory(CategoryViewModel newCategory)
+        public CategoryViewModel CreateCategory(CategoryViewModel newCategory)
         {
             // Usamos un bloque using para asegurarnos de que el contexto se libere al finalizar
             using (OrganiTaskDB context = new OrganiTaskDB())
@@ -37,34 +40,75 @@ namespace OrganiTask.Controllers
         }
 
         /// <summary>
-        /// Agrega una nueva etiqueta a una categoría.
+        /// Actualiza los datos de una categoría existente.
         /// </summary>
-        /// <param name="categoryId">ID de la categoría.</param>
-        /// <param name="tagName">Modelo de vista de la nueva Tag</param>
-        /// <returns>ID de la etiqueta creada.</returns>
-        public int AddTagToCategory(int categoryId, TagViewModel newTag)
+        /// <param name="category">Modelo de vista de la categoría a actualizar.</param>
+        public void UpdateCategory(CategoryViewModel category)
         {
             using (OrganiTaskDB context = new OrganiTaskDB())
             {
-                // Verificar que la categoría exista
-                Category category = context.Categories.FirstOrDefault(c => c.Id == categoryId);
-                if (category == null) return 0;
+                Category cat = context.Categories.FirstOrDefault(c => c.Id == category.Id);
 
-                // Crear la nueva etiqueta
-                Tag Tag = new Tag
-                {
-                    Name = newTag.Name,
-                    Color = "Gray",
-                    CategoryId = categoryId
-                };
+                if (cat == null) return;
 
-                context.Tags.Add(Tag);
+                cat.Title = category.Title;
                 context.SaveChanges();
-
-                return Tag.Id;
             }
         }
 
+        /// <summary>
+        /// Elimina una categoría y todas las etiquetas asociadas a ella.
+        /// </summary>
+        /// <param name="categoryId">Identificador de la categoría a eliminar.</param>
+        public void DeleteCategory(int categoryId)
+        {
+            using (OrganiTaskDB context = new OrganiTaskDB())
+            {
+                // Primero obtenemos todas las etiquetas asociadas a la categoría
+                OrganiList<int> tagIds = context.Tags
+                    .Where(t => t.CategoryId == categoryId)
+                    .Select(t => t.Id)
+                    .ToOrganiList();
+
+                // Luego, eliminamos las relaciones entre las etiquetas y las tareas
+                foreach (int tagId in tagIds)
+                {
+                    new TagController().DeleteTag(tagId); // Eliminar cada etiqueta asociada a la categoría
+                }
+
+                // Ahora eliminamos la categoría en sí
+                Category category = context.Categories.FirstOrDefault(c => c.Id == categoryId);
+                if (category != null)
+                {
+                    context.Categories.Remove(category); // Eliminar la categoría
+                    context.SaveChanges(); // Guardar los cambios
+                }
+            }
+        }
+
+        /// <summary>
+        /// Verifica si una categoría específica existe en el tablero
+        /// </summary>
+        /// <param name="dashboardId">ID del tablero</param>
+        /// <param name="categoryId">ID de la categoría a verificar</param>
+        /// <returns>True si la categoría existe, False en caso contrario</returns>
+        public bool CategoryExists(int dashboardId, int categoryId)
+        {
+            try
+            {
+                // Obtener todas las categorías del tablero
+                OrganiList<CategoryViewModel> categories = new DashboardController().GetDashboardCategories(dashboardId);
+
+                // Verificar si la categoría con el ID específico existe
+                return categories != null && categories.Any(c => c.Id == categoryId);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al verificar si existe la categoría: {ex.Message}",
+                    "Hubo un error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
     }
 
 }

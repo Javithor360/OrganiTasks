@@ -74,6 +74,7 @@
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
+    <Compile Include="Controllers\TagController.cs" />
     <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="Entities\Category.cs">
       <DependentUpon>OrganiTaskDB.tt</DependentUpon>

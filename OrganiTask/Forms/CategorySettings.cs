@@ -64,7 +64,7 @@ namespace OrganiTask.Forms
             btnClose.Visible = true;
 
             // Carga las etiquetas de la categoría desde el controlador
-            OrganiList<TagViewModel> tags = controller.GetTagsForCategory(categoryId);
+            OrganiList<TagViewModel> tags = new TagController().GetTagsForCategory(categoryId);
             RenderTags(tags); // Prepara y renderiza las etiquetas en el panel
         }
 
@@ -93,6 +93,8 @@ namespace OrganiTask.Forms
                 return;
             }
 
+            CategoryController categoryController = new CategoryController(); // Instanciamos el controlador
+
             if (isNew) // Si es una nueva categoría, creamos su modelo
             {
                 CategoryViewModel newCategory = new CategoryViewModel 
@@ -101,14 +103,14 @@ namespace OrganiTask.Forms
                     Title = name 
                 };
 
-                controller.CreateCategory(newCategory); // y lo enviamos al controlador
+                categoryController.CreateCategory(newCategory); // y lo enviamos al controlador
                 categoryId = newCategory.Id; // Guardamos el ID de la nueva categoría
                 isNew = false; // Indicamos que la categoría ya no es nueva
             }
             else // Si no es nueva, simplemente actualizamos su título
             {
                 // Actualizamos el título de la categoría
-                controller.UpdateCategory(new CategoryViewModel { Id = categoryId, Title = name });
+                categoryController.UpdateCategory(new CategoryViewModel { Id = categoryId, Title = name });
             }
 
             isEditing = false; // Salimos del modo edición
@@ -216,6 +218,8 @@ namespace OrganiTask.Forms
 
         private void BeginInlineNewTag(Panel plusCard)
         {
+            TagController tagController = new TagController();
+
             // Desactivamos el evento de click para evitar que se llame varias veces
             plusCard.Click -= (s, e) => BeginInlineNewTag(plusCard);
 
@@ -277,7 +281,7 @@ namespace OrganiTask.Forms
                 };
 
                 // Llamamos al controlador para crear la etiqueta
-                controller.CreateTag(vm);
+                tagController.CreateTag(vm);
 
                 // Recargamos la categoría y disparamos el evento de cambio
                 LoadCategoryDetails();
@@ -293,7 +297,7 @@ namespace OrganiTask.Forms
                 Location = new Point(btnOk.Right + 5, txt.Bottom + 3)
             };
 
-            btnCancel.Click += (s, e) => RenderTags(controller.GetTagsForCategory(categoryId)); // simplemente recargamos las etiquetas
+            btnCancel.Click += (s, e) => RenderTags(tagController.GetTagsForCategory(categoryId)); // simplemente recargamos las etiquetas
             plusCard.Controls.Add(btnCancel); // agregamos el botón de cancelar al panel
         }
 
