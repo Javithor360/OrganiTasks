@@ -1,16 +1,8 @@
 ﻿using OrganiTask.Controllers;
 using OrganiTask.Entities.ViewModels;
-using OrganiTask.Entities;
 using OrganiTask.Util;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Label = System.Windows.Forms.Label;
 

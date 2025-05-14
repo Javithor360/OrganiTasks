@@ -2,16 +2,12 @@
 using OrganiTask.Entities;
 using OrganiTask.Entities.ViewModels;
 using OrganiTask.Forms.Controls;
-using OrganiTask.Forms.Test;
 using OrganiTask.Util;
 using OrganiTask.Util.Collections;
 using System;
-using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using static System.Collections.Specialized.BitVector32;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace OrganiTask.Forms
 {
@@ -348,10 +344,10 @@ namespace OrganiTask.Forms
             cboSort.Visible = true;
 
             // Añadimos solo categorías válidas
-            var validCategories = categories.Where(c => c.Id != -1).ToArray();
-            if (validCategories.Length > 0)
+            OrganiList<CategoryViewModel> validCategories = categories.Where(c => c.Id != -1).ToOrganiList();
+            if (validCategories.Count > 0)
             {
-                cboSort.Items.AddRange(validCategories);
+                cboSort.Items.AddRange(validCategories.ToArray());
                 cboSort.SelectedIndex = 0;
                 cboSort.Focus();
                 cboSort.DroppedDown = true;

@@ -1,10 +1,7 @@
 ﻿using OrganiTask.Controllers;
-using OrganiTask.Entities;
 using OrganiTask.Entities.ViewModels;
 using OrganiTask.Util;
 using System;
-using System.Data;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace OrganiTask.Forms.Test
@@ -37,7 +34,7 @@ namespace OrganiTask.Forms.Test
                 return;
             }
 
-            var newDashboard = new DashboardViewModel
+            DashboardViewModel newDashboard = new DashboardViewModel
             {
                 DashboardTitle = txtDashboardTitle.Text,
                 Description = txtDashboardDescription.Text.Trim(),
@@ -113,21 +110,21 @@ namespace OrganiTask.Forms.Test
 
         private void createDefaultValues(int dashboardId)
         {
-            using (var context = new OrganiTaskDB())
+            using (OrganiTaskDB context = new OrganiTaskDB())
             {
                 // Crear la categoría
-                var category = new CategoryViewModel
+                CategoryViewModel category = new CategoryViewModel
                 {
                     Title = txtCategoryName.Text,
                     DashboardId = dashboardId
                 };
 
-                var currentCategory = categoryController.InsertCategory(category);
+                CategoryViewModel currentCategory = categoryController.InsertCategory(category);
 
                 // Crear las etiquetas
-                foreach (var item in listBoxTags.Items)
+                foreach (TagViewModel item in listBoxTags.Items)
                 {
-                    var tag = new TagViewModel
+                    TagViewModel tag = new TagViewModel
                     {
                         Name = item.ToString(),
                         CategoryId = currentCategory.Id
@@ -160,7 +157,7 @@ namespace OrganiTask.Forms.Test
         {
             if (listBoxTags.SelectedItem != null)
             {
-                var result = MessageBox.Show($"¿Desea eliminar la etiqueta '{listBoxTags.SelectedItem}'?",
+                DialogResult result = MessageBox.Show($"¿Desea eliminar la etiqueta '{listBoxTags.SelectedItem}'?",
                 "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)

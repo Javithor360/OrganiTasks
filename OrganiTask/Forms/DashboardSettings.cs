@@ -75,7 +75,7 @@ namespace OrganiTask.Forms
 
             int row = 0;
 
-            foreach (var column in columnTitles)
+            foreach (CategoryViewModel column in columnTitles)
             {
                 // Construimos un Label con el nombre de la categoría
                 Label lbl = new Label

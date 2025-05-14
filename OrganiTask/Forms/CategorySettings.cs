@@ -2,13 +2,7 @@
 using OrganiTask.Entities.ViewModels;
 using OrganiTask.Util.Collections;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using OrganiTask.Util;
@@ -198,7 +192,7 @@ namespace OrganiTask.Forms
                 tagDetails.ShowDialog();
             };
 
-            var baseColor = ColorUtil.ParseColor(tag.Color);
+            Color baseColor = ColorUtil.ParseColor(tag.Color);
 
             // Definimos un label que contendrá el nombre de la etiqueta
             Label lbl = new Label

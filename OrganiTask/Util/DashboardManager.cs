@@ -1,10 +1,5 @@
 ﻿using OrganiTask.Forms;
 using OrganiTask.Util.Collections;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace OrganiTask.Util
@@ -51,7 +46,7 @@ namespace OrganiTask.Util
             // Buscar si el dashboard ya está abierto
             Node<DashboardInstance> existingNode = null;
 
-            foreach (var node in _openDashboards)
+            foreach (DashboardInstance node in _openDashboards)
             {
                 if (node.DashboardId == dashboardId)
                 {
@@ -104,7 +99,7 @@ namespace OrganiTask.Util
         public void RemoveDashboard(int dashboardId)
         {
             // Recorrer la lista y buscar el dashboard con el ID especificado
-            foreach (var node in _openDashboards)
+            foreach (DashboardInstance node in _openDashboards)
             {
                 if (node.DashboardId == dashboardId)
                 {

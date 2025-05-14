@@ -1,12 +1,10 @@
 ﻿using OrganiTask.Entities;
 using OrganiTask.Entities.ViewModels;
-using OrganiTask.Forms;
 using OrganiTask.Util;
 using OrganiTask.Util.Collections;
 using System;
 using System.Linq;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using Task = OrganiTask.Entities.Task;
 
 namespace OrganiTask.Controllers
@@ -180,28 +178,6 @@ namespace OrganiTask.Controllers
                 newDashboard.Id = dashboard.Id; // Asignar el ID generado al modelo de la vista
 
                 return newDashboard;
-            }
-        }
-
-
-        /// <summary>
-        /// Modificar la información un tablero existente.
-        /// </summary>
-        /// <param name="updatedDashboard">Modelo de vista del tablero actualizado.</param>
-        public void UpdateDashboard(DashboardViewModel updatedDashboard)
-        {
-            using (OrganiTaskDB context = new OrganiTaskDB())
-            {
-                // Buscar el tablero por su ID
-                var dashboard = context.Dashboards.FirstOrDefault(d => d.Id == updatedDashboard.Id);
-                if (dashboard == null) return;
-
-                // Actualizar los datos del tablero
-                dashboard.Name = updatedDashboard.DashboardTitle;
-                dashboard.Description = updatedDashboard.Description;
-
-                // Guardar los cambios
-                context.SaveChanges();
             }
         }
 
