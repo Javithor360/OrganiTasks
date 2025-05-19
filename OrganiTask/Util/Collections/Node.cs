@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OrganiTask.Util.Collections
+﻿namespace OrganiTask.Util.Collections
 {
     /// <summary>
     /// Clase nodo para la lista doblemente enlazada que contiene referencias al siguiente y anterior nodo

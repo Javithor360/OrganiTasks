@@ -1,23 +1,14 @@
-﻿using OrganiTask.Entities;
-using OrganiTask.Entities.ViewModels;
+﻿using OrganiTask.Entities.ViewModels;
 using OrganiTask.Controllers;
 using OrganiTask.Util;
 using OrganiTask.Util.Collections;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.Entity.Infrastructure;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Task = OrganiTask.Entities.Task;
 
 namespace OrganiTask.Forms
 {
-    public partial class TaskDetails: Form
+    public partial class TaskDetails : Form
     {
         // Propiedades para almacenar el modelo de vista de la tarea y el identificador del tablero
         private TaskViewModel task; // Modelo de vista de la tarea
@@ -25,6 +16,7 @@ namespace OrganiTask.Forms
         private bool isEditMode = false; // Indica si el formulario está en modo edición
 
         public event EventHandler TaskUpdated; // Evento para notificar que la tarea ha sido actualizada
+        public event EventHandler TaskDeleted; // Evento para notificar que la tarea ha sido eliminada
 
         // Campos para los controles de edición
         private TextBox txtTitle; // TextBox para el título
@@ -68,15 +60,19 @@ namespace OrganiTask.Forms
                 RenderTaskInViewMode(); // Modo vista
                 // Determinar visibilidad de botones
                 btnEdit.Visible = true;
+                btnDelete.Visible = true;
                 btnSave.Visible = false;
                 btnCancel.Visible = false;
+                txtBoxDesc.ReadOnly = true;
             }
             else
             {
                 RenderTaskInEditMode(); // Modo edición
                 // Determinar visibilidad de botones
+                txtBoxDesc.ReadOnly = false;
                 btnEdit.Visible = false;
                 btnSave.Visible = true;
+                btnDelete.Visible = false;
                 btnCancel.Visible = true;
             }
         }
@@ -87,8 +83,8 @@ namespace OrganiTask.Forms
             // Definir el título y descripción de la tarea y mostrarlos
             lblTitle.Text = task.Title;
             lblTitle.Visible = true;
-            lblDesc.Text = task.Description;
-            lblDesc.Visible = true;
+            txtBoxDesc.Text = task.Description;
+            txtBoxDesc.Visible = true;
 
             LoadCategoriesViewMode(); // Cargamos las categorías de la tarea en modo vista
 
@@ -107,7 +103,7 @@ namespace OrganiTask.Forms
 
             // Ocultamos los labels de título y descripción
             lblTitle.Visible = false;
-            lblDesc.Visible = false;
+            txtBoxDesc.Visible = false;
 
             // Agregamos filas a la tabla con TextBoxes para editar el título y descripción
             AddRowWithTextBox("Título:", task.Title, out txtTitle);
@@ -160,7 +156,7 @@ namespace OrganiTask.Forms
                 foreach (TagViewModel tag in category.TagList)
                 {
                     int index = cmb.Items.Add(tag); // Agregamos la etiqueta al ComboBox y guardamos su índice
-                    
+
                     if (category.AssignedTag != null && tag.Id == category.AssignedTag.Id)
                     {
                         cmb.SelectedIndex = index; // Si la etiqueta es la actual, la seleccionamos
@@ -193,11 +189,13 @@ namespace OrganiTask.Forms
             Label lblKey = new Label
             {
                 AutoSize = false,
+                Size = new Size(190, 25),
                 Dock = DockStyle.Fill,
                 Font = new Font("Segoe UI", 10, FontStyle.Bold),
                 TextAlign = ContentAlignment.MiddleLeft,
                 Padding = new Padding(0, 2, 5, 2),
-                Text = labelText
+                Text = labelText,
+                AutoEllipsis = true
             };
 
             // Creamos el label para la etiqueta
@@ -214,8 +212,8 @@ namespace OrganiTask.Forms
             // Si hay un color, lo aplicamos al label de la etiqueta
             if (!string.IsNullOrEmpty(valueText) && !string.IsNullOrWhiteSpace(color))
             {
-                lblValue.ForeColor = Color.White;
-                lblValue.BackColor = ParseColor(color);
+                lblValue.ForeColor = ColorUtil.IsDarkColor(ColorUtil.ParseColor(color)) ? Color.White : Color.Black;
+                lblValue.BackColor = ColorUtil.ParseColor(color);
                 lblValue.Padding = new Padding(2, 1, 2, 1);
             }
 
@@ -251,7 +249,7 @@ namespace OrganiTask.Forms
                 Multiline = multiline,
                 Dock = DockStyle.Fill,
                 Margin = new Padding(0, 4, 0, 4),
-                Height = multiline ? 60 : 20
+                Height = multiline ? 100 : 20
             };
 
             // Agregamos los controles a la tabla
@@ -339,6 +337,16 @@ namespace OrganiTask.Forms
         // Evento de clic en el botón de guardar
         private void btnSave_Click(object sender, EventArgs e)
         {
+            // Validar que la fecha de finalización no sea menor a la fecha de inicio
+            if (dtpEnd.Value < dtpStart.Value)
+            {
+                MessageBox.Show("La fecha de finalización no puede ser anterior a la fecha de inicio.", 
+                    "Error de validación", 
+                    MessageBoxButtons.OK, 
+                    MessageBoxIcon.Error);
+                return;
+            }
+
             // Actualizamos la tarea con los nuevos valores
             task.Title = txtTitle.Text;
             task.Description = txtDesc.Text;
@@ -374,43 +382,33 @@ namespace OrganiTask.Forms
         // Evento de clic en el botón de cancelar
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            SetEditMode(false); // Cambiar a modo vista
+            if (task.Id != 0)
+            {
+                SetEditMode(false); // Cambiar a modo vista
+            }
+            else
+            {
+                this.Close(); // Cerrar el formulario si no hay tarea
+            }
         }
 
         /*
          * Métodos complementarios
          */
 
-        // Método complementario para convertir un string en un color
-        // NOTA: Este método podría ir en una clase de utilidades
-        private Color ParseColor(string colorString)
-        {
-            try
-            {
-                Color known = Color.FromName(colorString);
-                if (known.A != 0) // Si el color es conocido y no es transparente
-                    return known;
-
-                // Si no, probamos con hex
-                if (colorString.StartsWith("#"))
-                {
-                    // Removemos el #
-                    colorString = colorString.Substring(1);
-                    // parse RRGGBB
-                    int argb = int.Parse(colorString, System.Globalization.NumberStyles.HexNumber);
-                    return Color.FromArgb(255, (argb >> 16) & 0xFF, (argb >> 8) & 0xFF, argb & 0xFF);
-                }
-            }
-            catch { } // Ignoramos cualquier error y retornamos Gray por defecto
-
-            return Color.Gray;
-        }
-
         // Método para cambiar el modo de edición del formulario
         public void SetEditMode(bool editMode)
         {
             isEditMode = editMode;
             RenderTask();
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            bool taskDeleted = taskController.DeleteTask(task.Id);
+
+            if (taskDeleted) this.Close();
+            TaskDeleted?.Invoke(this, EventArgs.Empty); // Notificar que la tarea ha sido eliminada
         }
     }
 }

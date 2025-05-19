@@ -2,8 +2,6 @@
 using OrganiTask.Entities.ViewModels;
 using OrganiTask.Util;
 using OrganiTask.Util.Collections;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace OrganiTask.Controllers
@@ -47,6 +45,8 @@ namespace OrganiTask.Controllers
                 {
                     viewModel.DashboardPreviews.AddLast(new DashboardViewModel
                     {
+                        Id = dashboard.Id,
+                        Description = dashboard.Description,
                         DashboardTitle = dashboard.Name
                     });
                 }

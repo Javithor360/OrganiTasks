@@ -3,9 +3,7 @@ using OrganiTask.Entities.ViewModels;
 using OrganiTask.Util;
 using OrganiTask.Util.Collections;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace OrganiTask.Controllers
 {
@@ -38,57 +36,15 @@ namespace OrganiTask.Controllers
                     {
                         Id = task.Id,
                         Title = task.Title,
-                        Description = task.Description,
+                        Description = string.IsNullOrEmpty(task.Description)
+                        ? "Sin descripción... Agrega una para más detalles"
+                        : task.Description,
                         StartDate = (DateTime)task.StartDate,
                         EndDate = (DateTime)task.EndDate
                     };
                 }
             }
             return taskVM; // Retornar el modelo de vista de la tarea o null si no se encuentra
-        }
-
-        /// <summary>
-        /// Carga las relaciones de etiquetas para la tarea: para cada categoría del tablero,
-        /// obtiene la etiqueta asignada (si existe) y las devuelve como una lista de objetos TagViewModel.
-        /// Este método no retorna los nombres de las categorías.
-        /// </summary>
-        /// <param name="taskId">Identificador de la tarea.</param>
-        /// <param name="dashboardId">Identificador del tablero al que pertenece la tarea.</param>
-        /// <returns>Lista de modelos de vista de etiquetas.</returns>
-        public OrganiList<TagViewModel> LoadTaskTags(int taskId, int dashboardId)
-        {
-            OrganiList<TagViewModel> tagsVM = new OrganiList<TagViewModel>(); // Inicializar la lista de modelos de vista de etiquetas
-
-            using (OrganiTaskDB context = new OrganiTaskDB())
-            {
-                // Obtenenemos todas las categorías que pertenecen al tablero
-                OrganiList<Category> categories = context.Categories
-                    .Where(c => c.DashboardId == dashboardId)
-                    .OrderBy(c => c.Title)
-                    .ToOrganiList();
-
-                foreach (Category category in categories)
-                {
-                    Tag tag = (
-                     from ttag in context.TaskTags
-                     join tg in context.Tags on ttag.TagId equals tg.Id
-                     where ttag.TaskId == taskId && tg.CategoryId == category.Id
-                     select tg
-                    ).FirstOrDefault();
-
-                    TagViewModel tagVM = new TagViewModel
-                    {
-                        Id = tag?.Id ?? 0,
-                        Name = tag?.Name ?? "",
-                        Color = tag?.Color ?? "",
-                        CategoryId = category.Id
-                    };
-
-                    tagsVM.Add(tagVM); // Agregar el modelo de vista de la etiqueta a la lista
-                }
-            }
-
-            return tagsVM; // Retornar la lista de modelos de vista de etiquetas
         }
 
         /// <summary>
@@ -126,39 +82,39 @@ namespace OrganiTask.Controllers
                     // Solo creamos al CategoryViewModel si la tarea tiene una etiqueta asignada
                     //if (tag != null && !string.IsNullOrEmpty(tag.Name))
                     //{
-                        // Crear el modelo de vista de la categoría
-                        CategoryViewModel categoryViewModel = new CategoryViewModel
+                    // Crear el modelo de vista de la categoría
+                    CategoryViewModel categoryViewModel = new CategoryViewModel
+                    {
+                        Id = category.Id,
+                        Title = category.Title,
+                        AssignedTag = tag != null ?
+                        new TagViewModel
                         {
-                            Id = category.Id,
-                            Title = category.Title,
-                            AssignedTag = tag != null ?
-                            new TagViewModel
-                            {
-                                Id = tag.Id,
-                                Name = tag.Name,
-                                Color = tag.Color,
-                                CategoryId = category.Id,
-                            } : new TagViewModel(),
-                        };
+                            Id = tag.Id,
+                            Name = tag.Name,
+                            Color = tag.Color,
+                            CategoryId = category.Id,
+                        } : new TagViewModel(),
+                    };
 
-                        // Obtener las etiquetas disponibles para la categoría
-                        OrganiList<Tag> availableTags = context.Tags
-                            .Where(t => t.CategoryId == category.Id)
-                            .OrderBy(t => t.Name)
-                            .ToOrganiList();
+                    // Obtener las etiquetas disponibles para la categoría
+                    OrganiList<Tag> availableTags = context.Tags
+                        .Where(t => t.CategoryId == category.Id)
+                        .OrderBy(t => t.Name)
+                        .ToOrganiList();
 
-                        // Para cada etiqueta disponible, crear un TagViewModel y agregarlo a la lista de etiquetas
-                        foreach (Tag t in availableTags)
+                    // Para cada etiqueta disponible, crear un TagViewModel y agregarlo a la lista de etiquetas
+                    foreach (Tag t in availableTags)
+                    {
+                        categoryViewModel.TagList.AddLast(new TagViewModel
                         {
-                            categoryViewModel.TagList.AddLast(new TagViewModel
-                            {
-                                Id = t.Id,
-                                Name = t.Name,
-                                Color = t.Color,
-                                CategoryId = t.CategoryId
-                            });
-                        }
-                        categoryVM.Add(categoryViewModel);    
+                            Id = t.Id,
+                            Name = t.Name,
+                            Color = t.Color,
+                            CategoryId = t.CategoryId
+                        });
+                    }
+                    categoryVM.Add(categoryViewModel);
                     //}
                 }
             }
@@ -252,6 +208,58 @@ namespace OrganiTask.Controllers
                         context.TaskTags.Add(newTaskTag); // Agregar la nueva TaskTag
                     }
                 }
+                context.SaveChanges(); // Guardar los cambios
+            }
+        }
+
+        /// <summary>
+        /// Elimina la tarea.
+        /// </summary>
+        /// <param name="taskId">Id de la tarea a eliminar</param>
+        public bool DeleteTask(int taskId)
+        {
+            using (OrganiTaskDB context = new OrganiTaskDB())
+            {
+                Task task = context.Tasks.FirstOrDefault(t => t.Id == taskId);
+
+                // Si la tarea no existe
+                if (task == null) return false;
+
+                context.Tasks.Remove(task);
+                context.SaveChanges(); // Guardar los cambios en la base de datos
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Actualiza la relación entre una tarea y una etiqueta en una categoría específica por medio de sus ID.
+        /// </summary>
+        /// <param name="taskId">ID de la tarea.</param>
+        /// <param name="newTagId">ID de la nueva etiqueta.</param>
+        /// <param name="categoryId">ID de la categoría.</param>
+        public void UpdateTagCategoryForTask(int taskId, int newTagId, int categoryId)
+        {
+            using (OrganiTaskDB context = new OrganiTaskDB())
+            {
+                // Primeramente eliminamos cualquier relación existente para la tarea en la categoría
+                OrganiList<TaskTag> existing = context.TaskTags
+                    .Where(tt => tt.TaskId == taskId && tt.Tag.CategoryId == categoryId)
+                    .ToOrganiList();
+
+                context.TaskTags.RemoveRange(existing);
+
+                // Ahora, si el ID de la nueva etiqueta es válido, creamos la relación
+                if (newTagId > 0)
+                {
+                    TaskTag newTT = new TaskTag
+                    {
+                        TaskId = taskId,
+                        TagId = newTagId
+                    };
+                    context.TaskTags.Add(newTT); // Agregar la nueva relación
+                }
+
                 context.SaveChanges(); // Guardar los cambios
             }
         }

@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Drawing;
+using System.Windows.Forms;
 
 namespace OrganiTask.Forms
 {
@@ -34,84 +35,184 @@ namespace OrganiTask.Forms
             this.flpBoard = new System.Windows.Forms.FlowLayoutPanel();
             this.lblDashboardTitle = new System.Windows.Forms.Label();
             this.btnDashboardBack = new System.Windows.Forms.Button();
-            this.btnDashboardAdd = new System.Windows.Forms.Button();
-            this.btnDashboardSort = new System.Windows.Forms.Button();
-            this.btnDashboardSettings = new System.Windows.Forms.Button();
+            this.btnNewTask = new System.Windows.Forms.Button();
+            this.btnSort = new System.Windows.Forms.Button();
+            this.btnSettings = new System.Windows.Forms.Button();
+            this.btnShowHidden = new System.Windows.Forms.Button();
+            this.pnlHeader = new System.Windows.Forms.Panel();
+            this.pnlSidebar = new System.Windows.Forms.Panel();
+            this.cboSort = new System.Windows.Forms.ComboBox();
+            this.pnlHeader.SuspendLayout();
+            this.pnlSidebar.SuspendLayout();
             this.SuspendLayout();
             // 
             // flpBoard
             // 
             this.flpBoard.AutoScroll = true;
-            this.flpBoard.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.flpBoard.Location = new System.Drawing.Point(135, 79);
+            this.flpBoard.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.flpBoard.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flpBoard.Location = new System.Drawing.Point(250, 70);
             this.flpBoard.Name = "flpBoard";
-            this.flpBoard.Size = new System.Drawing.Size(853, 509);
+            this.flpBoard.Padding = new System.Windows.Forms.Padding(20);
+            this.flpBoard.Size = new System.Drawing.Size(750, 530);
             this.flpBoard.TabIndex = 0;
+            this.flpBoard.HorizontalScroll.Enabled = false;
             this.flpBoard.WrapContents = false;
             // 
             // lblDashboardTitle
             // 
+            this.lblDashboardTitle.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblDashboardTitle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.lblDashboardTitle.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDashboardTitle.Location = new System.Drawing.Point(135, 18);
+            this.lblDashboardTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.lblDashboardTitle.Location = new System.Drawing.Point(0, 0);
             this.lblDashboardTitle.Name = "lblDashboardTitle";
-            this.lblDashboardTitle.Size = new System.Drawing.Size(853, 45);
+            this.lblDashboardTitle.Size = new System.Drawing.Size(1000, 70);
             this.lblDashboardTitle.TabIndex = 1;
-            this.lblDashboardTitle.Text = "label1";
+            this.lblDashboardTitle.Text = "Tablero Kanban";
             this.lblDashboardTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnDashboardBack
             // 
-            this.btnDashboardBack.Location = new System.Drawing.Point(12, 546);
+            this.btnDashboardBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnDashboardBack.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.btnDashboardBack.FlatAppearance.BorderSize = 0;
+            this.btnDashboardBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDashboardBack.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDashboardBack.ForeColor = System.Drawing.Color.White;
+            this.btnDashboardBack.Location = new System.Drawing.Point(20, 475);
             this.btnDashboardBack.Name = "btnDashboardBack";
-            this.btnDashboardBack.Size = new System.Drawing.Size(117, 42);
+            this.btnDashboardBack.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnDashboardBack.Size = new System.Drawing.Size(210, 40);
             this.btnDashboardBack.TabIndex = 2;
             this.btnDashboardBack.Text = "🢀 Regresar";
             this.btnDashboardBack.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnDashboardBack.UseVisualStyleBackColor = true;
+            this.btnDashboardBack.UseVisualStyleBackColor = false;
+            this.btnDashboardBack.Click += new System.EventHandler(this.btnDashboardBack_Click);
             // 
-            // btnDashboardAdd
+            // btnNewTask
             // 
-            this.btnDashboardAdd.Location = new System.Drawing.Point(12, 149);
-            this.btnDashboardAdd.Name = "btnDashboardAdd";
-            this.btnDashboardAdd.Size = new System.Drawing.Size(117, 43);
-            this.btnDashboardAdd.TabIndex = 3;
-            this.btnDashboardAdd.Text = "➕ Nueva tarea";
-            this.btnDashboardAdd.UseVisualStyleBackColor = true;
-            this.btnDashboardAdd.Click += new System.EventHandler(this.btnAddTask_Click);
+            this.btnNewTask.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.btnNewTask.FlatAppearance.BorderSize = 0;
+            this.btnNewTask.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNewTask.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNewTask.ForeColor = System.Drawing.Color.White;
+            this.btnNewTask.Location = new System.Drawing.Point(20, 120);
+            this.btnNewTask.Name = "btnNewTask";
+            this.btnNewTask.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnNewTask.Size = new System.Drawing.Size(210, 40);
+            this.btnNewTask.TabIndex = 3;
+            this.btnNewTask.Text = "➕ Nueva tarea";
+            this.btnNewTask.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnNewTask.UseVisualStyleBackColor = false;
+            this.btnNewTask.Click += new System.EventHandler(this.btnNewTask_Click);
             // 
-            // btnDashboardSort
+            // btnSort
             // 
-            this.btnDashboardSort.Location = new System.Drawing.Point(12, 79);
-            this.btnDashboardSort.Name = "btnDashboardSort";
-            this.btnDashboardSort.Size = new System.Drawing.Size(117, 43);
-            this.btnDashboardSort.TabIndex = 4;
-            this.btnDashboardSort.Text = "⇅ Ordenar tablero";
-            this.btnDashboardSort.UseVisualStyleBackColor = true;
+            this.btnSort.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.btnSort.FlatAppearance.BorderSize = 0;
+            this.btnSort.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSort.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSort.ForeColor = System.Drawing.Color.White;
+            this.btnSort.Location = new System.Drawing.Point(20, 60);
+            this.btnSort.Name = "btnSort";
+            this.btnSort.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnSort.Size = new System.Drawing.Size(210, 40);
+            this.btnSort.TabIndex = 4;
+            this.btnSort.Text = "⇅ Ordenar tablero";
+            this.btnSort.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSort.UseVisualStyleBackColor = false;
+            this.btnSort.Click += new System.EventHandler(this.btnSort_Click);
             // 
-            // btnDashboardSettings
+            // btnSettings
             // 
-            this.btnDashboardSettings.Location = new System.Drawing.Point(12, 219);
-            this.btnDashboardSettings.Name = "btnDashboardSettings";
-            this.btnDashboardSettings.Size = new System.Drawing.Size(117, 43);
-            this.btnDashboardSettings.TabIndex = 5;
-            this.btnDashboardSettings.Text = "⚙️ Configurar tablero";
-            this.btnDashboardSettings.UseVisualStyleBackColor = true;
+            this.btnSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.btnSettings.FlatAppearance.BorderSize = 0;
+            this.btnSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSettings.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSettings.ForeColor = System.Drawing.Color.White;
+            this.btnSettings.Location = new System.Drawing.Point(20, 180);
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnSettings.Size = new System.Drawing.Size(210, 40);
+            this.btnSettings.TabIndex = 5;
+            this.btnSettings.Text = "⚙️ Configurar tablero";
+            this.btnSettings.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSettings.UseVisualStyleBackColor = false;
+            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
+            // 
+            // btnShowHidden
+            // 
+            this.btnShowHidden.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.btnShowHidden.FlatAppearance.BorderSize = 0;
+            this.btnShowHidden.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnShowHidden.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnShowHidden.ForeColor = System.Drawing.Color.White;
+            this.btnShowHidden.Location = new System.Drawing.Point(20, 240);
+            this.btnShowHidden.Name = "btnShowHidden";
+            this.btnShowHidden.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnShowHidden.Size = new System.Drawing.Size(210, 40);
+            this.btnShowHidden.TabIndex = 6;
+            this.btnShowHidden.Text = "🔎 Mostrar ocultos";
+            this.btnShowHidden.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnShowHidden.UseVisualStyleBackColor = false;
+            this.btnShowHidden.Click += new System.EventHandler(this.btnShowHidden_Click);
+            // 
+            // pnlHeader
+            // 
+            this.pnlHeader.BackColor = System.Drawing.Color.White;
+            this.pnlHeader.Controls.Add(this.lblDashboardTitle);
+            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
+            this.pnlHeader.Name = "pnlHeader";
+            this.pnlHeader.Size = new System.Drawing.Size(1000, 70);
+            this.pnlHeader.TabIndex = 7;
+            // 
+            // pnlSidebar
+            // 
+            this.pnlSidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.pnlSidebar.Controls.Add(this.btnNewTask);
+            this.pnlSidebar.Controls.Add(this.btnSort);
+            this.pnlSidebar.Controls.Add(this.cboSort);
+            this.pnlSidebar.Controls.Add(this.btnSettings);
+            this.pnlSidebar.Controls.Add(this.btnShowHidden);
+            this.pnlSidebar.Controls.Add(this.btnDashboardBack);
+            this.pnlSidebar.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pnlSidebar.Location = new System.Drawing.Point(0, 70);
+            this.pnlSidebar.Name = "pnlSidebar";
+            this.pnlSidebar.Size = new System.Drawing.Size(250, 530);
+            this.pnlSidebar.TabIndex = 8;
+            // 
+            // cboSort
+            // 
+            this.cboSort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboSort.Font = this.btnSort.Font;
+            this.cboSort.FormattingEnabled = true;
+            this.cboSort.Location = this.btnSort.Location;
+            this.cboSort.Name = "cboSort";
+            this.cboSort.Size = this.btnSort.Size;
+            this.cboSort.TabIndex = this.btnSort.TabIndex;
+            this.cboSort.Visible = false;
+            this.cboSort.SelectionChangeCommitted += new System.EventHandler(this.cboSort_SelectionChangeCommitted);
+            this.cboSort.DropDownClosed += new System.EventHandler(this.cboSort_DropDownClosed);
+            this.cboSort.LostFocus += new System.EventHandler(this.cboSort_LostFocus);
             // 
             // KanbanDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1000, 600);
-            this.Controls.Add(this.btnDashboardSettings);
-            this.Controls.Add(this.btnDashboardSort);
-            this.Controls.Add(this.btnDashboardAdd);
-            this.Controls.Add(this.btnDashboardBack);
-            this.Controls.Add(this.lblDashboardTitle);
             this.Controls.Add(this.flpBoard);
+            this.Controls.Add(this.pnlSidebar);
+            this.Controls.Add(this.pnlHeader);
+            this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MinimumSize = new System.Drawing.Size(1000, 600);
             this.Name = "KanbanDashboard";
-            this.Text = "KanbanDashboard";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "OrganiTask - Tablero Kanban";
             this.Load += new System.EventHandler(this.KanbanDashboard_Load);
+            this.pnlHeader.ResumeLayout(false);
+            this.pnlSidebar.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -120,8 +221,12 @@ namespace OrganiTask.Forms
 
         private Label lblDashboardTitle;
         private Button btnDashboardBack;
-        private Button btnDashboardAdd;
-        private Button btnDashboardSort;
-        private Button btnDashboardSettings;
+        private Button btnNewTask;
+        private Button btnSort;
+        private Button btnSettings;
+        private Button btnShowHidden;
+        private Panel pnlHeader;
+        private Panel pnlSidebar;
+        private ComboBox cboSort;
     }
 }

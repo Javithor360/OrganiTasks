@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OrganiTask.Util.Collections;
+using System;
 
 namespace OrganiTask.Entities.ViewModels
 {
@@ -17,5 +14,8 @@ namespace OrganiTask.Entities.ViewModels
         public DateTime StartDate { get; set; } // Fecha de inicio de la tarea
         public DateTime EndDate { get; set; } // Fecha de vencimiento de la tarea
         public int DashboardId { get; set; } // Identificador del tablero al que pertenece la tarea
+
+        // Colección de etiquetas asociadas a la tarea
+        public OrganiList<Tag> Tags { get; set; } = new OrganiList<Tag>();
     }
 }

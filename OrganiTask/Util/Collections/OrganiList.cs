@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OrganiTask.Util.Collections
 {
@@ -143,7 +138,7 @@ namespace OrganiTask.Util.Collections
         public void BulkAdd(IEnumerable<T> values)
         {
             // Se recorren los elementos y se agregan a la lista
-            foreach (var value in values)
+            foreach (T value in values)
             {
                 AddLast(value); // Se agrega el valor al final de la lista
             }
