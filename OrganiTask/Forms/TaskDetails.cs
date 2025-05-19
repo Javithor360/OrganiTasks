@@ -337,6 +337,16 @@ namespace OrganiTask.Forms
         // Evento de clic en el botón de guardar
         private void btnSave_Click(object sender, EventArgs e)
         {
+            // Validar que la fecha de finalización no sea menor a la fecha de inicio
+            if (dtpEnd.Value < dtpStart.Value)
+            {
+                MessageBox.Show("La fecha de finalización no puede ser anterior a la fecha de inicio.", 
+                    "Error de validación", 
+                    MessageBoxButtons.OK, 
+                    MessageBoxIcon.Error);
+                return;
+            }
+
             // Actualizamos la tarea con los nuevos valores
             task.Title = txtTitle.Text;
             task.Description = txtDesc.Text;
